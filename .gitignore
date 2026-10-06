@@ -30,3 +30,7 @@ api/config.php
 
 # Otro proyecto con su propio repo, copiado aqui dentro por error
 roberto-portfolio/
+
+# El backend PHP vive fuera del proyecto (~/Desktop/sabitas-api) y se sube a
+# Hostpoint a mano. Aqui no pinta nada: esto se despliega en Vercel.
+api/
