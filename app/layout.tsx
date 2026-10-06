@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next';
-import { CookieBanner } from '@/components/cookie-banner'
 
 // ⚙️ MANTENIMIENTO: cambia a false para volver al estado normal
 const MAINTENANCE_MODE = false
@@ -52,7 +51,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>{children} <Analytics /><CookieBanner /></body>
+      <body>{children} <Analytics /></body>
     </html>
   )
 }
