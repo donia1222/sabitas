@@ -99,3 +99,13 @@ queda raro, `rm -rf .next` antes de volver a arrancar.
   tienda, que es donde se cambian los colores de Sabitas de una vez.
 - Formularios con React Hook Form + Zod. Avisos con Sonner.
 - Los componentes de cliente llevan `"use client"`.
+
+## Donde esta cada cosa
+
+El **backend PHP vive fuera del proyecto**, en `~/Desktop/sabitas-api/`, y se
+sube a Hostpoint a mano (`https://web.lweb.ch/templettedhopnew/`). No esta en
+el repositorio a proposito: no se despliega en Vercel, no lo usa el codigo de
+Next y no tiene por que publicarse. La carpeta `api/` esta en `.gitignore`.
+
+Lo que si esta aqui es `app/api/`, que son las rutas de Next que hacen de
+intermediarias con esos PHP.
