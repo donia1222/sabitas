@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 import { clearCache } from "../cache"
 
 const PHP_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/add_category.php"
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
 
     const res = await fetch(PHP_URL, {
-      method: "POST",
+      method: "POST", headers: cabecerasAdmin(),
       body: formData,
     })
     const text = await res.text()

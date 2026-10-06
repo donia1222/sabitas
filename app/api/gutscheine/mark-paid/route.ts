@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 
 const PHP_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/mark_gift_card_paid.php"
 
@@ -7,7 +8,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const res = await fetch(PHP_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: cabecerasAdmin({ "Content-Type": "application/json" }),
       body: JSON.stringify(body),
     })
     const data = await res.json()

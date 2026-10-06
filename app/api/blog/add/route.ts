@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 import { blogCache } from "../cache"
 
 const PHP_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/add_blog_post.php"
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
     const body = await req.blob()
     const res = await fetch(PHP_URL, {
       method: "POST",
-      headers: { "Content-Type": contentType },
+      headers: cabecerasAdmin({ "Content-Type": contentType }),
       body,
       cache: "no-store",
     })

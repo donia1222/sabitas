@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { type NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
     const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL
     const phpResponse = await fetch(`${apiBase}/delete_import.php`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: cabecerasAdmin({ "Content-Type": "application/json" }),
       body: JSON.stringify({ ids }),
     })
 

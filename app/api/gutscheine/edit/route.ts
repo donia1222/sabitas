@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 
 const PHP_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/edit_gift_card.php"
 
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
 
     const res = await fetch(PHP_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: cabecerasAdmin({ "Content-Type": "application/x-www-form-urlencoded" }),
       body: params.toString(),
     })
     const data = await res.json()
@@ -25,7 +26,7 @@ export async function DELETE(req: NextRequest) {
     const { id } = await req.json()
     const res = await fetch(PHP_URL, {
       method: "DELETE",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: cabecerasAdmin({ "Content-Type": "application/x-www-form-urlencoded" }),
       body: `id=${id}`,
     })
     const data = await res.json()

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "")
 
@@ -18,7 +19,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const res = await fetch(`${BASE}/save_shipping_settings.php`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: cabecerasAdmin({ "Content-Type": "application/json" }),
       body: JSON.stringify(body),
     })
     if (!res.ok) throw new Error(`${res.status}`)

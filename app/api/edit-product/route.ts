@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 import { isPhpBlocked, reportPhpError, clearPhpBlock } from "@/lib/php-guard"
 import { phpFetch } from "@/lib/php-queue"
 
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
   try {
     const formData = await req.formData()
-    const res = await phpFetch(PHP, { method: "POST", body: formData })
+    const res = await phpFetch(PHP, { method: "POST", headers: cabecerasAdmin(), body: formData })
     if (!res.ok) { reportPhpError(res.status); throw new Error(`${res.status}`) }
     const data = await res.json()
     clearPhpBlock()

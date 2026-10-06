@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cabecerasAdmin } from "@/lib/admin-token"
 import { clearCache } from "../cache"
 
 const PHP_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/delete_category.php"
@@ -8,7 +9,7 @@ export async function POST(req: NextRequest) {
     const body = await req.text()
     const res = await fetch(PHP_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: cabecerasAdmin({ "Content-Type": "application/x-www-form-urlencoded" }),
       body,
     })
     const text = await res.text()

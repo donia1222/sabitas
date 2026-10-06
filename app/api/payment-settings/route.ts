@@ -9,7 +9,7 @@ const TTL = 600_000 // 10 min
 // servidor (Vercel), nunca llega al navegador. Debe coincidir con
 // 'shop_admin_token' en secure_config/almacen.php. Se puede sobreescribir con
 // la variable de entorno SHOP_ADMIN_TOKEN en Vercel.
-const SHOP_ADMIN_TOKEN = process.env.SHOP_ADMIN_TOKEN || "d621582296ee0f274eedfa1cde94bf2b7c5d078bee1d846d"
+const SHOP_ADMIN_TOKEN = process.env.SHOP_ADMIN_TOKEN || ""
 
 declare global {
   var __payCache: { data: unknown; at: number } | null | undefined
