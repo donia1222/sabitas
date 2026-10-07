@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AdminLoginButton } from "@/components/admin-auth"
 import { InstallPWAButton } from "@/components/install-pwa-button"
-import { Facebook, Twitter, Instagram, Newspaper, ArrowRight, Download, ShieldCheck } from "lucide-react"
+import { Facebook, Twitter, Instagram, Newspaper, ArrowRight, Download, ShieldCheck, MapPin, Phone, Mail } from "lucide-react"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -279,139 +279,141 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
         </div>
       </div>
 
-      {/* ── Footer columns ── */}
-      <div className="bg-white border-t border-n-150 py-14">
+      {/* ── El pie ────────────────────────────────────────────────────────
+          Una sola columna centrada, del derecho y del revés igual: logo,
+          contacto, mapa y enlaces, cada cosa debajo de la anterior y todo
+          sobre el mismo eje. Antes eran dos columnas de alturas distintas y
+          nada acababa cuadrando: el mapa alto a un lado, la lista corta al
+          otro y medio pie en blanco. */}
+      <div className="bg-white border-t border-n-150 py-14 lg:py-16">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 md:items-center">
+          <div className="max-w-3xl mx-auto flex flex-col items-center text-center">
 
-            {/* LEFT: Logo + Contact + Hours */}
-            <div>
-              {/* Logo + name */}
-              <div className="flex justify-center md:justify-start mb-6">
-                <img src="/sabitas/logo.png" alt="Sabitas" className="h-24 lg:h-28 w-auto object-contain" />
-              </div>
+            <img
+              src="/sabitas/logo.png"
+              alt="Sabitas"
+              className="h-24 lg:h-28 w-auto object-contain"
+            />
 
-              {/* Contact pills */}
-              <div className="flex flex-wrap gap-2 mb-6">
-                <a href={`https://maps.google.com/?q=${CONSULTA_MAPA}`} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-n-50 hover:bg-n-150 text-n-700 text-sm px-3 py-1.5 rounded-full transition-colors">
-                  <span className="text-base">📍</span> {LOCALIDAD_COMPLETA}
-                </a>
-                <a href={`tel:${CONTACTO.telefonoPlano}`}
-                  className="inline-flex items-center gap-2 bg-n-50 hover:bg-brand hover:text-white text-brand font-semibold text-sm px-3 py-1.5 rounded-full transition-colors">
-                  <span className="text-base">📞</span> {CONTACTO.telefono}
-                </a>
-                <a href={`mailto:${CONTACTO.email}`}
-                  className="inline-flex items-center gap-2 bg-n-50 hover:bg-brand hover:text-white text-brand font-semibold text-sm px-3 py-1.5 rounded-full transition-colors">
-                  <span className="text-base">✉️</span> {CONTACTO.email}
-                </a>
-              </div>
+            {/* La costura, el mismo hilo que separa los bloques de la web. */}
+            <span className="block w-40 h-0 border-t-2 border-dashed border-brand-pale/70 my-7" />
 
-              {/* El mapa, a todo el ancho de la columna. */}
-              <div>
-                {/* Map */}
-                <a
-                  href={`https://maps.google.com/?q=${CONSULTA_MAPA}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-2xl overflow-hidden border border-brand-tint block relative group w-full"
-                  style={{ height: "190px" }}
-                >
-                  <iframe
-                    title="Standort"
-                    src={`https://maps.google.com/maps?q=${CONSULTA_MAPA}&output=embed&z=14`}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, height: "100%", pointerEvents: "none" }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                  <div className="absolute inset-0 bg-brand/0 group-hover:bg-brand/10 transition-colors flex items-end p-2">
-                    <span className="bg-white/90 text-brand text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
-                      Auf Karte öffnen ↗
-                    </span>
-                  </div>
-                </a>
-
-              </div>
+            {/* Contacto */}
+            <div className="flex flex-wrap justify-center gap-2">
+              <a
+                href={`https://maps.google.com/?q=${CONSULTA_MAPA}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-brand-wash hover:bg-brand-tint border border-brand-tint text-n-700 text-[14px] px-4 py-2 rounded-full transition-colors"
+              >
+                <MapPin className="w-4 h-4 text-brand" />
+                {LOCALIDAD_COMPLETA}
+              </a>
+              <a
+                href={`tel:${CONTACTO.telefonoPlano}`}
+                className="inline-flex items-center gap-2 bg-brand-wash hover:bg-brand hover:text-white border border-brand-tint text-brand font-semibold text-[14px] px-4 py-2 rounded-full transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                {CONTACTO.telefono}
+              </a>
+              <a
+                href={`mailto:${CONTACTO.email}`}
+                className="inline-flex items-center gap-2 bg-brand-wash hover:bg-brand hover:text-white border border-brand-tint text-brand font-semibold text-[14px] px-4 py-2 rounded-full transition-colors"
+              >
+                <Mail className="w-4 h-4" />
+                {CONTACTO.email}
+              </a>
             </div>
 
-            {/* Una sola lista: «Service» y «Firma» eran dos columnas con tres
-                enlaces cada una, y en el telefono quedaban una debajo de otra
-                como si fueran secciones distintas. */}
-            <div>
-              <h3 className="font-black text-n-900 text-base mb-5 uppercase tracking-widest">Service</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3.5 max-w-md">
-                <li>
-                  <a href="/kontakt" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
-                </li>
-                <li>
-                  <Dialog open={openModal === "rueckgabe"} onOpenChange={(open) => setOpenModal(open ? "rueckgabe" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.rueckgabe.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.rueckgabe.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.rueckgabe.content}</div>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-                <li>
-                  <Dialog open={openModal === "zahlungsarten"} onOpenChange={(open) => setOpenModal(open ? "zahlungsarten" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.zahlungsarten.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.zahlungsarten.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.zahlungsarten.content}</div>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-                <li>
-                  <button
-                    onClick={handleDownloadVCard}
-                    className="flex items-center gap-1.5 text-sm font-medium text-n-700 hover:text-brand transition-colors text-left"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    Digitale Visitenkarte
-                  </button>
-                </li>
-                <li>
-                  <a href="/ueber-mich" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Über mich</a>
-                </li>
-                <li>
-                  <Dialog open={openModal === "impressum"} onOpenChange={(open) => setOpenModal(open ? "impressum" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.impressum.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.impressum.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.impressum.content}</div>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-                <li>
-                  <Dialog open={openModal === "datenschutz"} onOpenChange={(open) => setOpenModal(open ? "datenschutz" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.datenschutz.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.datenschutz.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.datenschutz.content}</div>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-              </ul>
+            {/* El mapa, del ancho del bloque */}
+            <a
+              href={`https://maps.google.com/?q=${CONSULTA_MAPA}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative group w-full rounded-2xl overflow-hidden border border-brand-tint mt-8"
+              style={{ height: "200px" }}
+            >
+              <iframe
+                title="Standort"
+                src={`https://maps.google.com/maps?q=${CONSULTA_MAPA}&output=embed&z=14`}
+                width="100%"
+                height="100%"
+                style={{ border: 0, height: "100%", pointerEvents: "none" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <span className="absolute inset-0 bg-brand/0 group-hover:bg-brand/10 transition-colors flex items-end p-3">
+                <span className="bg-white/90 text-brand text-[11px] font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                  Auf Karte öffnen ↗
+                </span>
+              </span>
+            </a>
+
+            {/* Los enlaces, en una linea centrada y separados por un punto.
+                Dos columnas con una lista corta a un lado dejaban el pie
+                descuadrado; asi se lee de un vistazo y queda simetrico. */}
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2.5 mt-10">
+              <a href="/kontakt" className="text-[14px] font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
+              <span className="text-brand-pale select-none" aria-hidden>·</span>
+                <Dialog open={openModal === "rueckgabe"} onOpenChange={(open) => setOpenModal(open ? "rueckgabe" : null)}>
+                  <DialogTrigger asChild>
+                    <button className="text-[14px] font-medium text-n-700 hover:text-brand transition-colors">{legalContent.rueckgabe.title}</button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>{legalContent.rueckgabe.title}</DialogTitle>
+                    </DialogHeader>
+                    <div className="whitespace-pre-line text-sm text-n-700">{legalContent.rueckgabe.content}</div>
+                  </DialogContent>
+                </Dialog>
+                <span className="text-brand-pale select-none" aria-hidden>·</span>
+                <Dialog open={openModal === "zahlungsarten"} onOpenChange={(open) => setOpenModal(open ? "zahlungsarten" : null)}>
+                  <DialogTrigger asChild>
+                    <button className="text-[14px] font-medium text-n-700 hover:text-brand transition-colors">{legalContent.zahlungsarten.title}</button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>{legalContent.zahlungsarten.title}</DialogTitle>
+                    </DialogHeader>
+                    <div className="whitespace-pre-line text-sm text-n-700">{legalContent.zahlungsarten.content}</div>
+                  </DialogContent>
+                </Dialog>
+                <span className="text-brand-pale select-none" aria-hidden>·</span>
+              <a href="/ueber-mich" className="text-[14px] font-medium text-n-700 hover:text-brand transition-colors">Über mich</a>
+                <span className="text-brand-pale select-none" aria-hidden>·</span>
+                <Dialog open={openModal === "impressum"} onOpenChange={(open) => setOpenModal(open ? "impressum" : null)}>
+                  <DialogTrigger asChild>
+                    <button className="text-[14px] font-medium text-n-700 hover:text-brand transition-colors">{legalContent.impressum.title}</button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>{legalContent.impressum.title}</DialogTitle>
+                    </DialogHeader>
+                    <div className="whitespace-pre-line text-sm text-n-700">{legalContent.impressum.content}</div>
+                  </DialogContent>
+                </Dialog>
+                <span className="text-brand-pale select-none" aria-hidden>·</span>
+                <Dialog open={openModal === "datenschutz"} onOpenChange={(open) => setOpenModal(open ? "datenschutz" : null)}>
+                  <DialogTrigger asChild>
+                    <button className="text-[14px] font-medium text-n-700 hover:text-brand transition-colors">{legalContent.datenschutz.title}</button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>{legalContent.datenschutz.title}</DialogTitle>
+                    </DialogHeader>
+                    <div className="whitespace-pre-line text-sm text-n-700">{legalContent.datenschutz.content}</div>
+                  </DialogContent>
+                </Dialog>
             </div>
 
+            {/* La tarjeta de visita, aparte: es una accion, no un enlace mas. */}
+            <button
+              onClick={handleDownloadVCard}
+              className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 rounded-full border border-brand-pale text-brand font-semibold text-[14px] hover:bg-brand-tint/60 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Digitale Visitenkarte
+            </button>
           </div>
         </div>
       </div>
