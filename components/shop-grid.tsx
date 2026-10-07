@@ -280,7 +280,11 @@ function CatCard({ srcs, displayName, isActive, onClick }: {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function ShopGrid() {
+/**
+ * `categoriaInicial` llega desde /kollektion/<slug>: esa pantalla ya sabe que
+ * categoria es, y asi no hay que esperar a leer la direccion.
+ */
+export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: string } = {}) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -354,7 +358,7 @@ export default function ShopGrid() {
   // Acepta ?cat=<slug> (usado al volver desde el detalle de producto) o ?cat=<nombre>
   useEffect(() => {
     if (categories.length === 0) return
-    const catParam = searchParams.get("cat")
+    const catParam = categoriaInicial ?? searchParams.get("cat")
     if (catParam) {
       const matched =
         categories.find((c) => c.slug.toLowerCase() === catParam.toLowerCase()) ??
@@ -375,17 +379,19 @@ export default function ShopGrid() {
         return
       }
     }
-  }, [categories])
+  }, [categories, categoriaInicial])
 
   // Mantener la categoría activa en la URL para que al volver desde el detalle
   // de producto (router.back) se recupere la misma sección y no "todos".
   useEffect(() => {
     if (loading) return
-    const url = new URL(window.location.href)
-    if (activeCategory === "all") url.searchParams.delete("cat")
-    else url.searchParams.set("cat", activeCategory)
-    if (url.toString() !== window.location.href) {
-      window.history.replaceState(window.history.state, "", url.toString())
+    // Cada categoria tiene su propia direccion. Se cambia sin recargar: una
+    // navegacion de verdad volveria a pedir los productos y a subir la pagina
+    // arriba del todo cada vez que se toca una categoria.
+    const destino = activeCategory === "all" ? "/shop" : `/kollektion/${activeCategory}`
+    const actual = window.location.pathname + window.location.search
+    if (actual !== destino) {
+      window.history.replaceState(window.history.state, "", destino)
     }
   }, [activeCategory, loading])
 
@@ -589,7 +595,7 @@ export default function ShopGrid() {
 
   const handleSelect    = useCallback((p: Product) => {
     // Llevamos la sección actual para que el botón "Zurück" del detalle vuelva a ella
-    const back = activeCategory === "all" ? "shop" : `shop?cat=${encodeURIComponent(activeCategory)}`
+    const back = activeCategory === "all" ? "shop" : `kollektion/${activeCategory}`
     router.push(`/product/${p.id}?back=${encodeURIComponent(back)}`)
   }, [activeCategory]) // eslint-disable-line react-hooks/exhaustive-deps
   const handleAddToCart = useCallback((p: Product) => addToCart(p), [addedIds, cart]) // eslint-disable-line react-hooks/exhaustive-deps

@@ -429,7 +429,7 @@ export function HeroSection() {
                   return (
                     <button
                       key={cat.id}
-                      onClick={() => router.push(`/shop?cat=${encodeURIComponent(cat.name)}`)}
+                      onClick={() => router.push(`/kollektion/${cat.slug}`)}
                       className={`${c.bg} w-[72vw] max-w-[260px] shrink-0 snap-start sm:w-auto sm:max-w-none rounded-2xl border border-brand-tint hover:border-brand-pale group hover:shadow-[0_18px_40px_-28px_rgba(107,79,147,0.8)] transition-all duration-300 text-left flex flex-col relative overflow-hidden`}
                     >
                       {/* La foto manda: apaisada, a todo el ancho de la tarjeta
