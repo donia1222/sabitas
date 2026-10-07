@@ -371,95 +371,108 @@ export default function BlogPage() {
           </>
         )}
 
-        {/* El ultimo, en grande: la foto a un lado, el titulo y el arranque
-            del texto al otro. Se abre en la misma hoja que los demas, asi que
-            el articulo entero se lee en un sitio y no en dos. */}
+        {/* Hasta tres articulos, todos en grande, uno debajo de otro: con tan
+            pocos, las tarjetas pequeñas dejaban media pantalla vacia. De
+            cuatro en adelante, el mas nuevo arriba y el resto en una fila que
+            se arrastra de lado. */}
         {!loading && posts.length > 0 && (() => {
-          const post = posts[0]
+          const todosGrandes = posts.length <= 3
+          const grandes = todosGrandes ? posts : posts.slice(0, 1)
+          const restantes = todosGrandes ? [] : posts.slice(1)
+
           return (
-            <article
-              onClick={() => setSelectedPost(post)}
-              className="group bg-white rounded-3xl overflow-hidden border border-brand-tint shadow-[0_22px_50px_-36px_rgba(107,79,147,0.9)] hover:shadow-[0_26px_55px_-30px_rgba(107,79,147,0.9)] transition-shadow cursor-pointer mb-12 grid lg:grid-cols-[1.15fr_1fr]"
-            >
-              <div className="h-[240px] sm:h-[320px] lg:h-full lg:min-h-[340px] overflow-hidden bg-brand-tint">
-                {post.hero_image_url ? (
-                  <img
-                    src={post.hero_image_url}
-                    alt={post.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-brand-pale">
-                    <Newspaper className="w-10 h-10" />
-                  </div>
-                )}
-              </div>
-
-              <div className="p-6 sm:p-9 flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="inline-flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.16em] text-brand bg-brand-tint px-3 py-1.5 rounded-full">
-                    Neuester Beitrag
-                  </span>
-                  <span className="flex items-center gap-1.5 text-[12.5px] text-n-500">
-                    <Calendar className="w-3.5 h-3.5" />
-                    {formatDate(post.created_at)}
-                  </span>
-                </div>
-
-                <h2
-                  className="font-display font-semibold text-ink leading-[1.12]"
-                  style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", letterSpacing: "-0.03em" }}
+            <>
+              {grandes.map((post, i) => (
+                <article
+                  key={post.id}
+                  onClick={() => setSelectedPost(post)}
+                  className="group bg-white rounded-3xl overflow-hidden border border-brand-tint shadow-[0_22px_50px_-36px_rgba(107,79,147,0.9)] hover:shadow-[0_26px_55px_-30px_rgba(107,79,147,0.9)] transition-shadow cursor-pointer mb-6 last:mb-0 grid lg:grid-cols-[1.15fr_1fr]"
                 >
-                  {post.title}
-                </h2>
+                  <div className="h-[240px] sm:h-[320px] lg:h-full lg:min-h-[340px] overflow-hidden bg-brand-tint">
+                    {post.hero_image_url ? (
+                      <img src={post.hero_image_url} alt={post.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-brand-pale">
+                        <Newspaper className="w-10 h-10" />
+                      </div>
+                    )}
+                  </div>
 
-                <p className="text-n-600 text-[15px] leading-relaxed mt-4 line-clamp-4">
-                  {post.content}
-                </p>
+                  <div className="p-6 sm:p-9 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 mb-4">
+                      {/* La etiqueta solo en el primero: en los demas seria mentira. */}
+                      {i === 0 && (
+                        <span className="inline-flex items-center gap-1.5 text-[10.5px] font-bold uppercase tracking-[0.16em] text-brand bg-brand-tint px-3 py-1.5 rounded-full">
+                          Neuester Beitrag
+                        </span>
+                      )}
+                      <span className="flex items-center gap-1.5 text-[12.5px] text-n-500">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {formatDate(post.created_at)}
+                      </span>
+                    </div>
 
-                <span className="inline-flex items-center gap-2 text-brand font-semibold text-[14.5px] mt-6 group-hover:gap-3 transition-all">
-                  Weiterlesen <span>→</span>
-                </span>
-              </div>
-            </article>
+                    <h2
+                      className="font-display font-semibold text-ink leading-[1.12]"
+                      style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", letterSpacing: "-0.03em" }}
+                    >
+                      {post.title}
+                    </h2>
+
+                    <p className="text-n-600 text-[15px] leading-relaxed mt-4 line-clamp-4">
+                      {post.content}
+                    </p>
+
+                    <span className="inline-flex items-center gap-2 text-brand font-semibold text-[14.5px] mt-6 group-hover:gap-3 transition-all">
+                      Weiterlesen <span>→</span>
+                    </span>
+                  </div>
+                </article>
+              ))}
+
+              {restantes.length > 0 && (
+                <>
+                  <div className="flex items-center gap-3 mt-12 mb-6">
+                    <div className="w-1 h-6 bg-brand-pale rounded-full" />
+                    <h2 className="font-display text-[21px] font-semibold text-ink tracking-tight">Weitere Beiträge</h2>
+                  </div>
+
+                  {/* Una fila que se arrastra de lado, en movil y en escritorio:
+                      asi caben los que haya sin estirar la pagina hacia abajo. */}
+                  <div className="flex gap-4 overflow-x-auto -mx-4 px-4 pb-2 snap-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    {restantes.map((post) => (
+                      <article
+                        key={post.id}
+                        onClick={() => setSelectedPost(post)}
+                        className="group shrink-0 snap-start w-[78vw] sm:w-[320px] bg-white rounded-3xl overflow-hidden border border-brand-tint hover:border-brand-pale shadow-[0_18px_40px_-34px_rgba(107,79,147,0.9)] hover:shadow-[0_22px_45px_-30px_rgba(107,79,147,0.9)] transition-shadow cursor-pointer"
+                      >
+                        <div className="h-52 overflow-hidden bg-brand-tint">
+                          {post.hero_image_url ? (
+                            <img src={post.hero_image_url} alt={post.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-brand-pale">
+                              <Newspaper className="w-8 h-8" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-5">
+                          <span className="flex items-center gap-1.5 text-xs text-n-500 mb-2">
+                            <Calendar className="w-3 h-3" />
+                            {formatDate(post.created_at)}
+                          </span>
+                          <h2 className="font-display font-semibold text-ink text-[16.5px] leading-tight mb-2 line-clamp-2">{post.title}</h2>
+                          <p className="text-sm text-n-600 leading-relaxed line-clamp-3">{post.content}</p>
+                          <div className="mt-4 text-[13px] font-semibold text-brand">Weiterlesen →</div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
           )
         })()}
 
-        {/* Rest of posts — card grid */}
-        {!loading && posts.length > 1 && (
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-6 bg-brand-pale rounded-full" />
-            <h2 className="font-display text-[21px] font-semibold text-ink tracking-tight">Weitere Beiträge</h2>
-          </div>
-        )}
-        {!loading && posts.length > 1 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.slice(1).map((post) => (
-              <article
-                key={post.id}
-                onClick={() => setSelectedPost(post)}
-                className="bg-white rounded-3xl overflow-hidden border border-brand-tint hover:border-brand-pale shadow-[0_18px_40px_-34px_rgba(107,79,147,0.9)] hover:shadow-[0_22px_45px_-30px_rgba(107,79,147,0.9)] transition-shadow cursor-pointer group"
-              >
-                <div className="h-52 overflow-hidden bg-n-100">
-                  {post.hero_image_url ? (
-                    <img src={post.hero_image_url} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-n-300 text-sm">Kein Bild</div>
-                  )}
-                </div>
-                <div className="p-5">
-                  <span className="flex items-center gap-1.5 text-xs text-n-400 font-medium mb-2">
-                    <Calendar className="w-3 h-3" />
-                    {formatDate(post.created_at)}
-                  </span>
-                  <h2 className="font-display font-semibold text-ink text-[16.5px] leading-tight mb-2 line-clamp-2">{post.title}</h2>
-                  <p className="text-sm text-n-600 leading-relaxed line-clamp-3">{post.content}</p>
-                  <div className="mt-4 text-[13px] font-semibold text-brand">Weiterlesen →</div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Post modal */}
