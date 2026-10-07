@@ -282,7 +282,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
       {/* ── Footer columns ── */}
       <div className="bg-white border-t border-n-150 py-14">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14 md:items-center">
 
             {/* LEFT: Logo + Contact + Hours */}
             <div>
@@ -341,7 +341,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                 como si fueran secciones distintas. */}
             <div>
               <h3 className="font-black text-n-900 text-base mb-5 uppercase tracking-widest">Service</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3.5 max-w-md">
                 <li>
                   <a href="/kontakt" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
                 </li>
