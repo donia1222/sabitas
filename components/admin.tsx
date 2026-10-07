@@ -1956,7 +1956,7 @@ export function Admin({ onClose }: AdminProps) {
               su titulo, lo que llega con el paquete 3. En una sola fila eran
               diez pestañas que no cabian y habia que arrastrar para ver las
               suyas. */}
-          <div className="mb-8 space-y-3">
+          <div className="mb-8 space-y-2.5">
             <div className="overflow-x-auto -mx-2 px-2 pb-1 flex justify-center">
               <TabsList className="inline-flex w-max mx-auto bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1">
 
@@ -2043,24 +2043,24 @@ export function Admin({ onClose }: AdminProps) {
             </div>
 
             {/* El paquete 3: se ve, se entiende y no se puede pulsar. */}
-            <div className="rounded-2xl border border-dashed border-brand-pale/70 bg-brand-wash/50 px-4 py-3.5 w-max max-w-full mx-auto">
-              <div className="flex items-center justify-center gap-2 mb-2.5">
-                <span className="w-6 h-px bg-brand-pale/60" />
-                <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand/70">
+            <div className="rounded-xl border border-dashed border-brand-pale/60 bg-brand-wash/40 px-3 py-2.5 w-max max-w-full mx-auto">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="w-5 h-px bg-brand-pale/60" />
+                <span className="text-[9.5px] font-bold uppercase tracking-[0.14em] text-brand/60">
                   Mit Paket 3
                 </span>
-                <span className="w-6 h-px bg-brand-pale/60" />
+                <span className="w-5 h-px bg-brand-pale/60" />
               </div>
               <div className="flex flex-wrap justify-center gap-1.5">
                 {PAQUETE_3.map(({ clave, etiqueta, Icono }) => (
                   <span
                     key={clave}
                     title="Kommt mit Paket 3"
-                    className="inline-flex items-center gap-2 rounded-xl bg-white/70 border border-n-150 px-3 py-2 text-sm font-semibold text-n-400 select-none cursor-default"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-white/60 border border-n-150 px-2.5 py-1 text-[12px] font-medium text-n-400 select-none cursor-default"
                   >
-                    <Icono className="w-4 h-4" />
+                    <Icono className="w-3.5 h-3.5" />
                     {etiqueta}
-                    <Lock className="w-3 h-3" />
+                    <Lock className="w-2.5 h-2.5" />
                   </span>
                 ))}
               </div>
