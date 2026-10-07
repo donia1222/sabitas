@@ -535,7 +535,7 @@ export function Admin({ onClose }: AdminProps) {
         form[`footer_${k}_content`] = s[`footer_${k}_content`] ?? FOOTER_LEGAL_DEFAULTS[k].content
       }
       // Hero
-      HERO_DEFAULTS.badges.forEach((d, i) => { form[`hero_badge_${i + 1}`] = s[`hero_badge_${i + 1}`] ?? d })
+      form["hero_badge_1"] = s["hero_badge_1"] ?? HERO_DEFAULTS.badges[0]
       form["hero_title_1"] = s["hero_title_1"] ?? HERO_DEFAULTS.titleLine1
       form["hero_title_2"] = s["hero_title_2"] ?? HERO_DEFAULTS.titleLine2
       form["hero_subtitle"] = s["hero_subtitle"] ?? HERO_DEFAULTS.subtitle
@@ -4117,19 +4117,16 @@ export function Admin({ onClose }: AdminProps) {
                     ))}
                   </div>
 
-                  {/* Badges */}
-                  <Label className="text-xs text-gray-400 font-medium">Trust-Bar Badges (4)</Label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1 mb-5">
-                    {[1, 2, 3, 4].map((i) => (
-                      <Input
-                        key={i}
-                        value={siteForm[`hero_badge_${i}`] ?? ""}
-                        onChange={(e) => setSiteForm(p => ({ ...p, [`hero_badge_${i}`]: e.target.value }))}
-                        placeholder={`Badge ${i}`}
-                        className="bg-gray-50/80 border-gray-200 rounded-xl focus:bg-white"
-                      />
-                    ))}
-                  </div>
+                  {/* Un solo badge: el hero muestra uno, no cuatro. Los otros
+                      tres campos se quitaron del panel para no prometer algo
+                      que luego no sale en ningun sitio. */}
+                  <Label className="text-xs text-gray-400 font-medium">Badge über dem Titel</Label>
+                  <Input
+                    value={siteForm["hero_badge_1"] ?? ""}
+                    onChange={(e) => setSiteForm(p => ({ ...p, hero_badge_1: e.target.value }))}
+                    placeholder="z.B. Handmade · Schweiz"
+                    className="bg-gray-50/80 border-gray-200 rounded-xl focus:bg-white mt-1 mb-5"
+                  />
 
                   {/* Título */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">

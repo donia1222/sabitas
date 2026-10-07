@@ -82,14 +82,11 @@ export function HeroSection() {
     () => [1, 2, 3].map((i) => siteContent[`hero_image_${i}_url`] || HERO_IMAGE_DEFAULTS[i - 1]),
     [siteContent],
   )
-  const heroBadges = useMemo(
-    () => HERO_DEFAULTS.badges.map((d, i) => {
-      const k = `hero_badge_${i + 1}`
-      // Si el badge fue guardado (aunque sea vacío) se respeta; si nunca se tocó, usa el por defecto
-      return k in siteContent ? siteContent[k] : d
-    }),
-    [siteContent],
-  )
+  /** La insignia de encima del titular. Solo hay una. */
+  const heroBadge = "hero_badge_1" in siteContent
+    ? siteContent["hero_badge_1"].trim()
+    : HERO_DEFAULTS.badges[0]
+
   /**
    * Lo guardado manda, aunque sea vacio.
    *
@@ -184,9 +181,11 @@ export function HeroSection() {
 
             {/* Texto */}
             <div className="order-2 lg:order-1 lg:py-16">
-              <span className="inline-block bg-white/80 text-brand text-[11.5px] font-semibold uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-brand-pale/60">
-                {heroBadges[0] || "Handmade · Schweiz"}
-              </span>
+              {heroBadge && (
+                <span className="inline-block bg-white/80 text-brand text-[11.5px] font-semibold uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-brand-pale/60">
+                  {heroBadge}
+                </span>
+              )}
 
               <h1
                 className="font-display text-ink font-semibold mt-6 leading-[1.08]"
