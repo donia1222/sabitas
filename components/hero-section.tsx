@@ -94,10 +94,17 @@ export function HeroSection() {
   const heroTitle2 = siteContent["hero_title_2"] || HERO_DEFAULTS.titleLine2
   const heroSubtitle = siteContent["hero_subtitle"] || HERO_DEFAULTS.subtitle
   const heroStats = useMemo(
-    () => HERO_DEFAULTS.stats.map((d, i) => ({
-      val: siteContent[`hero_stat${i + 1}_val`] || d.val,
-      label: siteContent[`hero_stat${i + 1}_label`] || d.label,
-    })),
+    () => HERO_DEFAULTS.stats.map((d, i) => {
+      // Guardado vacio NO es lo mismo que «nunca lo toque»: si ella borra el
+      // texto de abajo, se queda vacio. Con `||` volvia el de por defecto, y
+      // salia «Taschen» con «Handarbeit» debajo, que no pega ni con cola.
+      const claveVal = `hero_stat${i + 1}_val`
+      const claveLabel = `hero_stat${i + 1}_label`
+      return {
+        val: (claveVal in siteContent ? siteContent[claveVal] : d.val).trim(),
+        label: (claveLabel in siteContent ? siteContent[claveLabel] : d.label).trim(),
+      }
+    }),
     [siteContent],
   )
 
@@ -258,25 +265,47 @@ export function HeroSection() {
         </div>
       </section>
 
-      {/* ── Las tres razones, debajo del hero ── */}
+      {/* ── Las tres razones, debajo del hero ───────────────────────────
+          Antes eran tres tarjetas blancas sueltas, el icono a la izquierda y
+          mucho aire a la derecha. Ahora es UNA banda de color con las tres
+          dentro, separadas por la costura de puntos —el mismo hilo que cruza
+          el resto de la web—, y el contenido centrado. En el telefono la
+          costura se pone horizontal y van una debajo de otra. */}
       <section className="bg-white">
-        <div className="container mx-auto px-4 lg:px-8 py-10 lg:py-12">
-          <div className="grid sm:grid-cols-3 gap-4 lg:gap-5">
-            {heroStats.map(({ val, label }, i) => (
-              <div
-                key={label}
-                className="section-fade bg-white border border-brand-tint rounded-2xl p-5 lg:p-6 flex items-start gap-4 shadow-[0_10px_30px_-24px_rgba(107,79,147,0.6)]"
-                style={{ animationDelay: `${i * 110}ms` }}
-              >
-                <span className="w-11 h-11 shrink-0 rounded-full bg-brand-tint text-brand flex items-center justify-center">
-                  {[<Sparkles key="a" className="w-5 h-5" />, <Flower2 key="b" className="w-5 h-5" />, <Package key="c" className="w-5 h-5" />][i % 3]}
-                </span>
-                <div>
-                  <p className="font-semibold text-ink text-[15.5px] leading-tight">{val}</p>
-                  <p className="text-n-500 text-[14px] mt-1 leading-snug">{label}</p>
+        <div className="container mx-auto px-4 lg:px-8 py-10 lg:py-14">
+          <div
+            className="rounded-3xl border border-brand-tint px-4 py-8 sm:px-8 lg:px-10"
+            style={{ background: "linear-gradient(135deg, #FBF7FB 0%, #F4ECFC 55%, #FBF7FB 100%)" }}
+          >
+            <div className="grid sm:grid-cols-3">
+              {heroStats.map(({ val, label }, i) => (
+                <div
+                  key={i}
+                  className={`section-fade flex flex-col items-center text-center px-2 py-6 sm:py-2 ${
+                    i > 0
+                      ? "border-t border-dashed border-brand-pale/70 sm:border-t-0 sm:border-l"
+                      : ""
+                  }`}
+                  style={{ animationDelay: `${i * 110}ms` }}
+                >
+                  <span className="relative w-14 h-14 rounded-full bg-white text-brand flex items-center justify-center shadow-[0_12px_26px_-18px_rgba(107,79,147,0.9)]">
+                    {/* El aro de puntos alrededor del icono, como los circulos
+                        de los tres pasos. */}
+                    <span className="absolute -inset-1.5 rounded-full border-2 border-dashed border-brand-pale/70" />
+                    {[<Sparkles key="a" className="w-6 h-6" />, <Flower2 key="b" className="w-6 h-6" />, <Package key="c" className="w-6 h-6" />][i % 3]}
+                  </span>
+
+                  <p className="font-display font-semibold text-ink text-[19px] lg:text-[21px] mt-5 leading-tight" style={{ letterSpacing: "-0.02em" }}>
+                    {val}
+                  </p>
+                  {label && (
+                    <p className="text-n-600 text-[14.5px] mt-1.5 leading-snug max-w-[220px]">
+                      {label}
+                    </p>
+                  )}
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
