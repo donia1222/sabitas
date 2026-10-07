@@ -78,11 +78,15 @@ export function Header({ onCartOpen, cartCount = 0 }: HeaderProps) {
           {/* El logo manda. Antes habia aqui el nombre escrito en dos colores. */}
           <div className="flex-1 min-w-0 flex items-center">
             <button onClick={() => ir("/")} className="flex-shrink-0" aria-label="Sabitas · Startseite">
-              <img
-                src="/sabitas/logo.png"
-                alt="Sabitas"
-                className="h-[68px] lg:h-[80px] w-auto object-contain"
-              />
+              {/* El brillo que lo cruza al cargar, como en la primera landing. */}
+              <span className="logo-marco">
+                <img
+                  src="/sabitas/logo.png"
+                  alt="Sabitas"
+                  className="h-[68px] lg:h-[80px] w-auto object-contain"
+                />
+                <span className="brillo" />
+              </span>
             </button>
           </div>
 

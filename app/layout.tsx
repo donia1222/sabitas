@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/next';
+import { Bienvenida } from '@/components/bienvenida'
 
 // ⚙️ MANTENIMIENTO: cambia a false para volver al estado normal
 const MAINTENANCE_MODE = false
@@ -74,7 +75,17 @@ export default function RootLayout({
 
   return (
     <html lang="de">
-      <body>{children} <Analytics /></body>
+      <head>
+        {/* Decide la bienvenida ANTES de que se pinte nada: si se mirase
+            desde React, la pagina ya se habria visto un instante. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(!localStorage.getItem('sabitas_bienvenida_vista'))document.documentElement.dataset.bienvenida='1'}catch(e){}",
+          }}
+        />
+      </head>
+      <body><Bienvenida />{children} <Analytics /></body>
     </html>
   )
 }

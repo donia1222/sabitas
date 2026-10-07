@@ -155,3 +155,75 @@ h1, h2, h3, .font-display {
 @media (prefers-reduced-motion: reduce) {
   .titulo-cosido::after { transition: none; clip-path: inset(0 0 0 0); }
 }
+
+/* ── El logo, con su brillo ────────────────────────────────────────────────
+   El mismo gesto que en la primera landing: el logo entra creciendo un poco
+   y, un momento despues, lo cruza un destello de izquierda a derecha. Aqui
+   pasa una sola vez al cargar; en una cabecera, repetirlo cada pocos
+   segundos acabaria cansando. */
+.logo-marco {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+}
+.logo-marco img {
+  animation: logoEntra 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.logo-marco .brillo {
+  position: absolute;
+  top: 6%;
+  bottom: 6%;
+  width: 26%;
+  left: -35%;
+  pointer-events: none;
+  background: linear-gradient(100deg,
+    rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%);
+  animation: logoBrillo 1.5s ease-in-out 0.7s both;
+}
+@keyframes logoEntra {
+  from { opacity: 0; transform: scale(0.93) }
+  to   { opacity: 1; transform: scale(1) }
+}
+@keyframes logoBrillo {
+  from { left: -35%; opacity: 0 }
+  12%  { opacity: 1 }
+  to   { left: 108%; opacity: 0 }
+}
+
+/* ── La bienvenida ────────────────────────────────────────────────────────
+   Solo la primera visita. Quien decide es un script de dos lineas en el
+   <head>: mira localStorage ANTES de que se pinte nada y marca el <html>.
+   Hacerlo desde React llegaria tarde —la pagina ya se habria visto un
+   instante— y es justo lo que se quiere evitar. */
+.bienvenida { display: none }
+:root[data-bienvenida="1"] .bienvenida {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #ECE2F7 0%, #FBF7FB 55%, #FCFAFD 100%);
+}
+/* Mientras esta la bienvenida, la pagina de debajo no se desplaza. */
+:root[data-bienvenida="1"] body { overflow: hidden }
+
+.bienvenida img { width: min(68vw, 340px); height: auto }
+.bienvenida.se-va { animation: bienvenidaSale 0.55s ease forwards }
+@keyframes bienvenidaSale { to { opacity: 0; visibility: hidden } }
+
+/* La costura debajo del logo, dibujandose. */
+.bienvenida .costura {
+  height: 0;
+  border-top: 2px dashed #C9B6E4;
+  width: 0;
+  margin-top: 18px;
+  animation: costuraCrece 1.1s cubic-bezier(0.25, 0.9, 0.3, 1) 0.5s both;
+}
+@keyframes costuraCrece { to { width: min(50vw, 240px) } }
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-marco img, .logo-marco .brillo,
+  .bienvenida img, .bienvenida .costura { animation: none }
+  .logo-marco .brillo { display: none }
+}
