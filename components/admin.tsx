@@ -2213,7 +2213,7 @@ export function Admin({ onClose }: AdminProps) {
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-bold text-gray-900 text-sm">Status</h3>
                       <div className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center">
-                        <CheckCircle className="w-3.5 h-3.5 text-blue-500" />
+                        <CheckCircle className="w-3.5 h-3.5 text-brand" />
                       </div>
                     </div>
                     <ResponsiveContainer width="100%" height={120}>
@@ -2571,149 +2571,99 @@ export function Admin({ onClose }: AdminProps) {
 
           {/* Products Tab */}
           <TabsContent value="products">
-            {/* Modern Product Stats Dashboard */}
-            {productStats && (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-                {/* Total Products */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-600 p-5 text-white shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 hover:-translate-y-0.5">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-6 translate-x-6" />
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-4" />
-                  <div className="relative">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                        <Package className="w-4 h-4" />
+            {/* Los numeros, en calma ────────────────────────────────────
+                Eran cuatro ladrillos de color con degradado y sombra, cada uno
+                de un color distinto. Lo que importa es el numero, no el ladrillo:
+                ahora van en blanco, con el icono en un circulo lila y una sola
+                nota de color donde hace falta —ambar si hay poco y rojo si se
+                acabo—, que es cuando el color sirve para algo. */}
+            {productStats && (() => {
+              const cifras = [
+                { etiqueta: "Produkte",      valor: productStats.total_products, pie: "Gesamt",          Icono: Package,       aviso: null },
+                { etiqueta: "Lagerbestand",  valor: productStats.total_stock,    pie: "Einheiten",       Icono: Package2,      aviso: null },
+                { etiqueta: "Wenig Lager",   valor: productStats.low_stock,      pie: "Nachbestellen",   Icono: AlertTriangle, aviso: "ambar" },
+                { etiqueta: "Ausverkauft",   valor: productStats.out_of_stock,   pie: "Nicht verfügbar", Icono: X,             aviso: "rojo" },
+              ]
+              return (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+                  {cifras.map(({ etiqueta, valor, pie, Icono, aviso }) => {
+                    // El color solo aparece cuando hay algo que mirar.
+                    const encendido = aviso !== null && valor > 0
+                    const tono = aviso === "rojo"
+                      ? { circulo: "bg-red-50 text-red-500", numero: "text-red-600" }
+                      : { circulo: "bg-amber-50 text-amber-500", numero: "text-amber-600" }
+                    return (
+                      <div
+                        key={etiqueta}
+                        className="bg-white border border-brand-tint rounded-2xl p-4 sm:p-5 shadow-[0_14px_34px_-30px_rgba(107,79,147,0.9)]"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <span className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${encendido ? tono.circulo : "bg-brand-tint text-brand"}`}>
+                            <Icono className="w-4 h-4" />
+                          </span>
+                          <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-n-400 leading-tight">
+                            {etiqueta}
+                          </span>
+                        </div>
+                        <p className={`font-display text-[32px] font-semibold tracking-tight mt-3 ${encendido ? tono.numero : "text-ink"}`}>
+                          {valor}
+                        </p>
+                        <p className="text-[12.5px] text-n-400 mt-0.5">{pie}</p>
                       </div>
-                      <span className="text-xs font-medium text-indigo-100 uppercase tracking-wider">Produkte</span>
-                    </div>
-                    <p className="text-4xl font-black tracking-tight">{productStats.total_products}</p>
-                    <div className="flex items-center gap-1 mt-2 text-indigo-100 text-xs">
-                      <TrendingUp className="w-3 h-3" />
-                      <span>Gesamt</span>
-                    </div>
-                  </div>
+                    )
+                  })}
                 </div>
-
-                {/* Stock */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-5 text-white shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300 hover:-translate-y-0.5">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-6 translate-x-6" />
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-4" />
-                  <div className="relative">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                        <Package2 className="w-4 h-4" />
-                      </div>
-                      <span className="text-xs font-medium text-emerald-100 uppercase tracking-wider">Lagerbestand</span>
-                    </div>
-                    <p className="text-4xl font-black tracking-tight">{productStats.total_stock}</p>
-                    <div className="flex items-center gap-1 mt-2 text-emerald-100 text-xs">
-                      <CheckCircle className="w-3 h-3" />
-                      <span>Einheiten</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Low Stock */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 p-5 text-white shadow-lg shadow-amber-500/20 hover:shadow-xl hover:shadow-amber-500/30 transition-all duration-300 hover:-translate-y-0.5">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-6 translate-x-6" />
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-4" />
-                  <div className="relative">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                        <AlertTriangle className="w-4 h-4" />
-                      </div>
-                      <span className="text-xs font-medium text-amber-100 uppercase tracking-wider">Wenig Lager</span>
-                    </div>
-                    <p className="text-4xl font-black tracking-tight">{productStats.low_stock}</p>
-                    <div className="flex items-center gap-1 mt-2 text-amber-100 text-xs">
-                      <AlertTriangle className="w-3 h-3" />
-                      <span>Nachbestellen</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Out of Stock */}
-                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-rose-500 to-red-600 p-5 text-white shadow-lg shadow-rose-500/20 hover:shadow-xl hover:shadow-rose-500/30 transition-all duration-300 hover:-translate-y-0.5">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-6 translate-x-6" />
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-4" />
-                  <div className="relative">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                        <X className="w-4 h-4" />
-                      </div>
-                      <span className="text-xs font-medium text-rose-100 uppercase tracking-wider">Ausverkauft</span>
-                    </div>
-                    <p className="text-4xl font-black tracking-tight">{productStats.out_of_stock}</p>
-                    <div className="flex items-center gap-1 mt-2 text-rose-100 text-xs">
-                      <X className="w-3 h-3" />
-                      <span>Nicht verfügbar</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
+              )
+            })()}
 
             {/* Products Header Actions */}
             <div className="mb-6">
-              <h2 className="text-xl font-black text-gray-900 tracking-tight">Kategorieverwaltung</h2>
+              <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Kategorieverwaltung</h2>
               <p className="text-xs text-gray-400 mt-0.5 mb-3">Kategorien verwalten</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {/* Botón 1: crear Hauptkategorie (nivel superior, sin padre) */}
-                <button
-                  onClick={() => { setEditingCategory(null); setForceHaupt(true); setCatIsHaupt(true); setCatCreateKind(null); setIsCategoryModalOpen(true) }}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-700 to-blue-600 hover:from-blue-800 hover:to-blue-700 p-5 text-left shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-200"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
-                  <div className="relative">
-                    <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                      <Plus className="w-5 h-5 text-white" />
-                    </div>
-                    <p className="text-white font-bold text-base leading-tight">Neue Hauptkategorie</p>
-                    <p className="text-blue-100 text-xs mt-1">Oberste Ebene erstellen</p>
-                  </div>
-                </button>
-                {/* Botón 2: crear Kategorie (padre = una Hauptkategorie) */}
-                <button
-                  onClick={() => { setEditingCategory(null); setForceHaupt(false); setCatIsHaupt(false); setCatCreateKind("kategorie"); setIsCategoryModalOpen(true) }}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-500 to-sky-400 hover:from-sky-600 hover:to-sky-500 p-5 text-left shadow-md shadow-sky-500/20 hover:shadow-lg hover:shadow-sky-500/30 transition-all duration-200"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
-                  <div className="relative">
-                    <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                      <Plus className="w-5 h-5 text-white" />
-                    </div>
-                    <p className="text-white font-bold text-base leading-tight">Kategorie erstellen</p>
-                    <p className="text-sky-50 text-xs mt-1">In eine Hauptkategorie</p>
-                  </div>
-                </button>
-                {/* Botón 3: crear Subkategorie (padre = una Kategorie) */}
-                <button
-                  onClick={() => { setEditingCategory(null); setForceHaupt(false); setCatIsHaupt(false); setCatCreateKind("subkategorie"); setIsCategoryModalOpen(true) }}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-teal-500 to-teal-400 hover:from-teal-600 hover:to-teal-500 p-5 text-left shadow-md shadow-teal-500/20 hover:shadow-lg hover:shadow-teal-500/30 transition-all duration-200"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
-                  <div className="relative">
-                    <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                      <Plus className="w-5 h-5 text-white" />
-                    </div>
-                    <p className="text-white font-bold text-base leading-tight">Subkategorie erstellen</p>
-                    <p className="text-teal-50 text-xs mt-1">In eine Kategorie</p>
-                  </div>
-                </button>
+                {/* Tres botones iguales, en blanco. Antes eran tres ladrillos
+                    azul, celeste y verde: el color sugeria una jerarquia que no
+                    existe —son tres niveles del mismo arbol, no tres cosas
+                    distintas—. Lo que los distingue es el texto. */}
+                {[
+                  { titulo: "Neue Hauptkategorie", pie: "Oberste Ebene erstellen",
+                    alPulsar: () => { setEditingCategory(null); setForceHaupt(true); setCatIsHaupt(true); setCatCreateKind(null); setIsCategoryModalOpen(true) } },
+                  { titulo: "Kategorie erstellen", pie: "In eine Hauptkategorie",
+                    alPulsar: () => { setEditingCategory(null); setForceHaupt(false); setCatIsHaupt(false); setCatCreateKind("kategorie"); setIsCategoryModalOpen(true) } },
+                  { titulo: "Subkategorie erstellen", pie: "In eine Kategorie",
+                    alPulsar: () => { setEditingCategory(null); setForceHaupt(false); setCatIsHaupt(false); setCatCreateKind("subkategorie"); setIsCategoryModalOpen(true) } },
+                ].map(({ titulo, pie, alPulsar }) => (
+                  <button
+                    key={titulo}
+                    onClick={alPulsar}
+                    className="group flex items-center gap-3.5 rounded-2xl border border-dashed border-brand-pale bg-white hover:border-brand hover:bg-brand-wash/60 px-4 py-4 text-left transition-colors"
+                  >
+                    <span className="w-10 h-10 shrink-0 rounded-full bg-brand-tint text-brand flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
+                      <Plus className="w-5 h-5" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block font-semibold text-ink text-[15px] leading-tight">{titulo}</span>
+                      <span className="block text-n-400 text-[12.5px] mt-0.5">{pie}</span>
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
 
             {/* Categories List */}
             {(() => {
-              const SUB_COLORS = [
-                { bg: "bg-purple-100", dot: "bg-purple-500", border: "border-purple-300 hover:border-purple-400", icon: "from-purple-500 to-purple-400 shadow-purple-300/20", label: "text-purple-600", activeBtn: "bg-purple-600 text-white", ring: "border-purple-400 ring-2 ring-purple-200", header: "text-purple-400" },
-                { bg: "bg-emerald-100", dot: "bg-emerald-500", border: "border-emerald-300 hover:border-emerald-400", icon: "from-emerald-500 to-emerald-400 shadow-emerald-300/20", label: "text-emerald-600", activeBtn: "bg-emerald-600 text-white", ring: "border-emerald-400 ring-2 ring-emerald-200", header: "text-emerald-400" },
-                { bg: "bg-orange-100", dot: "bg-orange-500", border: "border-orange-300 hover:border-orange-400", icon: "from-orange-500 to-orange-400 shadow-orange-300/20", label: "text-orange-600", activeBtn: "bg-orange-600 text-white", ring: "border-orange-400 ring-2 ring-orange-200", header: "text-orange-400" },
-                { bg: "bg-pink-100", dot: "bg-pink-500", border: "border-pink-300 hover:border-pink-400", icon: "from-pink-500 to-pink-400 shadow-pink-300/20", label: "text-pink-600", activeBtn: "bg-pink-600 text-white", ring: "border-pink-400 ring-2 ring-pink-200", header: "text-pink-400" },
-                { bg: "bg-teal-100", dot: "bg-teal-500", border: "border-teal-300 hover:border-teal-400", icon: "from-teal-500 to-teal-400 shadow-teal-300/20", label: "text-teal-600", activeBtn: "bg-teal-600 text-white", ring: "border-teal-400 ring-2 ring-teal-200", header: "text-teal-400" },
-                { bg: "bg-amber-100", dot: "bg-amber-500", border: "border-amber-300 hover:border-amber-400", icon: "from-amber-500 to-amber-400 shadow-amber-300/20", label: "text-amber-600", activeBtn: "bg-amber-600 text-white", ring: "border-amber-400 ring-2 ring-amber-200", header: "text-amber-400" },
-                { bg: "bg-red-100", dot: "bg-red-500", border: "border-red-300 hover:border-red-400", icon: "from-red-500 to-red-400 shadow-red-300/20", label: "text-red-600", activeBtn: "bg-red-600 text-white", ring: "border-red-400 ring-2 ring-red-200", header: "text-red-400" },
-                { bg: "bg-indigo-100", dot: "bg-indigo-500", border: "border-indigo-300 hover:border-indigo-400", icon: "from-indigo-500 to-indigo-400 shadow-indigo-300/20", label: "text-indigo-600", activeBtn: "bg-indigo-600 text-white", ring: "border-indigo-400 ring-2 ring-indigo-200", header: "text-indigo-400" },
-              ]
+              /* Antes cada categoria salia de un color distinto —ocho, del
+                 morado al indigo—. Con tres categorias parecia una caja de
+                 lapices; aqui el color no dice nada que el nombre no diga ya.
+                 Se queda la forma del array para no tocar lo que lo usa. */
+              const TONO_LILA = {
+                bg: "bg-brand-tint", dot: "bg-brand",
+                border: "border-brand-tint hover:border-brand-pale",
+                icon: "from-brand to-brand-soft shadow-brand/20",
+                label: "text-brand", activeBtn: "bg-brand text-white",
+                ring: "border-brand ring-2 ring-brand-pale", header: "text-brand/60",
+              }
+              const SUB_COLORS = [TONO_LILA, TONO_LILA, TONO_LILA, TONO_LILA, TONO_LILA, TONO_LILA, TONO_LILA, TONO_LILA]
               // Hauptkategorie = marcada con is_haupt · Kategorie = cuelga de nada o de una Haupt · Subkategorie = cuelga de una Kategorie
               const haupts = categories.filter(c => c.is_haupt)
               const isHauptId = (id: number | null) => id != null && haupts.some(h => h.id === id)
@@ -2741,14 +2691,14 @@ export function Admin({ onClose }: AdminProps) {
                 const isSub = !cat.is_haupt && !!parentCat && !parentCat.is_haupt
                 const isSelected = productFilters.category === cat.slug
                 return (
-                  <div key={cat.slug} className={`flex flex-col rounded-2xl border shadow-sm hover:shadow-md transition-all overflow-hidden bg-white ${isSelected ? "border-blue-400 ring-2 ring-blue-200" : "border-gray-100 hover:border-gray-200"}`}>
+                  <div key={cat.slug} className={`flex flex-col rounded-2xl border shadow-sm hover:shadow-md transition-all overflow-hidden bg-white ${isSelected ? "border-brand ring-2 ring-brand-pale" : "border-gray-100 hover:border-gray-200"}`}>
                     <div className="flex items-center gap-2.5 px-3.5 pt-3 pb-2">
-                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 overflow-hidden shadow-sm ${cat.image ? "bg-gray-100" : `bg-gradient-to-br ${cat.parent_id ? (cs?.icon ?? "from-blue-400 to-blue-300 shadow-blue-300/20") : "from-blue-600 to-blue-500 shadow-blue-500/20"}`}`}>
+                      <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 overflow-hidden shadow-sm ${cat.image ? "bg-gray-100" : `bg-gradient-to-br ${cat.parent_id ? (cs?.icon ?? "from-brand-soft to-brand-pale shadow-brand/20") : "from-brand to-brand-soft shadow-brand/20"}`}`}>
                         {cat.image ? <img src={cat.image} alt="" className="w-full h-full object-cover" /> : <Flame className="w-4 h-4 text-white" />}
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-bold text-gray-900 text-sm truncate">{cat.name}</p>
-                        {parentName && !hideParent && <p className={`text-xs font-bold truncate ${cs?.label ?? "text-blue-500"}`}>↳ {parentName}</p>}
+                        {parentName && !hideParent && <p className={`text-xs font-bold truncate ${cs?.label ?? "text-brand"}`}>↳ {parentName}</p>}
                         <p className="text-[11px] text-gray-400 font-medium">{cat.is_haupt ? `${assignedCats} Kategorie${assignedCats !== 1 ? "n" : ""}` : `${productCount} Produkt${productCount !== 1 ? "e" : ""}`}</p>
                       </div>
                     </div>
@@ -2761,7 +2711,7 @@ export function Admin({ onClose }: AdminProps) {
                               setProductFilters(prev => ({ ...prev, category: isActive ? "" : cat.slug }))
                               if (!isActive) setTimeout(() => productsGridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50)
                             }}
-                            className={`flex-1 flex items-center justify-center gap-1 py-1.5 text-[11px] font-semibold transition-colors ${isSelected ? "bg-blue-600 text-white" : "text-gray-400 hover:bg-gray-50"}`}
+                            className={`flex-1 flex items-center justify-center gap-1 py-1.5 text-[11px] font-semibold transition-colors ${isSelected ? "bg-brand text-white" : "text-n-400 hover:bg-brand-wash"}`}
                           >
                             <Eye className="w-3 h-3" />
                             Ansehen
@@ -2771,7 +2721,7 @@ export function Admin({ onClose }: AdminProps) {
                       )}
                       <button
                         onClick={() => { setEditingCategory(cat); setForceHaupt(false); setCatIsHaupt(!!cat.is_haupt); setCatCreateKind(null); setIsCategoryModalOpen(true) }}
-                        className="flex-1 flex items-center justify-center gap-1 py-1.5 text-[11px] font-semibold text-green-700 hover:bg-green-50 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-1 py-1.5 text-[11px] font-semibold text-brand hover:bg-brand-wash transition-colors"
                       >
                         <Edit className="w-3 h-3" />
                         Bearbeiten
@@ -2793,9 +2743,9 @@ export function Admin({ onClose }: AdminProps) {
                   {/* NIVEL 1 — Hauptkategorien (solo las marcadas con is_haupt) */}
                   {haupts.length > 0 && (
                     <div className="mb-6">
-                      <div className="flex items-center gap-3 mb-4 px-5 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 shadow-md shadow-blue-500/20">
-                        <Flame className="w-6 h-6 text-white shrink-0" />
-                        <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wide">Hauptkategorien</h3>
+                      <div className="flex items-center gap-2.5 mb-4 pb-2.5 border-b border-brand-tint">
+                        <span className="w-1.5 h-5 rounded-full bg-brand shrink-0" />
+                        <h3 className="font-display text-[17px] font-semibold text-ink tracking-tight">Hauptkategorien</h3>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                         {haupts.map((cat, i) => renderCatCard(cat, SUB_COLORS[i % SUB_COLORS.length]))}
@@ -2805,9 +2755,9 @@ export function Admin({ onClose }: AdminProps) {
                   {/* NIVEL 2 — Kategorien (agrupadas bajo su Hauptkategorie; las sueltas aparte) */}
                   {kats.length > 0 && (
                     <div className="mb-6">
-                      <div className="flex items-center gap-3 mb-4 px-5 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-500 shadow-md shadow-emerald-500/20">
-                        <span className="w-3 h-3 rounded-full bg-white shrink-0" />
-                        <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wide">Kategorien</h3>
+                      <div className="flex items-center gap-2.5 mb-4 pb-2.5 border-b border-brand-tint">
+                        <span className="w-1.5 h-5 rounded-full bg-brand-soft shrink-0" />
+                        <h3 className="font-display text-[17px] font-semibold text-ink tracking-tight">Kategorien</h3>
                       </div>
                       <div className="space-y-6">
                         {haupts.map((parent, i) => {
@@ -2842,9 +2792,9 @@ export function Admin({ onClose }: AdminProps) {
                   {/* NIVEL 3 — Subkategorien (agrupadas bajo su Kategorie) */}
                   {subs.length > 0 && (
                     <div className="mb-6">
-                      <div className="flex items-center gap-3 mb-4 px-5 py-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 shadow-md shadow-amber-500/20">
+                      <div className="flex items-center gap-2.5 mb-4 pb-2.5 border-b border-brand-tint">
                         <span className="w-3 h-3 rounded-full bg-white shrink-0" />
-                        <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wide">Subkategorien</h3>
+                        <h3 className="font-display text-[17px] font-semibold text-ink tracking-tight">Subkategorien</h3>
                       </div>
                       <div className="space-y-6">
                         {kats.map((parent, i) => {
@@ -2860,23 +2810,20 @@ export function Admin({ onClose }: AdminProps) {
             })()}
 
             <div className="mb-4">
-              <h2 className="text-xl font-black text-gray-900 tracking-tight">Produkte hinzufügen</h2>
+              <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Produkte hinzufügen</h2>
               <p className="text-xs text-gray-400 mt-0.5 mb-4">Produkte verwalten</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {/* Banner: Neues Produkt */}
                 <button
                   onClick={showAddProductModal}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand to-brand-mid hover:from-brand-dark hover:to-brand p-5 text-left shadow-md shadow-green-500/20 hover:shadow-lg hover:shadow-green-500/30 transition-all duration-200"
+                  className="group flex items-center gap-3.5 rounded-2xl border border-dashed border-brand-pale bg-white hover:border-brand hover:bg-brand-wash/60 px-4 py-4 text-left transition-colors"
                 >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-6 -translate-x-4" />
-                  <div className="relative">
-                    <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-3">
-                      <Plus className="w-5 h-5 text-white" />
-                    </div>
-                    <p className="text-white font-bold text-base leading-tight">Neues Produkt</p>
-                    <p className="text-green-100 text-xs mt-1">Produkt manuell erstellen</p>
-                  </div>
+                  <span className="w-10 h-10 shrink-0 rounded-full bg-brand-tint text-brand flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
+                    <Plus className="w-5 h-5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-semibold text-ink text-[15px] leading-tight">Neues Produkt</span>
+                    <span className="block text-n-400 text-[12.5px] mt-0.5">Produkt manuell erstellen</span>
+                  </span>
                 </button>
 
                 {/* Excel-Import und Hersteller verwalten ausgeblendet */}
@@ -2943,7 +2890,7 @@ export function Admin({ onClose }: AdminProps) {
       
             {/* Products Filters */}
             <div className="mb-3">
-              <h2 className="text-xl font-black text-gray-900 tracking-tight">Produkte suchen</h2>
+              <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Produkte suchen</h2>
               <p className="text-xs text-gray-400 mt-0.5">Produkte filtern und suchen</p>
             </div>
             <div ref={filterCardRef}>
@@ -2978,7 +2925,7 @@ export function Admin({ onClose }: AdminProps) {
                     onClick={() => setProductFilters(prev => ({ ...prev, category: opt.value }))}
                     className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
                       (productFilters.category || "") === opt.value
-                        ? "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-500/20"
+                        ? "bg-brand border-brand text-white shadow-sm shadow-brand/20"
                         : "bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-100"
                     }`}
                   >
@@ -2992,7 +2939,7 @@ export function Admin({ onClose }: AdminProps) {
                 <span className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mr-1">Status:</span>
                 {[
                   { value: "", label: "Alle", icon: null },
-                  { value: "in_stock", label: "Lager", icon: <CheckCircle className="w-3.5 h-3.5" />, active: "bg-emerald-600 border-emerald-600 text-white shadow-sm shadow-emerald-500/20" },
+                  { value: "in_stock", label: "Lager", icon: <CheckCircle className="w-3.5 h-3.5" />, active: "bg-brand border-brand text-white shadow-sm shadow-brand/20" },
                   { value: "low_stock", label: "Wenig", icon: <AlertTriangle className="w-3.5 h-3.5" />, active: "bg-amber-500 border-amber-500 text-white shadow-sm shadow-amber-500/20" },
                   { value: "out_of_stock", label: "Leer", icon: <XCircle className="w-3.5 h-3.5" />, active: "bg-red-500 border-red-500 text-white shadow-sm shadow-red-500/20" },
                 ].map(opt => (
@@ -3001,7 +2948,7 @@ export function Admin({ onClose }: AdminProps) {
                     onClick={() => setProductFilters(prev => ({ ...prev, stock_status: opt.value }))}
                     className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
                       (productFilters.stock_status || "") === opt.value
-                        ? (opt.active ?? "bg-blue-600 border-blue-600 text-white shadow-sm shadow-blue-500/20")
+                        ? (opt.active ?? "bg-brand border-brand text-white shadow-sm shadow-brand/20")
                         : "bg-gray-50 border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-100"
                     }`}
                   >
@@ -3047,10 +2994,10 @@ export function Admin({ onClose }: AdminProps) {
             {/* Bulk action bar — sticky, solo visible con selección */}
             {selectedProductIds.size > 0 && (
               <div className="sticky top-16 z-20 mb-4">
-                <div className="bg-gradient-to-r from-brand to-brand-mid rounded-2xl px-4 py-3 shadow-lg shadow-green-500/20 flex flex-wrap items-center gap-3">
+                <div className="bg-gradient-to-r from-brand to-brand-mid rounded-2xl px-4 py-3 shadow-lg shadow-brand/25 flex flex-wrap items-center gap-3">
                   <div className="mr-2">
                     <p className="text-white font-bold text-sm leading-tight">Produktstatus ändern</p>
-                    <p className="text-green-100 text-xs">{selectedProductIds.size} Produkt{selectedProductIds.size !== 1 ? "e" : ""} ausgewählt</p>
+                    <p className="text-white/80 text-xs">{selectedProductIds.size} Produkt{selectedProductIds.size !== 1 ? "e" : ""} ausgewählt</p>
                   </div>
                   <Button
                     variant="outline"
@@ -3074,7 +3021,7 @@ export function Admin({ onClose }: AdminProps) {
                     size="sm"
                     onClick={handleBulkStatusUpdate}
                     disabled={!bulkStatus || bulkLoading}
-                    className="bg-white text-brand hover:bg-green-50 font-semibold"
+                    className="bg-white text-brand hover:bg-brand-wash font-semibold"
                   >
                     {bulkLoading ? "Speichern..." : "Anwenden"}
                   </Button>
@@ -3091,7 +3038,7 @@ export function Admin({ onClose }: AdminProps) {
             )}
 
             <div className="mb-3">
-              <h2 className="text-xl font-black text-gray-900 tracking-tight">Produkte</h2>
+              <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Produkte</h2>
               <p className="text-xs text-gray-400 mt-0.5">Alle Motive im Überblick</p>
             </div>
 
@@ -3152,7 +3099,7 @@ export function Admin({ onClose }: AdminProps) {
                       <span className="text-xs text-gray-400 font-medium">{product.stock} Stk.</span>
                     </div>
                     <div className="flex items-center gap-1.5 mt-2 flex-wrap">
-                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-600">{getCategoryDisplay(product.category)}</span>
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-brand-tint text-brand">{getCategoryDisplay(product.category)}</span>
                       {product.badge && (
                         <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-amber-50 text-amber-600">{product.badge}</span>
                       )}
@@ -3163,7 +3110,7 @@ export function Admin({ onClose }: AdminProps) {
                   <div className="flex border-t border-gray-100">
                     <button
                       onClick={(e) => { e.stopPropagation(); showEditProductModal(product.id) }}
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-green-700 hover:bg-green-50 transition-colors rounded-bl-xl"
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold text-brand hover:bg-brand-wash transition-colors rounded-bl-xl"
                     >
                       <Edit className="w-3 h-3" />
                       Bearbeiten
@@ -3234,7 +3181,7 @@ export function Admin({ onClose }: AdminProps) {
                   <BookOpen className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Blog</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Blog</h2>
                   <p className="text-sm text-gray-400 mt-0.5">{blogPosts.length} Beiträge</p>
                 </div>
               </div>
@@ -3301,7 +3248,7 @@ export function Admin({ onClose }: AdminProps) {
                   <Images className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Galerie</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Galerie</h2>
                   <p className="text-sm text-gray-400 mt-0.5">{galleryImages.length} Bilder</p>
                 </div>
               </div>
@@ -3561,7 +3508,7 @@ export function Admin({ onClose }: AdminProps) {
                   <Truck className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Versandkosten</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Versandkosten</h2>
                   <p className="text-sm text-gray-400 mt-0.5">Preise in CHF nach Zone und Gewicht</p>
                 </div>
               </div>
@@ -3590,7 +3537,7 @@ export function Admin({ onClose }: AdminProps) {
                 <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-gray-50/80 to-transparent border-b border-gray-100">
                   <div className="flex items-center gap-3">
                     <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${zone.enabled ? "bg-blue-100" : "bg-gray-100"}`}>
-                      <Truck className={`w-4 h-4 ${zone.enabled ? "text-blue-500" : "text-gray-400"}`} />
+                      <Truck className={`w-4 h-4 ${zone.enabled ? "text-brand" : "text-gray-400"}`} />
                     </div>
                     <div>
                       <span className="font-bold text-gray-900">{zone.name}</span>
@@ -3650,7 +3597,7 @@ export function Admin({ onClose }: AdminProps) {
                   <CreditCard className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Zahlungsmethoden</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Zahlungsmethoden</h2>
                   <p className="text-sm text-gray-400 mt-0.5">{features.caja ? "Aktiviere und konfiguriere die verfügbaren Zahlungsoptionen" : "Vorbereitet für später – heute läuft alles über WhatsApp"}</p>
                 </div>
               </div>
@@ -3890,7 +3837,7 @@ export function Admin({ onClose }: AdminProps) {
                   <Megaphone className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Anzeigen & Aktionen</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Anzeigen & Aktionen</h2>
                   <p className="text-sm text-gray-400 mt-0.5">Anzeigen verwalten, die beim Öffnen der Website erscheinen</p>
                 </div>
               </div>
@@ -3985,7 +3932,7 @@ export function Admin({ onClose }: AdminProps) {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Registrierte Kunden</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Registrierte Kunden</h2>
                   <p className="text-sm text-gray-400 mt-0.5">{users.length} {users.length === 1 ? "Kunde" : "Kunden"} registriert</p>
                 </div>
               </div>
@@ -4112,7 +4059,7 @@ export function Admin({ onClose }: AdminProps) {
                   <FileText className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-gray-900 tracking-tight">Inhalte bearbeiten</h2>
+                  <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Inhalte bearbeiten</h2>
                   <p className="text-sm text-gray-400 mt-0.5">Hero-Bereich & Footer-Texte der Startseite</p>
                 </div>
               </div>
