@@ -4146,14 +4146,18 @@ export function Admin({ onClose }: AdminProps) {
                     <Textarea value={siteForm["hero_subtitle"] ?? ""} onChange={(e) => setSiteForm(p => ({ ...p, hero_subtitle: e.target.value }))} rows={2} className="bg-gray-50/80 border-gray-200 rounded-xl mt-1 focus:bg-white" />
                   </div>
 
-                  {/* Stats */}
-                  <Label className="text-xs text-gray-400 font-medium">Statistik-Boxen (3)</Label>
+                  {/* Las tres cajas de debajo del hero. Solo el titulo: la
+                      segunda linea ya no se muestra en ningun sitio. */}
+                  <Label className="text-xs text-gray-400 font-medium">Drei Boxen unter dem Hero</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-1">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="border border-gray-100 rounded-xl p-3 space-y-2 bg-gray-50/40">
-                        <Input value={siteForm[`hero_stat${i}_val`] ?? ""} onChange={(e) => setSiteForm(p => ({ ...p, [`hero_stat${i}_val`]: e.target.value }))} placeholder="Wert (z.B. 500+)" className="bg-white border-gray-200 rounded-lg text-sm" />
-                        <Input value={siteForm[`hero_stat${i}_label`] ?? ""} onChange={(e) => setSiteForm(p => ({ ...p, [`hero_stat${i}_label`]: e.target.value }))} placeholder="Label" className="bg-white border-gray-200 rounded-lg text-sm" />
-                      </div>
+                      <Input
+                        key={i}
+                        value={siteForm[`hero_stat${i}_val`] ?? ""}
+                        onChange={(e) => setSiteForm(p => ({ ...p, [`hero_stat${i}_val`]: e.target.value }))}
+                        placeholder={`Box ${i} (z.B. Taschen)`}
+                        className="bg-gray-50/80 border-gray-200 rounded-xl text-sm focus:bg-white"
+                      />
                     ))}
                   </div>
                 </div>

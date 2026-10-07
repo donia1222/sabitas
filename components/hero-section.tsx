@@ -69,12 +69,22 @@ export function HeroSection() {
   const [count, setCount] = useState(0)
   const [slideIndex, setSlideIndex] = useState(0)
   const [siteContent, setSiteContent] = useState<Record<string, string>>({})
+  /**
+   * Si ya llegaron los ajustes.
+   *
+   * Hasta que llegan, lo guardado «no existe» y manda el texto por defecto;
+   * cuando llegan, cambia. Eso es lo que se veia como un parpadeo: aparecia
+   * «Handarbeit» debajo de «Taschen» y desaparecia al instante, porque ella
+   * dejo esa linea vacia. Mientras no esten, no se pintan esos textos.
+   */
+  const [ajustesListos, setAjustesListos] = useState(false)
 
   useEffect(() => {
     fetch(`/api/site-settings`, { cache: "no-store" })
       .then(r => r.json())
       .then(data => { if (data.success && data.settings) setSiteContent(data.settings) })
       .catch(() => {})
+      .finally(() => setAjustesListos(true))
   }, [])
 
   // Imágenes y textos del hero: usar overrides del admin, con fallback a los por defecto
@@ -289,7 +299,7 @@ export function HeroSection() {
             style={{ background: "linear-gradient(135deg, #FBF7FB 0%, #F4ECFC 55%, #FBF7FB 100%)" }}
           >
             <div className="grid sm:grid-cols-3">
-              {heroStats.map(({ val, label }, i) => (
+              {heroStats.map(({ val }, i) => (
                 <div
                   key={i}
                   className={`section-fade flex flex-col items-center text-center px-2 py-6 sm:py-2 ${
@@ -314,14 +324,10 @@ export function HeroSection() {
                     </span>
                   </span>
 
-                  <p className="font-display font-semibold text-ink text-[19px] lg:text-[21px] mt-5 leading-tight" style={{ letterSpacing: "-0.02em" }}>
-                    {val}
+                  <p className="font-display font-semibold text-ink text-[19px] lg:text-[21px] mt-5 leading-tight min-h-[1.2em]" style={{ letterSpacing: "-0.02em" }}>
+                    {ajustesListos ? val : ""}
                   </p>
-                  {label && (
-                    <p className="text-n-600 text-[14.5px] mt-1.5 leading-snug max-w-[220px]">
-                      {label}
-                    </p>
-                  )}
+
                 </div>
               ))}
             </div>
