@@ -192,14 +192,17 @@ export function HeroSection() {
             {/* Texto */}
             <div className="order-2 lg:order-1 lg:py-16">
               {heroBadge && (
-                <span className="inline-block bg-white/80 text-brand text-[11.5px] font-semibold uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-brand-pale/60">
+                <span
+                  className="hero-entra inline-block bg-white/80 text-brand text-[11.5px] font-semibold uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-brand-pale/60"
+                  style={{ animationDelay: "60ms" }}
+                >
                   {heroBadge}
                 </span>
               )}
 
               <h1
-                className="font-display text-ink font-semibold mt-6 leading-[1.08]"
-                style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", letterSpacing: "-0.03em" }}
+                className="hero-entra font-display text-ink font-semibold mt-6 leading-[1.08]"
+                style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", letterSpacing: "-0.03em", animationDelay: "170ms" }}
               >
                 {heroTitle1}
                 {heroTitle2 && <br />}
@@ -228,11 +231,14 @@ export function HeroSection() {
                 )}
               </h1>
 
-              <p className="text-n-600 text-[16.5px] lg:text-[17.5px] mt-7 leading-relaxed max-w-lg whitespace-pre-line">
+              <p
+                className="hero-entra text-n-600 text-[16.5px] lg:text-[17.5px] mt-7 leading-relaxed max-w-lg whitespace-pre-line"
+                style={{ animationDelay: "280ms" }}
+              >
                 {heroSubtitle}
               </p>
 
-              <div className="flex flex-wrap gap-3 mt-9">
+              <div className="hero-entra flex flex-wrap gap-3 mt-9" style={{ animationDelay: "380ms" }}>
                 <button
                   onClick={() => router.push("/shop")}
                   className="group bg-brand text-white font-semibold px-7 py-3.5 text-[14.5px] hover:bg-brand-dark transition-colors rounded-full inline-flex items-center gap-2 shadow-lg shadow-brand/25"
@@ -251,7 +257,7 @@ export function HeroSection() {
 
             {/* Foto */}
             <div className="order-1 lg:order-2 relative lg:h-[560px] -mx-4 lg:mx-0 lg:mr-[calc((100vw-100%)/-2)]">
-              <div className="relative h-[280px] sm:h-[360px] lg:h-full overflow-hidden lg:rounded-l-[2.5rem]">
+              <div className="hero-foto-entra relative h-[280px] sm:h-[360px] lg:h-full overflow-hidden lg:rounded-l-[2.5rem]" style={{ animationDelay: "120ms" }}>
                 {HERO_IMAGES.map((src, i) => (
                   <img
                     key={src}
@@ -307,7 +313,8 @@ export function HeroSection() {
                       ? "border-t border-dashed border-brand-pale/70 sm:border-t-0 sm:border-l"
                       : ""
                   }`}
-                  style={{ animationDelay: `${i * 110}ms` }}
+                  /* Entran cuando el hero ya esta puesto, no a la vez. */
+                  style={{ animationDelay: `${700 + i * 110}ms` }}
                 >
                   <span className="relative w-14 h-14 rounded-full bg-white text-brand flex items-center justify-center shadow-[0_12px_26px_-18px_rgba(107,79,147,0.9)]">
                     {/* El aro de puntos alrededor del icono, como los circulos

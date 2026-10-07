@@ -357,3 +357,31 @@ h1, h2, h3, .font-display {
 @media (prefers-reduced-motion: reduce) {
   .anuncio-fondo, .anuncio-tarjeta { animation: none }
 }
+
+/* ── La entrada del hero ───────────────────────────────────────────────────
+   Al cargar, las piezas del hero aparecen una detras de otra —insignia,
+   titular, texto, botones— y la foto se funde a la vez, un pelin mas lenta.
+   Lo de debajo entra despues, cuando el hero ya esta.
+
+   Va en CSS y no en JavaScript a proposito: asi empieza con el primer dibujo
+   de la pagina, sin esperar a que React despierte, que es cuando se notaba el
+   golpe seco. */
+.hero-entra {
+  animation: heroEntra 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes heroEntra {
+  from { opacity: 0; transform: translateY(14px) }
+  to   { opacity: 1; transform: none }
+}
+
+.hero-foto-entra {
+  animation: heroFotoEntra 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes heroFotoEntra {
+  from { opacity: 0; transform: scale(1.04) }
+  to   { opacity: 1; transform: none }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-entra, .hero-foto-entra { animation: none }
+}
