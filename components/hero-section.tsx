@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo, useRef } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { getCachedProducts } from "@/lib/products-cache"
 import { getCachedCategories } from "@/lib/categories-cache"
@@ -64,56 +64,11 @@ function CatImageCard({
 
 export function HeroSection() {
   const router = useRouter()
-  /** La foto del hero: se desvanece al bajar, solo en el telefono. */
-  const fotoRef = useRef<HTMLDivElement>(null)
   const [categories, setCategories] = useState<Category[]>([])
   const [products, setProducts] = useState<Product[]>([])
   const [count, setCount] = useState(0)
   const [slideIndex, setSlideIndex] = useState(0)
   const [siteContent, setSiteContent] = useState<Record<string, string>>({})
-
-  /**
-   * En el telefono, la foto del hero se apaga a medida que se baja: a la vez
-   * que se va, se acerca un poco, que es lo que da la sensacion de
-   * profundidad. En escritorio no pasa nada — alli la foto esta al lado del
-   * texto, no encima, y desvanecerla dejaria un hueco blanco.
-   *
-   * Se escribe en el estilo del elemento directamente, sin estado de React:
-   * esto corre en cada fotograma del desplazamiento y repintar el componente
-   * entero sesenta veces por segundo se nota en un movil.
-   */
-  useEffect(() => {
-    const el = fotoRef.current
-    if (!el) return
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return
-
-    let pedido = 0
-    const pintar = () => {
-      pedido = 0
-      // De tableta en adelante, la foto se queda como esta.
-      if (window.innerWidth >= 1024) {
-        el.style.opacity = ""
-        el.style.transform = ""
-        return
-      }
-      const alto = el.offsetHeight || 1
-      const avance = Math.min(1, Math.max(0, window.scrollY / (alto * 0.85)))
-      el.style.opacity = String(1 - avance)
-      el.style.transform = `scale(${1 + avance * 0.06})`
-    }
-    const alDesplazar = () => {
-      if (!pedido) pedido = requestAnimationFrame(pintar)
-    }
-
-    pintar()
-    window.addEventListener("scroll", alDesplazar, { passive: true })
-    window.addEventListener("resize", alDesplazar)
-    return () => {
-      window.removeEventListener("scroll", alDesplazar)
-      window.removeEventListener("resize", alDesplazar)
-      if (pedido) cancelAnimationFrame(pedido)
-    }
-  }, [])
 
   useEffect(() => {
     fetch(`/api/site-settings`)
@@ -274,10 +229,7 @@ export function HeroSection() {
             </div>
 
             {/* Foto */}
-            <div
-              ref={fotoRef}
-              className="order-1 lg:order-2 relative lg:h-[560px] -mx-4 lg:mx-0 lg:mr-[calc((100vw-100%)/-2)] will-change-[opacity,transform] origin-top"
-            >
+            <div className="order-1 lg:order-2 relative lg:h-[560px] -mx-4 lg:mx-0 lg:mr-[calc((100vw-100%)/-2)]">
               <div className="relative h-[280px] sm:h-[360px] lg:h-full overflow-hidden lg:rounded-l-[2.5rem]">
                 {HERO_IMAGES.map((src, i) => (
                   <img
