@@ -1952,11 +1952,14 @@ export function Admin({ onClose }: AdminProps) {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <div className="overflow-x-auto mb-8 -mx-2 px-2 pb-1">
-          {/* Una fila que se arrastra, sin reticula de columnas fijas: con las
-              del paquete 3 al final, el numero de pestañas ya no es el que
-              esperaba aquel calculo. */}
-          <TabsList className="flex w-max lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1 overflow-x-auto">
+          {/* Dos filas, no una. Arriba lo que ella usa a diario; abajo, con
+              su titulo, lo que llega con el paquete 3. En una sola fila eran
+              diez pestañas que no cabian y habia que arrastrar para ver las
+              suyas. */}
+          <div className="mb-8 space-y-3">
+            <div className="overflow-x-auto -mx-2 px-2 pb-1">
+              <TabsList className="flex w-max lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1">
+
             {features.pedidos && (
               <TabsTrigger
                 value="orders"
@@ -2036,27 +2039,31 @@ export function Admin({ onClose }: AdminProps) {
                 `disabled` ya impide el clic; `pointer-events-none` evita
                 ademas el cambio de color al pasar por encima, que invitaria a
                 intentarlo. */}
-            {/* Un cartelito delante, para que se lea como «a partir de aqui,
-                paquete 3» y no como opciones que se han estropeado. */}
-            <span className="hidden lg:flex items-center gap-1.5 shrink-0 pl-3 pr-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand/70 select-none">
-              <span className="w-5 h-px bg-brand-pale" />
-              Paket 3
-            </span>
+              </TabsList>
+            </div>
 
-            {PAQUETE_3.map(({ clave, etiqueta, Icono }) => (
-              <TabsTrigger
-                key={clave}
-                value={clave}
-                disabled
-                title="Kommt mit Paket 3"
-                className="flex items-center gap-2 font-semibold shrink-0 bg-n-50 text-n-400 opacity-60 pointer-events-none cursor-default"
-              >
-                <Icono className="w-4 h-4" />
-                <span>{etiqueta}</span>
-                <Lock className="w-3 h-3 shrink-0" />
-              </TabsTrigger>
-            ))}
-          </TabsList>
+            {/* El paquete 3: se ve, se entiende y no se puede pulsar. */}
+            <div className="rounded-2xl border border-dashed border-brand-pale/70 bg-brand-wash/50 px-3 py-3">
+              <div className="flex items-center gap-2 mb-2.5">
+                <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand/70">
+                  Mit Paket 3
+                </span>
+                <span className="flex-1 h-px bg-brand-pale/60" />
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {PAQUETE_3.map(({ clave, etiqueta, Icono }) => (
+                  <span
+                    key={clave}
+                    title="Kommt mit Paket 3"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white/70 border border-n-150 px-3 py-2 text-sm font-semibold text-n-400 select-none cursor-default"
+                  >
+                    <Icono className="w-4 h-4" />
+                    {etiqueta}
+                    <Lock className="w-3 h-3" />
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Orders Tab */}

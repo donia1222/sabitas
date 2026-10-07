@@ -7,6 +7,7 @@ import { Header } from "@/components/header"
 import { ProcesoSection } from "@/components/proceso-section"
 import { CtaContacto } from "@/components/cta-contacto"
 import { ReviewsSection } from "@/components/reviews-section"
+import { Anuncio } from "@/components/anuncio"
 import { EtiquetaCosida } from "@/components/titulo-cosido"
 import { HeroSection } from "@/components/hero-section"
 import { BlogBanner } from "@/components/blog-banner"
@@ -256,6 +257,9 @@ function StorefrontInner() {
   // 🏪 Renderizar página principal del store
   return (
     <div className="bg-white">
+
+      {/* El aviso que ella escribe en el panel, si hay alguno activo. */}
+      <Anuncio />
 
       <Header onCartOpen={() => setIsCartOpen(true)} cartCount={getTotalItems()} />
 

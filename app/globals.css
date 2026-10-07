@@ -341,3 +341,19 @@ h1, h2, h3, .font-display {
   .costura-tijeras .tijeras { animation: none; opacity: 1 }
   .costura-tijeras .cortado { animation: none; width: 0 }
 }
+
+/* El aviso de la portada: entra con un fundido y la tarjeta sube un poco. */
+.anuncio-fondo {
+  background: rgba(59, 43, 70, 0.45);
+  backdrop-filter: blur(3px);
+  animation: anuncioFondo 0.3s ease both;
+}
+.anuncio-tarjeta { animation: anuncioTarjeta 0.42s cubic-bezier(0.22, 1, 0.36, 1) both }
+@keyframes anuncioFondo { from { opacity: 0 } to { opacity: 1 } }
+@keyframes anuncioTarjeta {
+  from { opacity: 0; transform: translateY(18px) scale(0.97) }
+  to   { opacity: 1; transform: none }
+}
+@media (prefers-reduced-motion: reduce) {
+  .anuncio-fondo, .anuncio-tarjeta { animation: none }
+}
