@@ -541,6 +541,7 @@ export function Admin({ onClose }: AdminProps) {
       form["hero_subtitle"] = s["hero_subtitle"] ?? HERO_DEFAULTS.subtitle
       HERO_DEFAULTS.stats.forEach((d, i) => {
         form[`hero_stat${i + 1}_val`] = s[`hero_stat${i + 1}_val`] ?? d.val
+        form[`hero_stat${i + 1}_label`] = s[`hero_stat${i + 1}_label`] ?? ""
         form[`hero_stat${i + 1}_label`] = s[`hero_stat${i + 1}_label`] ?? d.label
       })
       setSiteForm(form)
@@ -4151,13 +4152,20 @@ export function Admin({ onClose }: AdminProps) {
                   <Label className="text-xs text-gray-400 font-medium">Drei Boxen unter dem Hero</Label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-1">
                     {[1, 2, 3].map((i) => (
-                      <Input
-                        key={i}
-                        value={siteForm[`hero_stat${i}_val`] ?? ""}
-                        onChange={(e) => setSiteForm(p => ({ ...p, [`hero_stat${i}_val`]: e.target.value }))}
-                        placeholder={`Box ${i} (z.B. Taschen)`}
-                        className="bg-gray-50/80 border-gray-200 rounded-xl text-sm focus:bg-white"
-                      />
+                      <div key={i} className="border border-gray-100 rounded-xl p-3 space-y-2 bg-gray-50/40">
+                        <Input
+                          value={siteForm[`hero_stat${i}_val`] ?? ""}
+                          onChange={(e) => setSiteForm(p => ({ ...p, [`hero_stat${i}_val`]: e.target.value }))}
+                          placeholder={`Titel (z.B. Taschen)`}
+                          className="bg-white border-gray-200 rounded-lg text-sm"
+                        />
+                        <Input
+                          value={siteForm[`hero_stat${i}_label`] ?? ""}
+                          onChange={(e) => setSiteForm(p => ({ ...p, [`hero_stat${i}_label`]: e.target.value }))}
+                          placeholder="Untertitel (optional)"
+                          className="bg-white border-gray-200 rounded-lg text-sm"
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>

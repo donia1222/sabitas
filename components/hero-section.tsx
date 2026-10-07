@@ -299,7 +299,7 @@ export function HeroSection() {
             style={{ background: "linear-gradient(135deg, #FBF7FB 0%, #F4ECFC 55%, #FBF7FB 100%)" }}
           >
             <div className="grid sm:grid-cols-3">
-              {heroStats.map(({ val }, i) => (
+              {heroStats.map(({ val, label }, i) => (
                 <div
                   key={i}
                   className={`section-fade flex flex-col items-center text-center px-2 py-6 sm:py-2 ${
@@ -327,6 +327,15 @@ export function HeroSection() {
                   <p className="font-display font-semibold text-ink text-[19px] lg:text-[21px] mt-5 leading-tight min-h-[1.2em]" style={{ letterSpacing: "-0.02em" }}>
                     {ajustesListos ? val : ""}
                   </p>
+
+                  {/* La segunda linea, solo si ella escribe algo. Se espera a
+                      que lleguen los ajustes: antes aparecia el texto por
+                      defecto y se iba al instante, que era el parpadeo. */}
+                  {ajustesListos && label && (
+                    <p className="text-n-600 text-[14.5px] mt-1.5 leading-snug max-w-[220px]">
+                      {label}
+                    </p>
+                  )}
 
                 </div>
               ))}
