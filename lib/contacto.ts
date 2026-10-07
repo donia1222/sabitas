@@ -7,12 +7,13 @@
  * ceros—, asi que cambiar un dato obligaba a buscarlo por media docena de
  * ficheros.
  *
- * La calle y el numero no estan porque ella todavia no los ha dado: el mapa
- * se centra en el pueblo, que es suficiente para que se vea donde esta.
+ * La direccion es la suya de verdad, la que dio ella por WhatsApp el
+ * 07/10/2026.
  */
 export const CONTACTO = {
   /** Como se llama ella. */
   nombre: "Sabrina",
+  apellido: "Steinbeck",
   /** El nombre de la marca. */
   empresa: "Sabitas",
   oficio: "Handgemachte Unikate",
@@ -23,17 +24,26 @@ export const CONTACTO = {
   email: "hallo@sabitas.ch",
   web: "https://sabitas.ch",
 
-  localidad: "Ganterschwil",
-  codigoPostal: "9608",
+  calle: "Waldeggstrasse 10",
+  localidad: "Ulisbach",
+  codigoPostal: "9631",
+  canton: "St. Gallen",
   pais: "Schweiz",
 } as const
 
-/** El pueblo tal y como se escribe en una direccion y se busca en el mapa. */
-export const LOCALIDAD_COMPLETA =
-  `${CONTACTO.codigoPostal} ${CONTACTO.localidad}, ${CONTACTO.pais}`
+/** La direccion en una linea, para las pildoras y los enlaces. */
+export const DIRECCION_COMPLETA =
+  `${CONTACTO.calle}, ${CONTACTO.codigoPostal} ${CONTACTO.localidad}`
+
+/** La misma, con el pais, para los textos legales. */
+export const DIRECCION_LEGAL =
+  `${DIRECCION_COMPLETA}, ${CONTACTO.pais}`
+
+/** Se mantiene el nombre viejo para no tocar lo que ya lo usa. */
+export const LOCALIDAD_COMPLETA = DIRECCION_COMPLETA
 
 /** La consulta para Google Maps. */
-export const CONSULTA_MAPA = encodeURIComponent(LOCALIDAD_COMPLETA)
+export const CONSULTA_MAPA = encodeURIComponent(DIRECCION_LEGAL)
 
 /**
  * La tarjeta de visita.
@@ -46,14 +56,14 @@ export function construirVCard(foto?: string): string {
   const lineas = [
     "BEGIN:VCARD",
     "VERSION:3.0",
-    `N:;${CONTACTO.nombre};;;`,
-    `FN:${CONTACTO.nombre} · ${CONTACTO.empresa}`,
+    `N:${CONTACTO.apellido};${CONTACTO.nombre};;;`,
+    `FN:${CONTACTO.nombre} ${CONTACTO.apellido} · ${CONTACTO.empresa}`,
     `ORG:${CONTACTO.empresa}`,
     `TITLE:${CONTACTO.oficio}`,
     `TEL;TYPE=CELL:${CONTACTO.telefonoPlano}`,
     `EMAIL:${CONTACTO.email}`,
     `URL:${CONTACTO.web}`,
-    `ADR;TYPE=WORK:;;;${CONTACTO.localidad};;${CONTACTO.codigoPostal};${CONTACTO.pais}`,
+    `ADR;TYPE=WORK:;;${CONTACTO.calle};${CONTACTO.localidad};${CONTACTO.canton};${CONTACTO.codigoPostal};${CONTACTO.pais}`,
   ]
   if (foto) lineas.push(`PHOTO;ENCODING=b;TYPE=PNG:${foto}`)
   lineas.push("END:VCARD")

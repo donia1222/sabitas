@@ -64,13 +64,13 @@ export function Footer() {
   const legalDefaults = {
     datenschutz: {
       title: "Datenschutzerklärung",
-      content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
+      content: `Sabitas · Sabrina Steinbeck | Waldeggstrasse 10, 9631 Ulisbach | hallo@sabitas.ch
 
 Diese Datenschutzerklärung informiert Sie gemäss dem Schweizer Datenschutzgesetz (DSG) sowie der EU-Datenschutz-Grundverordnung (DSGVO) über die Verarbeitung Ihrer personenbezogenen Daten.
 
 1. VERANTWORTLICHE STELLE
 Sabitas
-9608 Ganterschwil, Schweiz
+Waldeggstrasse 10, 9631 Ulisbach, Schweiz
 Telefon: +41 78 613 80 84
 E-Mail: hallo@sabitas.ch
 
@@ -128,22 +128,17 @@ Allgemeine Hinweise
 
 BETREIBER DES ONLINE-SHOPS
 Sabitas
-9608 Ganterschwil
+Waldeggstrasse 10
+9631 Ulisbach
 Kanton St. Gallen, Schweiz
 
-INHABER
-Max Muster
+INHABERIN
+Sabrina Steinbeck
 
 KONTAKT
 Telefon: +41 78 613 80 84
 E-Mail: hallo@sabitas.ch
 Website: www.sabitas.ch
-
-ÖFFNUNGSZEITEN
-Montag – Donnerstag: 13:30 – 18:30 Uhr
-Freitag: 13:30 – 18:30 Uhr
-Samstag: 10:00 – 16:00 Uhr
-Sonntag: Geschlossen
 
 UNTERNEHMENSFORM
 Einzelunternehmen / Kleinunternehmen nach Schweizer Recht
@@ -152,7 +147,7 @@ MEHRWERTSTEUER
 Alle Preise verstehen sich in CHF inklusive der gesetzlichen Schweizer Mehrwertsteuer (MwSt.).
 
 VERANTWORTLICH FÜR DEN INHALT
-Sabitas, 9608 Ganterschwil
+Sabrina Steinbeck, Waldeggstrasse 10, 9631 Ulisbach
 
 WEBDESIGN & UMSETZUNG
 lweb.ch – Webdesign & Digitalagentur
@@ -162,13 +157,13 @@ HAFTUNGSAUSSCHLUSS
 Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschliesslich deren Betreiber verantwortlich. Alle Inhalte dieser Website sind urheberrechtlich geschützt.
 
 ANWENDBARES RECHT
-Es gilt ausschliesslich Schweizer Recht. Gerichtsstand ist Ganterschwil, Kanton St. Gallen.
+Es gilt ausschliesslich Schweizer Recht. Gerichtsstand ist Wattwil, Kanton St. Gallen.
 
 Stand: Februar 2026`,
     },
     rueckgabe: {
       title: "Versand & Rückgabe",
-      content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
+      content: `Sabitas · Sabrina Steinbeck | Waldeggstrasse 10, 9631 Ulisbach | hallo@sabitas.ch
 
 1. VERSAND
 Wir liefern ausschliesslich innerhalb der Schweiz. Bestellungen werden in der Regel innerhalb von 1–3 Werktagen nach Zahlungseingang versandt. Der Versand erfolgt mit einem zuverlässigen Schweizer Paketdienstleister. Sie erhalten nach dem Versand eine E-Mail mit Ihrer Sendungsverfolgungsnummer. Versandkosten werden transparent im Bestellprozess ausgewiesen.
@@ -185,7 +180,8 @@ Vom Rückgaberecht ausgenommen sind: auf Kundenwunsch angefertigte oder graviert
 5. RÜCKSENDEPROZESS
 Bitte senden Sie die Ware gut verpackt an folgende Adresse zurück:
 Sabitas
-9608 Ganterschwil
+Waldeggstrasse 10
+9631 Ulisbach
 
 Die Rücksendekosten trägt der Käufer. Wir empfehlen, die Sendung versichert zu verschicken.
 

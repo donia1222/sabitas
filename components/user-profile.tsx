@@ -643,7 +643,7 @@ export function UserProfile({ onClose, onAccountDeleted }: UserProfileProps) {
     doc.setFontSize(8)
     doc.setTextColor(80, 80, 80)
     doc.text("FOTOGRAFIE-EDITIONEN", margin, 41)
-    doc.text("9608 Ganterschwil", margin, 46)
+    doc.text("Waldeggstrasse 10, 9631 Ulisbach", margin, 46)
     doc.text("Tel: 000 000 00 00", margin, 51)
     doc.text("hallo@sabitas.ch", margin, 56)
 

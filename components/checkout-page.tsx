@@ -2311,7 +2311,7 @@ const getFinalTotal = () => (isOnlyGutscheine() || paymentMethod === "pickup") ?
                 <h3 className="font-semibold text-brand mb-2">📦 Versandinformationen</h3>
                 <ul className="text-sm text-brand/80 space-y-1">
                   <li>• Lieferzeit: 2-3 Werktage</li>
-                  <li>• Versand aus 9608 Ganterschwil</li>
+                  <li>• Versand aus 9631 Ulisbach</li>
                   {shippingInfo.zone && <li>• Zone: {shippingInfo.zone} · {shippingInfo.range}</li>}
                 </ul>
               </CardContent>
