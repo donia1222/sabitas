@@ -257,8 +257,15 @@ export function HeroSection() {
 
             {/* Foto */}
             <div className="order-1 lg:order-2 relative lg:h-[560px] -mx-4 lg:mx-0 lg:mr-[calc((100vw-100%)/-2)]">
-              <div className="hero-foto-entra relative h-[280px] sm:h-[360px] lg:h-full overflow-hidden lg:rounded-l-[2.5rem]" style={{ animationDelay: "120ms" }}>
-                {HERO_IMAGES.map((src, i) => (
+              {/* El fondo lila se ve mientras no hay foto, asi que el hueco
+                  nunca esta en blanco ni cambia de alto. */}
+              <div className="hero-foto-entra relative h-[280px] sm:h-[360px] lg:h-full overflow-hidden lg:rounded-l-[2.5rem] bg-brand-tint" style={{ animationDelay: "120ms" }}>
+                {/* Las fotos esperan a los ajustes.
+                    Antes se pintaban las de por defecto y, al llegar los
+                    ajustes, se cambiaban por las suyas: eso era el fotogramazo
+                    al abrir o al recargar. Ahora se pinta una sola vez, ya la
+                    buena. */}
+                {ajustesListos && HERO_IMAGES.map((src, i) => (
                   <img
                     key={src}
                     src={src}
@@ -273,7 +280,7 @@ export function HeroSection() {
                   className="absolute inset-0 pointer-events-none hidden lg:block"
                   style={{ background: "linear-gradient(to right, rgba(236,226,247,0.85) 0%, rgba(236,226,247,0) 28%)" }}
                 />
-                {HERO_IMAGES.length > 1 && (
+                {ajustesListos && HERO_IMAGES.length > 1 && (
                   <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
                     {HERO_IMAGES.map((_, i) => (
                       <button
