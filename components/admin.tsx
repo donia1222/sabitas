@@ -1958,7 +1958,7 @@ export function Admin({ onClose }: AdminProps) {
               suyas. */}
           <div className="mb-8 space-y-3">
             <div className="overflow-x-auto -mx-2 px-2 pb-1">
-              <TabsList className="flex w-max lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1">
+              <TabsList className="flex w-max lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1 lg:[&>[role=tab]]:flex-1">
 
             {features.pedidos && (
               <TabsTrigger
