@@ -8,15 +8,38 @@ const MAINTENANCE_MODE = false
 
 
 
+const TITULO = 'Sabitas · Handgemachte Unikate aus der Schweiz'
+const DESCRIPCION =
+  'Taschen aus geliebtem Jeansstoff, kuschelige Hoodies und liebevolle Deko – jedes Stück ein Unikat, von Hand gefertigt.'
+
 export const metadata: Metadata = {
-  title: 'Sabitas · Handgemachte Unikate aus der Schweiz',
-  description: 'Taschen aus geliebtem Jeansstoff, kuschelige Hoodies und liebevolle Deko \u2013 jedes St\u00fcck ein Unikat, von Hand gefertigt.',
+  // Sin esto, las rutas de las imagenes de abajo salen relativas y WhatsApp
+  // o Facebook no las encuentran.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://sabitas.vercel.app'),
+  title: TITULO,
+  description: DESCRIPCION,
   generator: 'Lweb',
   icons: {
     icon: '/favicon.png',
-    apple: '/icon-192x192.png',
+    apple: '/apple-touch-icon.png',
   },
   manifest: '/manifest.json',
+  // Lo que se ve al pegar el enlace en WhatsApp, Facebook o iMessage. Sin
+  // esto sale el icono gris de Vercel.
+  openGraph: {
+    type: 'website',
+    siteName: 'Sabitas',
+    title: TITULO,
+    description: DESCRIPCION,
+    locale: 'de_CH',
+    images: [{ url: '/og-sabitas.jpg', width: 1200, height: 630, alt: 'Sabitas' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITULO,
+    description: DESCRIPCION,
+    images: ['/og-sabitas.jpg'],
+  },
 }
 
 export const viewport: Viewport = {
@@ -50,7 +73,7 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
+    <html lang="de">
       <body>{children} <Analytics /></body>
     </html>
   )

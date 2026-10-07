@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
+import { CONTACTO, LOCALIDAD_COMPLETA, CONSULTA_MAPA, descargarVCard } from "@/lib/contacto"
 import { useRouter } from "next/navigation"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AdminLoginButton } from "@/components/admin-auth"
@@ -58,44 +59,12 @@ export function Footer() {
       .catch(() => {})
   }, [])
 
-  const handleDownloadVCard = () => {
-    const imageUrl = "https://web.lweb.ch/templettedhopnew/logo.png"
-    fetch(imageUrl)
-      .then((res) => {
-        if (!res.ok) throw new Error(res.statusText)
-        return res.blob()
-      })
-      .then((blob) => {
-        const reader = new FileReader()
-        reader.onloadend = function () {
-          const base64data = (reader.result as string).split(",")[1]
-          const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:Sabitas\nORG:Sabitas\nTITLE:FOTOGRAFIE-EDITIONEN\nADR:;;Musterstrasse 1;Musterstadt;;8000;Switzerland\nTEL:+41000000000\nEMAIL:hallo@sabitas.ch\nURL:https://sabitas.ch\nPHOTO;ENCODING=b;TYPE=PNG:${base64data}\nEND:VCARD`
-          const blob2 = new Blob([vCardContent], { type: "text/vcard;charset=utf-8" })
-          const link = document.createElement("a")
-          link.href = URL.createObjectURL(blob2)
-          link.download = "Sabitas.vcf"
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-        }
-        reader.readAsDataURL(blob)
-      })
-      .catch(() => {
-        const vCardContent = `BEGIN:VCARD\nVERSION:3.0\nFN:Sabitas\nORG:Sabitas\nTITLE:FOTOGRAFIE-EDITIONEN\nADR:;;Musterstrasse 1;Musterstadt;;8000;Switzerland\nTEL:+41000000000\nEMAIL:hallo@sabitas.ch\nURL:https://sabitas.ch\nEND:VCARD`
-        const blob2 = new Blob([vCardContent], { type: "text/vcard;charset=utf-8" })
-        const link = document.createElement("a")
-        link.href = URL.createObjectURL(blob2)
-        link.download = "Sabitas.vcf"
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      })
-  }
+  const handleDownloadVCard = () => { void descargarVCard() }
 
   const legalDefaults = {
     agb: {
       title: "Allgemeine Geschäftsbedingungen (AGB)",
-      content: `Sabitas | Musterstrasse 1, 8000 Musterstadt | hallo@sabitas.ch
+      content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
 
 1. GELTUNGSBEREICH
 Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Bestellungen, die über den Online-Shop von Sabitas abgeschlossen werden. Abweichende Bedingungen des Käufers werden nicht anerkannt, es sei denn, wir stimmen ihrer Geltung ausdrücklich schriftlich zu.
@@ -122,21 +91,21 @@ Es gelten die gesetzlichen Gewährleistungsrechte nach Schweizer OR. Bei Sachmä
 Wir haften unbeschränkt für Vorsatz und grobe Fahrlässigkeit. Im Übrigen ist unsere Haftung auf den vorhersehbaren, vertragstypischen Schaden beschränkt. Die Haftung für leichte Fahrlässigkeit ist ausgeschlossen, soweit keine wesentlichen Vertragspflichten verletzt werden.
 
 9. ANWENDBARES RECHT & GERICHTSSTAND
-Es gilt ausschliesslich Schweizer Recht. Gerichtsstand für alle Streitigkeiten ist Musterstadt, Kanton Zürich, Schweiz.
+Es gilt ausschliesslich Schweizer Recht. Gerichtsstand für alle Streitigkeiten ist Ganterschwil, Kanton St. Gallen, Schweiz.
 
 10. SCHLUSSBESTIMMUNGEN
 Sollten einzelne Bestimmungen dieser AGB unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. Stand: Februar 2026.`,
     },
     datenschutz: {
       title: "Datenschutzerklärung",
-      content: `Sabitas | Musterstrasse 1, 8000 Musterstadt | hallo@sabitas.ch
+      content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
 
 Diese Datenschutzerklärung informiert Sie gemäss dem Schweizer Datenschutzgesetz (DSG) sowie der EU-Datenschutz-Grundverordnung (DSGVO) über die Verarbeitung Ihrer personenbezogenen Daten.
 
 1. VERANTWORTLICHE STELLE
 Sabitas
-Musterstrasse 1, 8000 Musterstadt, Schweiz
-Telefon: 000 000 00 00
+9608 Ganterschwil, Schweiz
+Telefon: +41 78 613 80 84
 E-Mail: hallo@sabitas.ch
 
 2. WELCHE DATEN WIR ERHEBEN
@@ -185,7 +154,7 @@ Bezahlen Sie über Ihr bestehendes PayPal-Konto. PayPal bietet einen integrierte
 Allgemeine Hinweise
 — Alle Preise verstehen sich in Schweizer Franken (CHF) inkl. MwSt.
 — Der Kaufbetrag wird erst nach Versandbestätigung belastet.
-— Bei Fragen zur Zahlung erreichen Sie uns unter hallo@sabitas.ch oder 000 000 00 00.`,
+— Bei Fragen zur Zahlung erreichen Sie uns unter hallo@sabitas.ch oder +41 78 613 80 84.`,
     },
     cookies: {
       title: "Cookie Manager",
@@ -234,9 +203,9 @@ Unsere Werte
 Wir legen grössten Wert auf Schweizer Qualitätsstandards, seriöse Beratung und die Einhaltung aller gesetzlichen Vorschriften. Für Produkte mit Altersbeschränkung (z. B. Messer, Armbrüste) führen wir eine gewissenhafte Alterskontrolle durch.
 
 Besuchen Sie uns
-Musterstrasse 1, 8000 Musterstadt
+9608 Ganterschwil
 Mo – Fr: 13:30 – 18:30 | Sa: 10:00 – 16:00
-📞 000 000 00 00 | hallo@sabitas.ch`,
+📞 +41 78 613 80 84 | hallo@sabitas.ch`,
     },
     impressum: {
       title: "Impressum",
@@ -244,15 +213,14 @@ Mo – Fr: 13:30 – 18:30 | Sa: 10:00 – 16:00
 
 BETREIBER DES ONLINE-SHOPS
 Sabitas
-Musterstrasse 1
-8000 Musterstadt
+9608 Ganterschwil
 Kanton St. Gallen, Schweiz
 
 INHABER
 Max Muster
 
 KONTAKT
-Telefon: 000 000 00 00
+Telefon: +41 78 613 80 84
 E-Mail: hallo@sabitas.ch
 Website: www.sabitas.ch
 
@@ -269,7 +237,7 @@ MEHRWERTSTEUER
 Alle Preise verstehen sich in CHF inklusive der gesetzlichen Schweizer Mehrwertsteuer (MwSt.).
 
 VERANTWORTLICH FÜR DEN INHALT
-Sabitas, Musterstrasse 1, 8000 Musterstadt
+Sabitas, 9608 Ganterschwil
 
 WEBDESIGN & UMSETZUNG
 lweb.ch – Webdesign & Digitalagentur
@@ -279,19 +247,19 @@ HAFTUNGSAUSSCHLUSS
 Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschliesslich deren Betreiber verantwortlich. Alle Inhalte dieser Website sind urheberrechtlich geschützt.
 
 ANWENDBARES RECHT
-Es gilt ausschliesslich Schweizer Recht. Gerichtsstand ist Musterstadt, Kanton Zürich.
+Es gilt ausschliesslich Schweizer Recht. Gerichtsstand ist Ganterschwil, Kanton St. Gallen.
 
 Stand: Februar 2026`,
     },
     rueckgabe: {
       title: "Versand & Rückgabe",
-      content: `Sabitas | Musterstrasse 1, 8000 Musterstadt | hallo@sabitas.ch
+      content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
 
 1. VERSAND
 Wir liefern ausschliesslich innerhalb der Schweiz. Bestellungen werden in der Regel innerhalb von 1–3 Werktagen nach Zahlungseingang versandt. Der Versand erfolgt mit einem zuverlässigen Schweizer Paketdienstleister. Sie erhalten nach dem Versand eine E-Mail mit Ihrer Sendungsverfolgungsnummer. Versandkosten werden transparent im Bestellprozess ausgewiesen.
 
 2. RÜCKGABERECHT
-Sie können bestellte Artikel innerhalb von 14 Tagen ab Erhalt ohne Angabe von Gründen zurückgeben. Bitte kontaktieren Sie uns vor der Rücksendung per E-Mail an hallo@sabitas.ch oder telefonisch unter 000 000 00 00.
+Sie können bestellte Artikel innerhalb von 14 Tagen ab Erhalt ohne Angabe von Gründen zurückgeben. Bitte kontaktieren Sie uns vor der Rücksendung per E-Mail an hallo@sabitas.ch oder telefonisch unter +41 78 613 80 84.
 
 3. ZUSTAND DER WARE
 Die Ware muss sich in originalem, unbenutztem Zustand befinden und in der Originalverpackung zurückgesendet werden. Bei Produkten wie Messern, Armbrüsten oder Outdoor-Ausrüstung dürfen keine Gebrauchsspuren vorhanden sein.
@@ -302,8 +270,7 @@ Vom Rückgaberecht ausgenommen sind: auf Kundenwunsch angefertigte oder graviert
 5. RÜCKSENDEPROZESS
 Bitte senden Sie die Ware gut verpackt an folgende Adresse zurück:
 Sabitas
-Musterstrasse 1
-8000 Musterstadt
+9608 Ganterschwil
 
 Die Rücksendekosten trägt der Käufer. Wir empfehlen, die Sendung versichert zu verschicken.
 
@@ -413,17 +380,17 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
 
               {/* Contact pills */}
               <div className="flex flex-wrap gap-2 mb-6">
-                <a href="https://maps.google.com/?q=Musterstrasse+1+8000+Musterstadt" target="_blank" rel="noopener noreferrer"
+                <a href={`https://maps.google.com/?q=${CONSULTA_MAPA}`} target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-n-50 hover:bg-n-150 text-n-700 text-sm px-3 py-1.5 rounded-full transition-colors">
-                  <span className="text-base">📍</span> Musterstrasse 1, 8000 Musterstadt
+                  <span className="text-base">📍</span> {LOCALIDAD_COMPLETA}
                 </a>
-                <a href="tel:0000000000"
+                <a href={`tel:${CONTACTO.telefonoPlano}`}
                   className="inline-flex items-center gap-2 bg-n-50 hover:bg-brand hover:text-white text-brand font-semibold text-sm px-3 py-1.5 rounded-full transition-colors">
-                  <span className="text-base">📞</span> 000 000 00 00
+                  <span className="text-base">📞</span> {CONTACTO.telefono}
                 </a>
-                <a href="mailto:hallo@sabitas.ch"
+                <a href={`mailto:${CONTACTO.email}`}
                   className="inline-flex items-center gap-2 bg-n-50 hover:bg-brand hover:text-white text-brand font-semibold text-sm px-3 py-1.5 rounded-full transition-colors">
-                  <span className="text-base">✉️</span> hallo@sabitas.ch
+                  <span className="text-base">✉️</span> {CONTACTO.email}
                 </a>
               </div>
 
@@ -431,7 +398,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
               <div className="flex flex-wrap gap-3">
                 {/* Map */}
                 <a
-                  href="https://maps.google.com/?q=Musterstrasse+1,+8000+Musterstadt"
+                  href={`https://maps.google.com/?q=${CONSULTA_MAPA}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded-2xl overflow-hidden border border-brand-tint block relative group"
@@ -439,7 +406,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                 >
                   <iframe
                     title="Standort"
-                    src="https://maps.google.com/maps?q=Musterstrasse+1,+8000+Musterstadt&output=embed&z=15"
+                    src={`https://maps.google.com/maps?q=${CONSULTA_MAPA}&output=embed&z=14`}
                     width="100%"
                     height="100%"
                     style={{ border: 0, minHeight: "100px", pointerEvents: "none" }}
@@ -476,7 +443,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
               <h3 className="font-black text-n-900 text-base mb-5 uppercase tracking-widest">Service</h3>
               <ul className="space-y-3">
                 <li>
-                  <a href="mailto:hallo@sabitas.ch" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
+                  <a href={`mailto:${CONTACTO.email}`} className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
                 </li>
                 <li>
                   <Dialog open={openModal === "rueckgabe"} onOpenChange={(open) => setOpenModal(open ? "rueckgabe" : null)}>

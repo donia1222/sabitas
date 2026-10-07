@@ -6,6 +6,7 @@ import { ShoppingCart, Menu, ArrowUp, Download, X } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { LoginAuth } from "./login-auth"
 import { features } from "@/lib/features"
+import { descargarVCard } from "@/lib/contacto"
 
 interface HeaderProps {
   onCartOpen?: () => void
@@ -21,31 +22,6 @@ const MENU = [
   { etiqueta: "Über mich", destino: "/ueber-mich" },
   { etiqueta: "Kontakt", destino: "/kontakt" },
 ]
-
-/**
- * La tarjeta de visita. Se baja con un toque y queda en los contactos del
- * telefono: nombre, numero, correo y web. Faltan la direccion y el apellido
- * hasta que ella los de — mejor vacio que inventado.
- */
-function descargarVCard() {
-  const vcard = [
-    "BEGIN:VCARD",
-    "VERSION:3.0",
-    "FN:Sabitas",
-    "ORG:Sabitas",
-    "TITLE:Handgemachte Unikate",
-    "TEL;TYPE=CELL:+41786138084",
-    "EMAIL:hallo@sabitas.ch",
-    "URL:https://sabitas.ch",
-    "END:VCARD",
-  ].join("\n")
-  const enlace = document.createElement("a")
-  enlace.href = URL.createObjectURL(new Blob([vcard], { type: "text/vcard;charset=utf-8" }))
-  enlace.download = "Sabitas.vcf"
-  document.body.appendChild(enlace)
-  enlace.click()
-  document.body.removeChild(enlace)
-}
 
 export function Header({ onCartOpen, cartCount = 0 }: HeaderProps) {
   const router = useRouter()

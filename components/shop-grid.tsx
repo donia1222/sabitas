@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback, memo, useRef } from "react"
+import { descargarVCard } from "@/lib/contacto"
 import { Header } from "@/components/header"
 import { BannerPagina } from "@/components/banner-pagina"
 import { getCachedProducts } from "@/lib/products-cache"
@@ -358,30 +359,7 @@ export default function ShopGrid() {
   const lastScrollYRef                      = useRef(0)
   const [showUserProfile, setShowUserProfile] = useState(false)
 
-  const handleDownloadVCard = () => {
-    const imageUrl = "https://web.lweb.ch/templettedhopnew/logo.png"
-    fetch(imageUrl)
-      .then((res) => { if (!res.ok) throw new Error(res.statusText); return res.blob() })
-      .then((blob) => {
-        const reader = new FileReader()
-        reader.onloadend = function () {
-          const base64data = (reader.result as string).split(",")[1]
-          const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Sabitas\nORG:Sabitas\nTITLE:FOTOGRAFIE-EDITIONEN\nADR:;;Musterstrasse 1;Musterstadt;;8000;Switzerland\nTEL:+41000000000\nEMAIL:hallo@sabitas.ch\nURL:https://sabitas.ch\nPHOTO;ENCODING=b;TYPE=PNG:${base64data}\nEND:VCARD`
-          const link = document.createElement("a")
-          link.href = URL.createObjectURL(new Blob([vcard], { type: "text/vcard;charset=utf-8" }))
-          link.download = "Sabitas.vcf"
-          document.body.appendChild(link); link.click(); document.body.removeChild(link)
-        }
-        reader.readAsDataURL(blob)
-      })
-      .catch(() => {
-        const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Sabitas\nORG:Sabitas\nTITLE:FOTOGRAFIE-EDITIONEN\nADR:;;Musterstrasse 1;Musterstadt;;8000;Switzerland\nTEL:+41000000000\nEMAIL:hallo@sabitas.ch\nURL:https://sabitas.ch\nEND:VCARD`
-        const link = document.createElement("a")
-        link.href = URL.createObjectURL(new Blob([vcard], { type: "text/vcard;charset=utf-8" }))
-        link.download = "Sabitas.vcf"
-        document.body.appendChild(link); link.click(); document.body.removeChild(link)
-      })
-  }
+  const handleDownloadVCard = () => { void descargarVCard() }
 
   const PAGE_SIZE = 50
   const [currentPage, setCurrentPage] = useState(0)
