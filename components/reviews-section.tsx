@@ -22,7 +22,7 @@ const RESENAS = [
       "Meine Tasche aus Jeansstoff begleitet mich seit Wochen überall hin. Schöne Stoffe, saubere Nähte und jedes Mal werde ich darauf angesprochen. Es kommt bestimmt noch etwas dazu.",
   },
   {
-    nombre: "Roberto Salvador",
+    nombre: "Roberto",
     cuando: "Vor 1 Monat",
     texto:
       "Ich habe eine Hundeleine gekauft und bin begeistert. Sehr sorgfältig gearbeitet, robust und richtig hübsch – genau so, wie ich es mir vorgestellt hatte.",
