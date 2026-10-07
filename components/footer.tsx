@@ -282,15 +282,13 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
       {/* ── Footer columns ── */}
       <div className="bg-white border-t border-n-150 py-14">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-14">
 
             {/* LEFT: Logo + Contact + Hours */}
             <div>
               {/* Logo + name */}
-              <div className="flex items-center gap-3 mb-6">
-                <img src="/sabitas/logo.png" alt="Sabitas" className="h-24 lg:h-28 w-auto object-contain flex-shrink-0" />
-                <div>
-                </div>
+              <div className="flex justify-center md:justify-start mb-6">
+                <img src="/sabitas/logo.png" alt="Sabitas" className="h-24 lg:h-28 w-auto object-contain" />
               </div>
 
               {/* Contact pills */}
@@ -309,22 +307,22 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                 </a>
               </div>
 
-              {/* Map + Opening hours */}
-              <div className="flex flex-wrap gap-3">
+              {/* El mapa, a todo el ancho de la columna. */}
+              <div>
                 {/* Map */}
                 <a
                   href={`https://maps.google.com/?q=${CONSULTA_MAPA}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-2xl overflow-hidden border border-brand-tint block relative group"
-                  style={{ width: "290px", minHeight: "100px", flexShrink: 0 }}
+                  className="rounded-2xl overflow-hidden border border-brand-tint block relative group w-full"
+                  style={{ height: "190px" }}
                 >
                   <iframe
                     title="Standort"
                     src={`https://maps.google.com/maps?q=${CONSULTA_MAPA}&output=embed&z=14`}
                     width="100%"
                     height="100%"
-                    style={{ border: 0, minHeight: "100px", pointerEvents: "none" }}
+                    style={{ border: 0, height: "100%", pointerEvents: "none" }}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
@@ -343,7 +341,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                 como si fueran secciones distintas. */}
             <div>
               <h3 className="font-black text-n-900 text-base mb-5 uppercase tracking-widest">Service</h3>
-              <ul className="space-y-3">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
                 <li>
                   <a href="/kontakt" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
                 </li>
