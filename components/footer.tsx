@@ -292,10 +292,11 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
             />
 
             {/* La costura, el mismo hilo que separa los bloques de la web.
-                Cada pocos segundos unas tijeras la recorren de derecha a
-                izquierda, como si fueran a cortarla. */}
+                Cada pocos segundos unas tijeras la cortan de izquierda a
+                derecha, y la linea desaparece a su paso. */}
             <span className="costura-tijeras my-7" aria-hidden>
               <span className="linea" />
+              <span className="cortado" />
               <span className="tijeras">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="6" cy="6" r="2.6" />
