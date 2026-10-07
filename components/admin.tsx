@@ -1963,7 +1963,7 @@ export function Admin({ onClose }: AdminProps) {
             {features.pedidos && (
               <TabsTrigger
                 value="orders"
-                className="flex items-center gap-2 font-semibold shrink-0 bg-blue-50 text-blue-700 data-[state=active]:bg-blue-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+                className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Bestellungen</span>
@@ -1971,7 +1971,7 @@ export function Admin({ onClose }: AdminProps) {
             )}
             <TabsTrigger
               value="products"
-              className="flex items-center gap-2 font-semibold shrink-0 bg-blue-50 text-blue-700 data-[state=active]:bg-blue-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
             >
               <Package className="w-4 h-4" />
               <span>Produkte</span>
@@ -1979,7 +1979,7 @@ export function Admin({ onClose }: AdminProps) {
             {features.envios && (
               <TabsTrigger
                 value="versand"
-                className="flex items-center gap-2 font-semibold shrink-0 bg-blue-50 text-blue-700 data-[state=active]:bg-blue-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+                className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
               >
                 <Package className="w-4 h-4" />
                 <span>Versand</span>
@@ -1987,21 +1987,21 @@ export function Admin({ onClose }: AdminProps) {
             )}
             <TabsTrigger
               value="anuncios"
-              className="flex items-center gap-2 font-semibold shrink-0 bg-green-50 text-green-700 data-[state=active]:bg-green-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
             >
               <Megaphone className="w-4 h-4" />
               <span>Anzeigen</span>
             </TabsTrigger>
             <TabsTrigger
               value="blog"
-              className="flex items-center gap-2 font-semibold shrink-0 bg-green-50 text-green-700 data-[state=active]:bg-green-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
             >
               <BookOpen className="w-4 h-4" />
               <span>Blog</span>
             </TabsTrigger>
             <TabsTrigger
               value="gallery"
-              className="flex items-center gap-2 font-semibold shrink-0 bg-green-50 text-green-700 data-[state=active]:bg-green-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
             >
               <Images className="w-4 h-4" />
               <span>Galerie</span>
@@ -2026,7 +2026,7 @@ export function Admin({ onClose }: AdminProps) {
             )}
             <TabsTrigger
               value="inhalte"
-              className="flex items-center gap-2 font-semibold shrink-0 bg-green-50 text-green-700 data-[state=active]:bg-green-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
+              className="flex items-center gap-2 font-semibold shrink-0 bg-brand-tint/60 text-brand data-[state=active]:bg-brand data-[state=active]:text-white data-[state=active]:shadow-sm transition-colors"
             >
               <FileText className="w-4 h-4" />
               <span>Inhalte</span>
@@ -3177,8 +3177,8 @@ export function Admin({ onClose }: AdminProps) {
             {/* Blog Header */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20">
-                  <BookOpen className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <BookOpen className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Blog</h2>
@@ -3198,8 +3198,8 @@ export function Admin({ onClose }: AdminProps) {
 
             {!blogLoading && blogPosts.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-4">
-                  <BookOpen className="w-8 h-8 text-orange-300" />
+                <div className="w-16 h-16 bg-brand-tint rounded-2xl flex items-center justify-center mb-4">
+                  <BookOpen className="w-8 h-8 text-brand-pale" />
                 </div>
                 <p className="text-gray-500 font-medium">Noch keine Beiträge</p>
                 <p className="text-gray-400 text-sm mt-1">Erstelle den ersten Blogbeitrag!</p>
@@ -3217,7 +3217,7 @@ export function Admin({ onClose }: AdminProps) {
                   <div className="flex-1 p-5 flex flex-col justify-between min-w-0">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-orange-50 text-orange-500">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-brand-tint text-brand">
                           <Calendar className="w-2.5 h-2.5" />
                           {new Date(post.created_at).toLocaleDateString("de-CH")}
                         </span>
@@ -3244,8 +3244,8 @@ export function Admin({ onClose }: AdminProps) {
             {/* Gallery Header */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/20">
-                  <Images className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <Images className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Galerie</h2>
@@ -3265,8 +3265,8 @@ export function Admin({ onClose }: AdminProps) {
 
             {!galleryLoading && galleryImages.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20">
-                <div className="w-16 h-16 bg-pink-50 rounded-2xl flex items-center justify-center mb-4">
-                  <Images className="w-8 h-8 text-pink-300" />
+                <div className="w-16 h-16 bg-brand-tint rounded-2xl flex items-center justify-center mb-4">
+                  <Images className="w-8 h-8 text-brand-pale" />
                 </div>
                 <p className="text-gray-500 font-medium">Noch keine Bilder</p>
                 <p className="text-gray-400 text-sm mt-1">Lade das erste Bild hoch!</p>
@@ -3504,8 +3504,8 @@ export function Admin({ onClose }: AdminProps) {
             {/* Versand Header */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                  <Truck className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <Truck className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Versandkosten</h2>
@@ -3593,8 +3593,8 @@ export function Admin({ onClose }: AdminProps) {
             {/* Zahlung Header */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-violet-500/20">
-                  <CreditCard className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <CreditCard className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Zahlungsmethoden</h2>
@@ -3833,8 +3833,8 @@ export function Admin({ onClose }: AdminProps) {
             {/* Anzeigen Header */}
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/20">
-                  <Megaphone className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <Megaphone className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Anzeigen & Aktionen</h2>
@@ -3928,8 +3928,8 @@ export function Admin({ onClose }: AdminProps) {
           <TabsContent value="kunden">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/20">
-                  <Users className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <Users className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Registrierte Kunden</h2>
@@ -4055,8 +4055,8 @@ export function Admin({ onClose }: AdminProps) {
           <TabsContent value="inhalte">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20">
-                  <FileText className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-brand-tint rounded-2xl flex items-center justify-center text-brand">
+                  <FileText className="w-6 h-6 text-brand" />
                 </div>
                 <div>
                   <h2 className="font-display text-[19px] font-semibold text-ink tracking-tight">Inhalte bearbeiten</h2>
