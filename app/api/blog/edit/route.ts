@@ -32,6 +32,7 @@ export async function DELETE(req: NextRequest) {
     const id = req.nextUrl.searchParams.get("id")
     const res = await fetch(`${PHP_URL}?id=${id}&_method=DELETE`, {
       method: "DELETE",
+      headers: cabecerasAdmin(),
       cache: "no-store",
     })
     const text = await res.text()

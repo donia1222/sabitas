@@ -30,7 +30,7 @@ export async function DELETE(req: NextRequest) {
     const body = await req.text()
     const res = await phpFetch(PHP, {
       method: "DELETE",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: cabecerasAdmin({ "Content-Type": "application/x-www-form-urlencoded" }),
       body,
     })
     if (!res.ok) { reportPhpError(res.status); throw new Error(`${res.status}`) }
