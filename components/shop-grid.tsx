@@ -922,32 +922,6 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
               </button>
               <div ref={desktopCatScrollRef} className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div className="flex gap-3" style={{ flexWrap: "nowrap" }}>
-              {/* Favoritos: solo cuando hay alguno guardado. */}
-              {wishlist.size > 0 && (
-                <button
-                  onClick={() => { setShowWishlist(p => !p); setActiveCategory("all") }}
-                  className="relative overflow-hidden rounded-2xl group text-left transition-all duration-300 flex flex-col justify-between p-4"
-                  style={{
-                    height: "180px", minWidth: "210px", width: "210px", flexShrink: 0,
-                    backgroundColor: "#ffffff",
-                    border: showWishlist ? "2px solid #E07BA8" : "2px solid #ECE2F7",
-                    boxShadow: showWishlist ? "0 8px 32px rgba(224,123,168,0.22)" : "none",
-                  }}
-                >
-                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full" style={{ backgroundColor: "rgba(224,123,168,0.10)" }} />
-                  <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full" style={{ backgroundColor: "rgba(224,123,168,0.07)" }} />
-                  <div className="relative w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(224,123,168,0.12)" }}>
-                    <Heart className={`w-6 h-6 ${showWishlist ? "fill-current" : ""}`} style={{ color: "#E07BA8" }} />
-                  </div>
-                  <div className="relative">
-                    <p className="font-black text-base leading-tight tracking-tight" style={{ color: "#E07BA8" }}>Favoriten</p>
-                    <p className="text-[11px] mt-0.5 font-medium text-n-400">
-                      {wishlist.size} {wishlist.size === 1 ? "Stück" : "Stücke"} →
-                    </p>
-                  </div>
-                </button>
-              )}
-
               {/* Alle */}
               <button
                 onClick={() => { setShowWishlist(false); setActiveCategory("all") }}
@@ -986,6 +960,32 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                   />
                 )
               })}
+              {/* Favoritos, al final de las categorias. */}
+              {wishlist.size > 0 && (
+                <button
+                  onClick={() => { setShowWishlist(p => !p); setActiveCategory("all") }}
+                  className="relative overflow-hidden rounded-2xl group text-left transition-all duration-300 flex flex-col justify-between p-4"
+                  style={{
+                    height: "180px", minWidth: "210px", width: "210px", flexShrink: 0,
+                    backgroundColor: "#ffffff",
+                    border: showWishlist ? "2px solid #E07BA8" : "2px solid #ECE2F7",
+                    boxShadow: showWishlist ? "0 8px 32px rgba(224,123,168,0.22)" : "none",
+                  }}
+                >
+                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full" style={{ backgroundColor: "rgba(224,123,168,0.10)" }} />
+                  <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full" style={{ backgroundColor: "rgba(224,123,168,0.07)" }} />
+                  <div className="relative w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(224,123,168,0.12)" }}>
+                    <Heart className={`w-6 h-6 ${showWishlist ? "fill-current" : ""}`} style={{ color: "#E07BA8" }} />
+                  </div>
+                  <div className="relative">
+                    <p className="font-black text-base leading-tight tracking-tight" style={{ color: "#E07BA8" }}>Favoriten</p>
+                    <p className="text-[11px] mt-0.5 font-medium text-n-400">
+                      {wishlist.size} {wishlist.size === 1 ? "Stück" : "Stücke"} →
+                    </p>
+                  </div>
+                </button>
+              )}
+
               </div>
               </div>
             </div>
@@ -1029,24 +1029,6 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
               </div>
 
               <div ref={mobileCatScrollRef} className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                {/* Favoritos: solo asoma cuando hay alguno. Un filtro vacio no
-                    tiene nada que ofrecer. */}
-                {wishlist.size > 0 && (
-                  <button
-                    onClick={() => { setShowWishlist(p => !p); setActiveCategory("all") }}
-                    className={`shrink-0 h-11 px-4 rounded-full flex items-center gap-2 text-[13.5px] font-semibold border transition-colors ${
-                      showWishlist
-                        ? "bg-highlight text-white border-highlight"
-                        : "bg-white text-highlight border-highlight/40"
-                    }`}
-                  >
-                    <Heart className={`w-4 h-4 ${showWishlist ? "fill-current" : ""}`} />
-                    Favoriten
-                    <span className={`text-[11px] font-bold px-1.5 rounded-full ${showWishlist ? "bg-white/25" : "bg-highlight/10"}`}>
-                      {wishlist.size}
-                    </span>
-                  </button>
-                )}
                 <button
                   onClick={() => { setShowWishlist(false); setActiveCategory("all") }}
                   className={`shrink-0 h-11 px-4 rounded-full text-[13.5px] font-semibold border transition-colors ${
@@ -1081,6 +1063,24 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                     </button>
                   )
                 })}
+                {/* Favoritos: solo asoma cuando hay alguno. Un filtro vacio no
+                    tiene nada que ofrecer. */}
+                {wishlist.size > 0 && (
+                  <button
+                    onClick={() => { setShowWishlist(p => !p); setActiveCategory("all") }}
+                    className={`shrink-0 h-11 px-4 rounded-full flex items-center gap-2 text-[13.5px] font-semibold border transition-colors ${
+                      showWishlist
+                        ? "bg-highlight text-white border-highlight"
+                        : "bg-white text-highlight border-highlight/40"
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${showWishlist ? "fill-current" : ""}`} />
+                    Favoriten
+                    <span className={`text-[11px] font-bold px-1.5 rounded-full ${showWishlist ? "bg-white/25" : "bg-highlight/10"}`}>
+                      {wishlist.size}
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
 
