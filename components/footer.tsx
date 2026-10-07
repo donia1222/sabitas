@@ -291,8 +291,20 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
               className="h-24 lg:h-28 w-auto object-contain"
             />
 
-            {/* La costura, el mismo hilo que separa los bloques de la web. */}
-            <span className="block w-40 h-0 border-t-2 border-dashed border-brand-pale/70 my-7" />
+            {/* La costura, el mismo hilo que separa los bloques de la web.
+                Cada pocos segundos unas tijeras la recorren de derecha a
+                izquierda, como si fueran a cortarla. */}
+            <span className="costura-tijeras my-7" aria-hidden>
+              <span className="linea" />
+              <span className="tijeras">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="6" cy="6" r="2.6" />
+                  <circle cx="6" cy="18" r="2.6" />
+                  <path d="M8.1 7.6 20 18" />
+                  <path d="M8.1 16.4 20 6" />
+                </svg>
+              </span>
+            </span>
 
             {/* Contacto */}
             <div className="flex flex-wrap justify-center gap-2">
