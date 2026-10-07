@@ -1957,8 +1957,8 @@ export function Admin({ onClose }: AdminProps) {
               diez pestañas que no cabian y habia que arrastrar para ver las
               suyas. */}
           <div className="mb-8 space-y-3">
-            <div className="overflow-x-auto -mx-2 px-2 pb-1">
-              <TabsList className="flex w-max lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1 lg:[&>[role=tab]]:flex-1">
+            <div className="overflow-x-auto -mx-2 px-2 pb-1 flex justify-center">
+              <TabsList className="inline-flex w-max mx-auto bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1">
 
             {features.pedidos && (
               <TabsTrigger
@@ -2043,14 +2043,15 @@ export function Admin({ onClose }: AdminProps) {
             </div>
 
             {/* El paquete 3: se ve, se entiende y no se puede pulsar. */}
-            <div className="rounded-2xl border border-dashed border-brand-pale/70 bg-brand-wash/50 px-3 py-3">
-              <div className="flex items-center gap-2 mb-2.5">
+            <div className="rounded-2xl border border-dashed border-brand-pale/70 bg-brand-wash/50 px-4 py-3.5 w-max max-w-full mx-auto">
+              <div className="flex items-center justify-center gap-2 mb-2.5">
+                <span className="w-6 h-px bg-brand-pale/60" />
                 <span className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand/70">
                   Mit Paket 3
                 </span>
-                <span className="flex-1 h-px bg-brand-pale/60" />
+                <span className="w-6 h-px bg-brand-pale/60" />
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap justify-center gap-1.5">
                 {PAQUETE_3.map(({ clave, etiqueta, Icono }) => (
                   <span
                     key={clave}
