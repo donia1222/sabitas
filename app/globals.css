@@ -227,3 +227,21 @@ h1, h2, h3, .font-display {
   .bienvenida img, .bienvenida .costura { animation: none }
   .logo-marco .brillo { display: none }
 }
+
+/* La mano que saluda en «Hallo, ich bin Sabitas 👋».
+   Gira desde la muñeca —de ahi el transform-origin abajo— tres veces al
+   cargar, y vuelve a saludar si le pasas el raton por encima. */
+.saluda {
+  display: inline-block;
+  transform-origin: 70% 80%;
+  animation: saludo 1.6s ease-in-out 0.6s 3;
+}
+.saluda:hover { animation: saludo 1.6s ease-in-out 1 }
+@keyframes saludo {
+  0%, 60%, 100% { transform: rotate(0deg) }
+  10%, 30%, 50% { transform: rotate(14deg) }
+  20%, 40%      { transform: rotate(-8deg) }
+}
+@media (prefers-reduced-motion: reduce) {
+  .saluda { animation: none }
+}

@@ -33,6 +33,28 @@ const VALORES = [
   { icono: Flower2, titulo: "Aus der Schweiz", texto: "Von mir entworfen und gefertigt – in der Schweiz." },
 ]
 
+/**
+ * Saca la mano del titular y la deja aparte para poder animarla.
+ *
+ * El texto viene de los ajustes del sitio, asi que la mano puede estar o no;
+ * si no esta, esto no hace nada. Si algun dia ella escribe otro titulo sin
+ * emoticono, sigue funcionando igual.
+ */
+function conManoQueSaluda(titulo: string) {
+  const partes = titulo.split("\u{1F44B}")
+  if (partes.length === 1) return titulo
+  return partes.map((parte, i) => (
+    <span key={i}>
+      {parte}
+      {i < partes.length - 1 && (
+        <span className="saluda" aria-hidden>
+          {"\u{1F44B}"}
+        </span>
+      )}
+    </span>
+  ))
+}
+
 export default function UeberMichPage() {
   const [ajustes, setAjustes] = useState<Record<string, string>>({})
 
@@ -82,7 +104,7 @@ export default function UeberMichPage() {
                 className="font-display font-semibold text-ink mt-3 leading-tight"
                 style={{ fontSize: "clamp(1.8rem, 3.8vw, 2.6rem)", letterSpacing: "-0.03em" }}
               >
-                {t("ueber_titel")}
+                {conManoQueSaluda(t("ueber_titel"))}
               </h1>
 
               <span className="block w-32 h-[3px] rounded-full bg-brand-pale mt-4 mb-6" />
