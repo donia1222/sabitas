@@ -245,3 +245,35 @@ h1, h2, h3, .font-display {
 @media (prefers-reduced-motion: reduce) {
   .saluda { animation: none }
 }
+
+/* Los tres iconos de la banda del hero.
+   Cada uno se mueve a su manera y muy despacio: el destello parpadea, la
+   flor se mece y la caja da un saltito. El aro de puntos gira alrededor.
+   Van escalonados para que no latan los tres a la vez, que es lo que hace
+   que un detalle asi canse. */
+.aro-gira { animation: aroGira 22s linear infinite }
+@keyframes aroGira { to { transform: rotate(360deg) } }
+
+.icono-brilla { animation: iconoBrilla 3.4s ease-in-out infinite }
+@keyframes iconoBrilla {
+  0%, 70%, 100% { transform: scale(1) rotate(0deg); opacity: 1 }
+  80%           { transform: scale(1.14) rotate(8deg); opacity: 0.85 }
+  90%           { transform: scale(0.98) rotate(-4deg) }
+}
+
+.icono-mece { animation: iconoMece 4.2s ease-in-out infinite }
+@keyframes iconoMece {
+  0%, 100% { transform: rotate(-5deg) }
+  50%      { transform: rotate(5deg) }
+}
+
+.icono-bota { animation: iconoBota 3.8s ease-in-out infinite }
+@keyframes iconoBota {
+  0%, 60%, 100% { transform: translateY(0) }
+  70%           { transform: translateY(-4px) }
+  85%           { transform: translateY(0) scaleY(0.96) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aro-gira, .icono-brilla, .icono-mece, .icono-bota { animation: none }
+}

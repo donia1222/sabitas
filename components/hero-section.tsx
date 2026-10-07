@@ -290,9 +290,17 @@ export function HeroSection() {
                 >
                   <span className="relative w-14 h-14 rounded-full bg-white text-brand flex items-center justify-center shadow-[0_12px_26px_-18px_rgba(107,79,147,0.9)]">
                     {/* El aro de puntos alrededor del icono, como los circulos
-                        de los tres pasos. */}
-                    <span className="absolute -inset-1.5 rounded-full border-2 border-dashed border-brand-pale/70" />
-                    {[<Sparkles key="a" className="w-6 h-6" />, <Flower2 key="b" className="w-6 h-6" />, <Package key="c" className="w-6 h-6" />][i % 3]}
+                        de los tres pasos. Gira muy despacio. */}
+                    <span
+                      className="absolute -inset-1.5 rounded-full border-2 border-dashed border-brand-pale/70 aro-gira"
+                      style={{ animationDelay: `${i * -4}s` }}
+                    />
+                    <span
+                      className={["icono-brilla", "icono-mece", "icono-bota"][i % 3]}
+                      style={{ animationDelay: `${i * 0.5}s` }}
+                    >
+                      {[<Sparkles key="a" className="w-6 h-6" />, <Flower2 key="b" className="w-6 h-6" />, <Package key="c" className="w-6 h-6" />][i % 3]}
+                    </span>
                   </span>
 
                   <p className="font-display font-semibold text-ink text-[19px] lg:text-[21px] mt-5 leading-tight" style={{ letterSpacing: "-0.02em" }}>
