@@ -71,7 +71,7 @@ export function HeroSection() {
   const [siteContent, setSiteContent] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    fetch(`/api/site-settings`)
+    fetch(`/api/site-settings`, { cache: "no-store" })
       .then(r => r.json())
       .then(data => { if (data.success && data.settings) setSiteContent(data.settings) })
       .catch(() => {})
@@ -90,9 +90,19 @@ export function HeroSection() {
     }),
     [siteContent],
   )
-  const heroTitle1 = siteContent["hero_title_1"] || HERO_DEFAULTS.titleLine1
-  const heroTitle2 = siteContent["hero_title_2"] || HERO_DEFAULTS.titleLine2
-  const heroSubtitle = siteContent["hero_subtitle"] || HERO_DEFAULTS.subtitle
+  /**
+   * Lo guardado manda, aunque sea vacio.
+   *
+   * Con `||` un texto borrado volvia a mostrar el de por defecto, y parecia que
+   * el panel no guardaba. Si ella deja la segunda linea en blanco, es que no
+   * quiere segunda linea.
+   */
+  const textoDelSitio = (clave: string, porDefecto: string) =>
+    clave in siteContent ? siteContent[clave].trim() : porDefecto
+
+  const heroTitle1 = textoDelSitio("hero_title_1", HERO_DEFAULTS.titleLine1)
+  const heroTitle2 = textoDelSitio("hero_title_2", HERO_DEFAULTS.titleLine2)
+  const heroSubtitle = textoDelSitio("hero_subtitle", HERO_DEFAULTS.subtitle)
   const heroStats = useMemo(
     () => HERO_DEFAULTS.stats.map((d, i) => {
       // Guardado vacio NO es lo mismo que «nunca lo toque»: si ella borra el
@@ -183,9 +193,10 @@ export function HeroSection() {
                 style={{ fontSize: "clamp(2.2rem, 5vw, 3.6rem)", letterSpacing: "-0.03em" }}
               >
                 {heroTitle1}
-                <br />
+                {heroTitle2 && <br />}
                 {/* La segunda linea, en cursiva y con el subrayado dibujado a
                     mano: es el gesto que mas se repite en sus maquetas. */}
+                {heroTitle2 && (
                 <span className="relative inline-block italic text-brand">
                   {heroTitle2}
                   <svg
@@ -205,6 +216,7 @@ export function HeroSection() {
                     />
                   </svg>
                 </span>
+                )}
               </h1>
 
               <p className="text-n-600 text-[16.5px] lg:text-[17.5px] mt-7 leading-relaxed max-w-lg whitespace-pre-line">

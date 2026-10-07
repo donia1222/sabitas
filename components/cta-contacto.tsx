@@ -21,7 +21,7 @@ export function CtaContacto({ separada = false }: { separada?: boolean } = {}) {
   const [ajustes, setAjustes] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    fetch("/api/site-settings")
+    fetch("/api/site-settings", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => { if (d.success && d.settings) setAjustes(d.settings) })
       .catch(() => {})
