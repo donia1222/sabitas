@@ -45,6 +45,7 @@ import {
   Bell,
   TrendingUp,
   Truck,
+  Lock,
   Eye,
   Receipt,
   ArrowUpRight,
@@ -169,6 +170,21 @@ interface Category {
 interface AdminProps {
   onClose: () => void
 }
+
+/**
+ * Las pestañas que llegan con el paquete 3.
+ *
+ * Aqui estan solo para que se vean: apagadas y sin poder pulsarse. Lo que de
+ * verdad las apaga son los interruptores de lib/features.ts y api/features.php
+ * —el panel no es la cerradura, es el cartel—.
+ */
+const PAQUETE_3 = [
+  { clave: "orders",        etiqueta: "Bestellungen", Icono: ShoppingBag },
+  { clave: "einstellungen", etiqueta: "Zahlung",      Icono: Shield },
+  { clave: "versand",       etiqueta: "Versand",      Icono: Truck },
+  { clave: "gutscheine",    etiqueta: "Gutscheine",   Icono: Gift },
+  { clave: "kunden",        etiqueta: "Kunden",       Icono: Users },
+] as const
 
 export default function AdminPage() {
   return <Admin onClose={() => window.history.back()} />
@@ -1937,7 +1953,10 @@ export function Admin({ onClose }: AdminProps) {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="overflow-x-auto mb-8 -mx-2 px-2 pb-1">
-          <TabsList className={`flex w-max lg:grid lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1 ${["lg:grid-cols-6","lg:grid-cols-7","lg:grid-cols-8","lg:grid-cols-9","lg:grid-cols-10"][[features.pedidos, features.envios, features.vales, features.cuentas].filter(Boolean).length]}`}>
+          {/* Una fila que se arrastra, sin reticula de columnas fijas: con las
+              del paquete 3 al final, el numero de pestañas ya no es el que
+              esperaba aquel calculo. */}
+          <TabsList className="flex w-max lg:w-full bg-white border border-n-150 rounded-2xl p-1 shadow-sm gap-1 overflow-x-auto">
             {features.pedidos && (
               <TabsTrigger
                 value="orders"
@@ -1953,13 +1972,6 @@ export function Admin({ onClose }: AdminProps) {
             >
               <Package className="w-4 h-4" />
               <span>Produkte</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="einstellungen"
-              className="flex items-center gap-2 font-semibold shrink-0 bg-blue-50 text-blue-700 data-[state=active]:bg-blue-400 data-[state=active]:text-white data-[state=active]:shadow-sm transition-all"
-            >
-              <Shield className="w-4 h-4" />
-              <span>Zahlung</span>
             </TabsTrigger>
             {features.envios && (
               <TabsTrigger
@@ -2016,6 +2028,34 @@ export function Admin({ onClose }: AdminProps) {
               <FileText className="w-4 h-4" />
               <span>Inhalte</span>
             </TabsTrigger>
+
+            {/* ── Lo que trae el paquete 3 ───────────────────────────────────
+                Se ven, apagadas y sin poder pulsarse, para que se entienda que
+                existen y que llegan con el paquete siguiente. Van al final a
+                proposito: delante quedan las que si se usan a diario.
+                `disabled` ya impide el clic; `pointer-events-none` evita
+                ademas el cambio de color al pasar por encima, que invitaria a
+                intentarlo. */}
+            {/* Un cartelito delante, para que se lea como «a partir de aqui,
+                paquete 3» y no como opciones que se han estropeado. */}
+            <span className="hidden lg:flex items-center gap-1.5 shrink-0 pl-3 pr-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand/70 select-none">
+              <span className="w-5 h-px bg-brand-pale" />
+              Paket 3
+            </span>
+
+            {PAQUETE_3.map(({ clave, etiqueta, Icono }) => (
+              <TabsTrigger
+                key={clave}
+                value={clave}
+                disabled
+                title="Kommt mit Paket 3"
+                className="flex items-center gap-2 font-semibold shrink-0 bg-n-50 text-n-400 opacity-60 pointer-events-none cursor-default"
+              >
+                <Icono className="w-4 h-4" />
+                <span>{etiqueta}</span>
+                <Lock className="w-3 h-3 shrink-0" />
+              </TabsTrigger>
+            ))}
           </TabsList>
           </div>
 
