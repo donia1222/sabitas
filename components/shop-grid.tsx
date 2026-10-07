@@ -810,24 +810,30 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                 </ul>
               </div>
 
-              <div className="lg:hidden border-t border-n-100 pt-4">
-                <button
-                  onClick={() => { setShowWishlist(p => !p); setActiveCategory("all"); setStockFilter("all"); setSearch(""); setSidebarOpen(false) }}
-                  className={`w-full text-left flex items-center justify-between text-sm px-3 py-2 rounded-xl transition-all font-medium ${
-                    showWishlist ? "bg-rose-100 text-rose-600 shadow-sm" : "text-n-700 hover:bg-rose-50 hover:text-rose-500"
-                  }`}
-                >
-                  <span className="flex items-center gap-2">
-                    <Heart className={`w-3.5 h-3.5 ${showWishlist ? "fill-current" : ""}`} />
-                    Wunschliste
-                  </span>
-                  {wishlist.size > 0 && (
-                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${showWishlist ? "bg-rose-200 text-rose-600" : "bg-rose-100 text-rose-400"}`}>
+              {/* Favoritos, debajo de las categorias. Solo cuando hay alguno
+                  guardado: un filtro vacio no ofrece nada. Antes esto estaba
+                  oculto en escritorio y en el telefono se llamaba de otra
+                  manera —«Wunschliste»— que la tarjeta de al lado. */}
+              {wishlist.size > 0 && (
+                <div className="border-t border-brand-tint pt-4">
+                  <button
+                    onClick={() => { setShowWishlist(p => !p); setActiveCategory("all"); setStockFilter("all"); setSearch(""); setSidebarOpen(false) }}
+                    className={`w-full text-left flex items-center justify-between text-sm px-3 py-2.5 rounded-xl transition-colors font-medium ${
+                      showWishlist
+                        ? "bg-highlight text-white shadow-sm"
+                        : "text-highlight hover:bg-highlight-tint"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Heart className={`w-4 h-4 ${showWishlist ? "fill-current" : ""}`} />
+                      Favoriten
+                    </span>
+                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${showWishlist ? "bg-white/25 text-white" : "bg-highlight/10 text-highlight"}`}>
                       {wishlist.size}
                     </span>
-                  )}
-                </button>
-              </div>
+                  </button>
+                </div>
+              )}
 
               <div className="lg:hidden border-t border-n-100 pt-4">
                 <button
