@@ -10,9 +10,10 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import {
   ShoppingCart, ChevronLeft, ChevronRight,
   Search, X, Check, ArrowLeft,
-  ArrowUp, ChevronDown, Heart, Menu, Newspaper, Download, Images, Gift
+  ArrowUp, ChevronDown, Heart, Menu, Newspaper, Download, Images, Gift,
+  SlidersHorizontal
 } from "lucide-react"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { ShoppingCartComponent } from "./shopping-cart"
 import { CheckoutPage } from "@/components/checkout-page"
 import { LoginAuth } from "./login-auth"
@@ -188,55 +189,12 @@ const ProductCard = memo(function ProductCard({ product, addedIds, wishlist, onS
   )
 })
 
-// ─── MobileCatCard: smaller version for mobile scroll ─────────────────────────
-
-function MobileCatCard({ srcs, displayName, isActive, onClick, id }: {
-  srcs: string[]
-  displayName: string
-  isActive: boolean
-  onClick: () => void
-  id?: string
-}) {
+/** La foto redonda de la pastilla: prueba las candidatas hasta que una carga. */
+function CatImage({ srcs, alt, className }: { srcs: string[]; alt: string; className?: string }) {
   const [idx, setIdx] = useState(0)
-  const img = srcs[idx] ?? null
-  return (
-    <button
-      id={id}
-      onClick={onClick}
-      className="relative overflow-hidden rounded-xl flex-shrink-0 text-left transition-all duration-200"
-      style={{
-        width: "110px", height: "120px",
-        backgroundColor: "#0E1015",
-        border: isActive ? "2px solid #6B4F93" : "2px solid transparent",
-        boxShadow: isActive ? "0 4px 16px rgba(107,79,147,0.28)" : "none",
-      }}
-    >
-      {img && (
-        <img
-          src={img}
-          alt={displayName}
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ transform: isActive ? "scale(1.05)" : undefined, transition: "transform 0.4s ease" }}
-          onError={() => setIdx(i => i + 1)}
-        />
-      )}
-      <div className="absolute inset-0" style={{
-        background: isActive
-          ? "linear-gradient(to top, rgba(59,43,70,0.78) 0%, transparent 55%)"
-          : "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 55%)"
-      }} />
-      {isActive && (
-        <div className="absolute top-1.5 right-1.5 w-4 h-4 bg-brand rounded-full flex items-center justify-center">
-          <Check className="w-2.5 h-2.5 text-white" />
-        </div>
-      )}
-      <div className="absolute bottom-0 left-0 right-0 px-2.5 pb-2">
-        <span className="text-white font-black text-[13px] leading-tight block truncate drop-shadow-md">
-          {displayName}
-        </span>
-      </div>
-    </button>
-  )
+  const img = srcs[idx]
+  if (!img) return null
+  return <img src={img} alt={alt} className={className} onError={() => setIdx(i => i + 1)} />
 }
 
 // Imagen para tarjetas de categoría:
@@ -350,6 +308,13 @@ export default function ShopGrid() {
   const [stockFilter, setStockFilter]       = useState<"all" | "out_of_stock">("all")
   /** Precio maximo elegido en el lateral. null = sin tope. */
   const [precioMax, setPrecioMax]           = useState<number | null>(null)
+  /** La hoja de filtros del telefono. En escritorio mandan el lateral. */
+  const [filtrosAbiertos, setFiltrosAbiertos] = useState(false)
+  /** Cuantos filtros hay puestos ahora mismo (para la pelotita del boton). */
+  const filtrosActivos =
+    (precioMax !== null ? 1 : 0) +
+    (stockFilter !== "all" ? 1 : 0) +
+    (activeSupplier !== "all" ? 1 : 0)
   const [sortBy, setSortBy]                 = useState<"default"|"name_asc"|"name_desc"|"price_asc"|"price_desc">("default")
   const [sidebarOpen, setSidebarOpen]       = useState(false)
   const [expandedCats, setExpandedCats]     = useState<Set<string>>(new Set())
@@ -951,15 +916,41 @@ export default function ShopGrid() {
               </button>
               <div ref={desktopCatScrollRef} className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               <div className="flex gap-3" style={{ flexWrap: "nowrap" }}>
+              {/* Favoritos: solo cuando hay alguno guardado. */}
+              {wishlist.size > 0 && (
+                <button
+                  onClick={() => { setShowWishlist(p => !p); setActiveCategory("all") }}
+                  className="relative overflow-hidden rounded-2xl group text-left transition-all duration-300 flex flex-col justify-between p-4"
+                  style={{
+                    height: "180px", minWidth: "210px", width: "210px", flexShrink: 0,
+                    backgroundColor: "#ffffff",
+                    border: showWishlist ? "2px solid #E07BA8" : "2px solid #ECE2F7",
+                    boxShadow: showWishlist ? "0 8px 32px rgba(224,123,168,0.22)" : "none",
+                  }}
+                >
+                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full" style={{ backgroundColor: "rgba(224,123,168,0.10)" }} />
+                  <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full" style={{ backgroundColor: "rgba(224,123,168,0.07)" }} />
+                  <div className="relative w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: "rgba(224,123,168,0.12)" }}>
+                    <Heart className={`w-6 h-6 ${showWishlist ? "fill-current" : ""}`} style={{ color: "#E07BA8" }} />
+                  </div>
+                  <div className="relative">
+                    <p className="font-black text-base leading-tight tracking-tight" style={{ color: "#E07BA8" }}>Favoriten</p>
+                    <p className="text-[11px] mt-0.5 font-medium text-n-400">
+                      {wishlist.size} {wishlist.size === 1 ? "Stück" : "Stücke"} →
+                    </p>
+                  </div>
+                </button>
+              )}
+
               {/* Alle */}
               <button
-                onClick={() => setActiveCategory("all")}
+                onClick={() => { setShowWishlist(false); setActiveCategory("all") }}
                 className="relative overflow-hidden rounded-2xl group text-left transition-all duration-300 flex flex-col justify-between p-4"
                 style={{
                   height: "180px", minWidth: "210px", width: "210px", flexShrink: 0,
                   backgroundColor: "#ffffff",
-                  border: activeCategory === "all" ? "2px solid #6B4F93" : "2px solid #ECE2F7",
-                  boxShadow: activeCategory === "all" ? "0 8px 32px rgba(107,79,147,0.22)" : "none",
+                  border: activeCategory === "all" && !showWishlist ? "2px solid #6B4F93" : "2px solid #ECE2F7",
+                  boxShadow: activeCategory === "all" && !showWishlist ? "0 8px 32px rgba(107,79,147,0.22)" : "none",
                 }}
               >
                 <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full" style={{ backgroundColor: "rgba(107,79,147,0.10)" }} />
@@ -993,28 +984,72 @@ export default function ShopGrid() {
               </div>
             </div>
 
-            {/* ── Category cards — mobile only ── */}
-            <div ref={mobileCatScrollRef} className="lg:hidden overflow-x-auto mb-3 -mx-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <div className="flex gap-2.5 pb-1" style={{ flexWrap: "nowrap" }}>
-                {/* Alle mobile */}
+            {/* ── La barra del telefono ──────────────────────────────────
+                En el movil manda esto: el buscador y un boton de filtros que
+                abre una hoja por abajo, y debajo las categorias en pastillas
+                con su foto pequeña. Las tarjetas cuadradas de antes ocupaban
+                media pantalla antes de ver un solo producto. */}
+            <div className="lg:hidden mb-4 space-y-3">
+              <div className="flex gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-n-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Suchen…"
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    /* 16 px: por debajo, Safari hace zoom al tocar el campo. */
+                    className="w-full pl-10 pr-9 py-3 text-[16px] bg-white rounded-full border border-brand-tint focus:outline-none focus:border-brand-pale focus:ring-2 focus:ring-brand/10 transition-all placeholder-n-400"
+                  />
+                  {search && (
+                    <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-n-400 hover:text-brand">
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
                 <button
-                  onClick={() => setActiveCategory("all")}
-                  className="relative overflow-hidden rounded-xl flex-shrink-0 flex flex-col justify-between p-3 transition-all duration-200"
-                  style={{
-                    width: "110px", height: "120px",
-                    backgroundColor: "#fff",
-                    border: activeCategory === "all" ? "2px solid #6B4F93" : "2px solid #ECE2F7",
-                    boxShadow: activeCategory === "all" ? "0 4px 16px rgba(107,79,147,0.22)" : "none",
-                  }}
+                  onClick={() => setFiltrosAbiertos(true)}
+                  className="relative shrink-0 w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-sm shadow-brand/25"
+                  aria-label="Filter"
                 >
-                  <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full" style={{ backgroundColor: "rgba(107,79,147,0.09)" }} />
-                  <div className="relative w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(107,79,147,0.12)" }}>
-                    <Check className="w-4 h-4" style={{ color: "#6B4F93" }} />
-                  </div>
-                  <div className="relative">
-                    <p className="font-black text-[15px] leading-tight" style={{ color: "#6B4F93" }}>Alle</p>
-                    <p className="text-[12px] text-n-400 mt-0.5">Anzeigen</p>
-                  </div>
+                  <SlidersHorizontal className="w-[18px] h-[18px]" />
+                  {filtrosActivos > 0 && (
+                    <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-highlight text-white text-[11px] font-bold flex items-center justify-center border-2 border-white">
+                      {filtrosActivos}
+                    </span>
+                  )}
+                </button>
+              </div>
+
+              <div ref={mobileCatScrollRef} className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                {/* Favoritos: solo asoma cuando hay alguno. Un filtro vacio no
+                    tiene nada que ofrecer. */}
+                {wishlist.size > 0 && (
+                  <button
+                    onClick={() => { setShowWishlist(p => !p); setActiveCategory("all") }}
+                    className={`shrink-0 h-11 px-4 rounded-full flex items-center gap-2 text-[13.5px] font-semibold border transition-colors ${
+                      showWishlist
+                        ? "bg-highlight text-white border-highlight"
+                        : "bg-white text-highlight border-highlight/40"
+                    }`}
+                  >
+                    <Heart className={`w-4 h-4 ${showWishlist ? "fill-current" : ""}`} />
+                    Favoriten
+                    <span className={`text-[11px] font-bold px-1.5 rounded-full ${showWishlist ? "bg-white/25" : "bg-highlight/10"}`}>
+                      {wishlist.size}
+                    </span>
+                  </button>
+                )}
+                <button
+                  onClick={() => { setShowWishlist(false); setActiveCategory("all") }}
+                  className={`shrink-0 h-11 px-4 rounded-full text-[13.5px] font-semibold border transition-colors ${
+                    activeCategory === "all" && !showWishlist
+                      ? "bg-brand text-white border-brand"
+                      : "bg-white text-n-700 border-brand-tint"
+                  }`}
+                >
+                  Alle
                 </button>
                 {categories.filter(cat => cat.parent_id === null).map(cat => {
                   const branch = branchSlugs(cat.id)
@@ -1023,18 +1058,126 @@ export default function ShopGrid() {
                   const displayName = cat.name.replace(/\s*\d{4}$/, "")
                   const srcs = cat.image ? [cat.image, ...catImageSrcWithFallback(catProds, cat.name)] : catImageSrcWithFallback(catProds, cat.name)
                   return (
-                    <MobileCatCard
+                    <button
                       key={cat.slug}
                       id={`mobile-cat-${cat.slug}`}
-                      srcs={srcs}
-                      displayName={displayName}
-                      isActive={isActive}
-                      onClick={() => { setActiveCategory(prev => prev === cat.slug ? "all" : cat.slug); setExpandedCats(prev => { const n = new Set(prev); n.add(cat.slug); return n }) }}
-                    />
+                      onClick={() => { setShowWishlist(false); setActiveCategory(prev => prev === cat.slug ? "all" : cat.slug); setExpandedCats(prev => { const n = new Set(prev); n.add(cat.slug); return n }) }}
+                      className={`shrink-0 h-11 pl-1.5 pr-4 rounded-full flex items-center gap-2 text-[13.5px] font-semibold border transition-colors ${
+                        isActive
+                          ? "bg-brand text-white border-brand"
+                          : "bg-white text-n-700 border-brand-tint"
+                      }`}
+                    >
+                      <span className="w-8 h-8 rounded-full overflow-hidden bg-brand-tint shrink-0">
+                        <CatImage srcs={srcs} alt={displayName} className="w-full h-full object-cover" />
+                      </span>
+                      {displayName}
+                    </button>
                   )
                 })}
               </div>
             </div>
+
+            {/* ── La hoja de filtros del telefono ───────────────────────
+                Lo que en escritorio esta siempre a la vista en el lateral
+                —precio, disponibilidad y marca— aqui vive en una hoja que
+                sube desde abajo. Asi la pantalla empieza por los productos y
+                no por los filtros. */}
+            <Sheet open={filtrosAbiertos} onOpenChange={setFiltrosAbiertos}>
+              <SheetContent side="bottom" className="lg:hidden rounded-t-3xl border-brand-tint p-0 max-h-[85vh] overflow-y-auto">
+                <SheetTitle className="sr-only">Filter</SheetTitle>
+
+                <div className="px-5 pt-5 pb-3 flex items-center justify-between">
+                  <p className="font-display font-semibold text-ink text-[19px]">Filter</p>
+                  {filtrosActivos > 0 && (
+                    <button
+                      onClick={() => { setPrecioMax(null); setStockFilter("all"); setActiveSupplier("all") }}
+                      className="text-[13px] font-semibold text-brand"
+                    >
+                      Zurücksetzen
+                    </button>
+                  )}
+                </div>
+
+                {/* Precio */}
+                {precioTope > 0 && (
+                  <div className="px-5 py-4 border-t border-brand-tint">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-n-400 mb-2">Preis</p>
+                    <p className="text-ink font-semibold text-[16px]">
+                      {precioMax === null ? "Alle Preise" : `Bis CHF ${precioMax.toLocaleString("de-CH")}`}
+                    </p>
+                    <input
+                      type="range"
+                      min={0}
+                      max={precioTope}
+                      step={precioTope > 200 ? 10 : 5}
+                      value={precioMax ?? precioTope}
+                      onChange={e => {
+                        const v = Number(e.target.value)
+                        setPrecioMax(v >= precioTope ? null : v)
+                      }}
+                      className="w-full mt-3 accent-brand"
+                      aria-label="Höchstpreis"
+                    />
+                    <div className="flex items-center justify-between text-[12px] text-n-400 mt-1">
+                      <span>CHF 0</span>
+                      <span>CHF {precioTope.toLocaleString("de-CH")}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Disponibilidad */}
+                <div className="px-5 py-4 border-t border-brand-tint">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-n-400 mb-3">Verfügbarkeit</p>
+                  <div className="flex gap-2">
+                    {([["all", "Alle"], ["out_of_stock", "An Lager"]] as const).map(([val, label]) => (
+                      <button
+                        key={val}
+                        onClick={() => setStockFilter(val)}
+                        className={`flex-1 h-11 rounded-full text-[14px] font-semibold border transition-colors ${
+                          stockFilter === val
+                            ? "bg-brand text-white border-brand"
+                            : "bg-white text-n-700 border-brand-tint"
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Marca */}
+                {suppliers.length > 0 && (
+                  <div className="px-5 py-4 border-t border-brand-tint">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-n-400 mb-3">Hersteller</p>
+                    <div className="flex flex-wrap gap-2">
+                      {["all", ...suppliers].map(m => (
+                        <button
+                          key={m}
+                          onClick={() => setActiveSupplier(m)}
+                          className={`h-10 px-4 rounded-full text-[13.5px] font-semibold border transition-colors ${
+                            activeSupplier === m
+                              ? "bg-brand text-white border-brand"
+                              : "bg-white text-n-700 border-brand-tint"
+                          }`}
+                        >
+                          {m === "all" ? "Alle" : m}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="sticky bottom-0 bg-white border-t border-brand-tint px-5 py-4">
+                  <button
+                    onClick={() => setFiltrosAbiertos(false)}
+                    className="w-full h-12 rounded-full bg-brand text-white font-semibold text-[15px] shadow-lg shadow-brand/25"
+                  >
+                    {filtered.length} {filtered.length === 1 ? "Stück" : "Stücke"} anzeigen
+                  </button>
+                </div>
+              </SheetContent>
+            </Sheet>
 
             {/* ── Subcategory bar — visible when active category has subcategories ── */}
             {(() => {
@@ -1109,7 +1252,7 @@ export default function ShopGrid() {
 
             {/* ── Supplier / Hersteller chips ── */}
             {suppliers.length > 0 && (
-              <div className="border-t border-n-200 mt-6 pt-6">
+              <div className="hidden lg:block border-t border-n-200 mt-6 pt-6">
                 <div className="flex items-start gap-2.5 mb-2.5">
                   <div className="w-0.5 self-stretch bg-brand rounded-full flex-shrink-0" />
                   <div>
@@ -1147,8 +1290,9 @@ export default function ShopGrid() {
               </div>
             )}
 
-            {/* ── Search — mobile only, below brand badges ── */}
-            <div className="sm:hidden relative mb-4">
+            {/* El buscador de tableta: en el telefono esta arriba, en la
+                barra nueva; en escritorio, en el lateral. */}
+            <div className="hidden sm:block lg:hidden relative mb-4">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-n-400 pointer-events-none" />
               <input
                 type="text"
