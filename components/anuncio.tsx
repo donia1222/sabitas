@@ -34,8 +34,10 @@ export function Anuncio() {
       .then((r) => r.json())
       .then((d) => {
         if (cancelado || !d?.success) return
-        const lista: Anuncio[] = d.announcements ?? []
-        const activo = lista[0]
+        // Con ?active=1 el servidor contesta `announcement` (uno solo); la
+        // lista del panel usa `announcements`. Se aceptan las dos formas:
+        // leer solo una era justo lo que dejaba el aviso sin salir.
+        const activo: Anuncio | undefined = d.announcement ?? (d.announcements ?? [])[0]
         if (!activo) return
 
         const soloUnaVez = activo.show_once === true || activo.show_once === 1
