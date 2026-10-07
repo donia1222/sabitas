@@ -62,40 +62,6 @@ export function Footer() {
   const handleDownloadVCard = () => { void descargarVCard() }
 
   const legalDefaults = {
-    agb: {
-      title: "Allgemeine Geschäftsbedingungen (AGB)",
-      content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
-
-1. GELTUNGSBEREICH
-Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für alle Bestellungen, die über den Online-Shop von Sabitas abgeschlossen werden. Abweichende Bedingungen des Käufers werden nicht anerkannt, es sei denn, wir stimmen ihrer Geltung ausdrücklich schriftlich zu.
-
-2. VERTRAGSSCHLUSS
-Das Angebot in unserem Online-Shop stellt eine unverbindliche Einladung zur Bestellung dar. Durch das Absenden der Bestellung geben Sie ein verbindliches Angebot ab. Der Kaufvertrag kommt erst mit unserer schriftlichen Auftragsbestätigung per E-Mail zustande. Wir behalten uns das Recht vor, Bestellungen ohne Angabe von Gründen abzulehnen.
-
-3. SORTIMENT & PRODUKTE
-Unser Sortiment umfasst die im Shop aufgeführten Artikel. Alle Motive werden in Übereinstimmung mit den geltenden Schweizer Gesetzen angeboten. Für bestimmte Artikel können gesetzliche Altersbeschränkungen gelten. Mit der Bestellung bestätigen Sie, das gegebenenfalls vorgeschriebene Mindestalter erreicht zu haben.
-
-4. PREISE UND ZAHLUNG
-Alle Preise verstehen sich in Schweizer Franken (CHF) inklusive der gesetzlichen Mehrwertsteuer (MwSt.). Versandkosten werden im Bestellprozess separat ausgewiesen. Wir akzeptieren folgende Zahlungsmittel: Zahlung per Telefon (nach Absprache, z. B. über eine Bezahl-App), PostFinance, VISA, Mastercard, American Express sowie PayPal. Der Kaufpreis ist mit Abschluss der Bestellung fällig.
-
-5. LIEFERUNG
-Wir liefern ausschliesslich innerhalb der Schweiz. Die Lieferzeit beträgt in der Regel 1–3 Werktage nach Zahlungseingang. Bei Lieferverzögerungen informieren wir Sie unverzüglich. Das Versandrisiko geht mit Übergabe an den Paketdienstleister auf den Käufer über.
-
-6. WIDERRUFSRECHT & RÜCKGABE
-Sie haben das Recht, Ihre Bestellung innerhalb von 14 Tagen ab Erhalt der Ware ohne Angabe von Gründen zu widerrufen. Die Ware ist in originalem, unbenutztem Zustand und in der Originalverpackung zurückzusenden. Die Rücksendekosten trägt der Käufer. Ausgenommen vom Widerrufsrecht sind auf Kundenwunsch angefertigte oder personalisierte Artikel sowie Hygieneartikel nach Entsiegelung.
-
-7. GEWÄHRLEISTUNG
-Es gelten die gesetzlichen Gewährleistungsrechte nach Schweizer OR. Bei Sachmängeln haben Sie das Recht auf Nachbesserung oder Ersatzlieferung. Schlägt die Nacherfüllung fehl, können Sie vom Vertrag zurücktreten oder den Kaufpreis mindern.
-
-8. HAFTUNG
-Wir haften unbeschränkt für Vorsatz und grobe Fahrlässigkeit. Im Übrigen ist unsere Haftung auf den vorhersehbaren, vertragstypischen Schaden beschränkt. Die Haftung für leichte Fahrlässigkeit ist ausgeschlossen, soweit keine wesentlichen Vertragspflichten verletzt werden.
-
-9. ANWENDBARES RECHT & GERICHTSSTAND
-Es gilt ausschliesslich Schweizer Recht. Gerichtsstand für alle Streitigkeiten ist Ganterschwil, Kanton St. Gallen, Schweiz.
-
-10. SCHLUSSBESTIMMUNGEN
-Sollten einzelne Bestimmungen dieser AGB unwirksam sein, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. Stand: Februar 2026.`,
-    },
     datenschutz: {
       title: "Datenschutzerklärung",
       content: `Sabitas | 9608 Ganterschwil | hallo@sabitas.ch
@@ -155,57 +121,6 @@ Allgemeine Hinweise
 — Alle Preise verstehen sich in Schweizer Franken (CHF) inkl. MwSt.
 — Der Kaufbetrag wird erst nach Versandbestätigung belastet.
 — Bei Fragen zur Zahlung erreichen Sie uns unter hallo@sabitas.ch oder +41 78 613 80 84.`,
-    },
-    cookies: {
-      title: "Cookie Manager",
-      content: `Was sind Cookies?
-Cookies sind kleine Textdateien, die beim Besuch unserer Website auf Ihrem Gerät gespeichert werden. Sie ermöglichen es, Einstellungen zu speichern und die Nutzung der Website zu verbessern.
-
-Technisch notwendige Cookies
-Diese Cookies sind für den Betrieb des Online-Shops unbedingt erforderlich. Sie ermöglichen grundlegende Funktionen wie Warenkorb, Login und Sitzungsverwaltung. Diese Cookies können nicht deaktiviert werden.
-— Sitzungs-Cookie (Session): Speichert Ihre aktuelle Sitzung (Warenkorb, Login-Status).
-— Sicherheits-Cookie: Schützt vor Cross-Site-Request-Forgery (CSRF).
-
-Funktionale Cookies
-Diese Cookies ermöglichen erweiterte Funktionen wie gespeicherte Spracheinstellungen oder zuletzt angesehene Produkte. Sie können diese Cookies deaktivieren, was jedoch die Funktionalität einschränken kann.
-
-Analyse-Cookies
-Wir verwenden keine externen Analyse-Dienste (z. B. Google Analytics) ohne Ihre ausdrückliche Einwilligung.
-
-Ihre Rechte
-Gemäss Schweizer DSG und EU-DSGVO haben Sie das Recht, Cookies abzulehnen oder zu löschen. Sie können Cookies jederzeit über die Einstellungen Ihres Browsers verwalten oder löschen:
-— Chrome: Einstellungen → Datenschutz → Cookies
-— Firefox: Einstellungen → Datenschutz → Cookies
-— Safari: Einstellungen → Datenschutz → Cookies verwalten
-
-Bei Fragen: hallo@sabitas.ch`,
-    },
-    ueberuns: {
-      title: "Über uns",
-      content: `Sabitas
-Fine-Art-Prints aus der Schweiz
-
-Wer wir sind
-Sabitas ist ein Beispiel-Onlineshop. Dieser Text dient nur zur Veranschaulichung und kann im Admin-Bereich frei angepasst werden.
-
-Was uns auszeichnet
-Unser Team besteht aus passionierten Outdoor-Enthusiasten, Jägern und Anglern, die ihre Produkte selbst kennen und lieben. Wir verkaufen nur, was wir selbst für gut befinden – Qualität vor Quantität.
-
-Unser Sortiment
-— Sorgfältig ausgewählte Produkte von Marken, hinter denen wir stehen
-— Persönliche Beratung vor und nach dem Kauf
-— Angelbedarf: Ruten, Rollen, Köder, Zubehör für alle Gewässer
-— Security & Outdoor: Taktische Ausrüstung, Lampen, Schlafsäcke, Survival-Tools
-— Grill & Rauch: Premium-Grillzubehör, Räucherschränke, Gewürze
-— Schleudern & Blasrohre: Sportartikel für Freizeit und Wettkampf
-
-Unsere Werte
-Wir legen grössten Wert auf Schweizer Qualitätsstandards, seriöse Beratung und die Einhaltung aller gesetzlichen Vorschriften. Für Produkte mit Altersbeschränkung (z. B. Messer, Armbrüste) führen wir eine gewissenhafte Alterskontrolle durch.
-
-Besuchen Sie uns
-9608 Ganterschwil
-Mo – Fr: 13:30 – 18:30 | Sa: 10:00 – 16:00
-📞 +41 78 613 80 84 | hallo@sabitas.ch`,
     },
     impressum: {
       title: "Impressum",
@@ -420,30 +335,17 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                   </div>
                 </a>
 
-                <div className="bg-brand-wash border border-brand-tint rounded-2xl p-4" style={{ width: "260px", flexShrink: 0 }}>
-                  <p className="text-xs font-black text-brand uppercase tracking-widest mb-3">Öffnungszeiten</p>
-                  <div className="space-y-1.5">
-                    {[
-                      { day: "Mo – Fr", hours: "13:30 – 18:30", open: true },
-                      { day: "Sa", hours: "10:00 – 16:00", open: true },
-                      { day: "So", hours: "Geschlossen", open: false },
-                    ].map(({ day, hours, open }) => (
-                      <div key={day} className="flex items-center justify-between gap-6">
-                        <span className={`text-sm font-medium ${open ? "text-n-800" : "text-n-400"}`}>{day}</span>
-                        <span className={`text-sm ${open ? "text-n-900 font-semibold" : "text-n-400"}`}>{hours}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Service */}
+            {/* Una sola lista: «Service» y «Firma» eran dos columnas con tres
+                enlaces cada una, y en el telefono quedaban una debajo de otra
+                como si fueran secciones distintas. */}
             <div>
               <h3 className="font-black text-n-900 text-base mb-5 uppercase tracking-widest">Service</h3>
               <ul className="space-y-3">
                 <li>
-                  <a href={`mailto:${CONTACTO.email}`} className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
+                  <a href="/kontakt" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Kontakt</a>
                 </li>
                 <li>
                   <Dialog open={openModal === "rueckgabe"} onOpenChange={(open) => setOpenModal(open ? "rueckgabe" : null)}>
@@ -472,19 +374,6 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                   </Dialog>
                 </li>
                 <li>
-                  <Dialog open={openModal === "cookies"} onOpenChange={(open) => setOpenModal(open ? "cookies" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.cookies.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.cookies.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.cookies.content}</div>
-                    </DialogContent>
-                  </Dialog>
-                </li>
-                <li>
                   <button
                     onClick={handleDownloadVCard}
                     className="flex items-center gap-1.5 text-sm font-medium text-n-700 hover:text-brand transition-colors text-left"
@@ -493,25 +382,8 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                     Digitale Visitenkarte
                   </button>
                 </li>
-              </ul>
-            </div>
-
-            {/* Firma */}
-            <div>
-              <h3 className="font-black text-n-900 text-base mb-5 uppercase tracking-widest">Firma</h3>
-              <ul className="space-y-3">
                 <li>
-                  <Dialog open={openModal === "ueberuns"} onOpenChange={(open) => setOpenModal(open ? "ueberuns" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.ueberuns.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.ueberuns.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.ueberuns.content}</div>
-                    </DialogContent>
-                  </Dialog>
+                  <a href="/ueber-mich" className="text-sm font-medium text-n-700 hover:text-brand transition-colors">Über mich</a>
                 </li>
                 <li>
                   <Dialog open={openModal === "impressum"} onOpenChange={(open) => setOpenModal(open ? "impressum" : null)}>
@@ -539,21 +411,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
                     </DialogContent>
                   </Dialog>
                 </li>
-                <li>
-                  <Dialog open={openModal === "agb"} onOpenChange={(open) => setOpenModal(open ? "agb" : null)}>
-                    <DialogTrigger asChild>
-                      <button className="text-sm font-medium text-n-700 hover:text-brand transition-colors text-left">{legalContent.agb.title}</button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-                      <DialogHeader>
-                        <DialogTitle>{legalContent.agb.title}</DialogTitle>
-                      </DialogHeader>
-                      <div className="whitespace-pre-line text-sm text-n-700">{legalContent.agb.content}</div>
-                    </DialogContent>
-                  </Dialog>
-                </li>
               </ul>
-
             </div>
 
           </div>
