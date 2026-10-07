@@ -16,7 +16,7 @@ const RESENAS = [
       "Ich habe eine Deko für meine Mutter gekauft und sie war sofort verliebt. Man sieht und spürt, dass alles von Hand gemacht ist – so etwas findet man im Laden einfach nicht.",
   },
   {
-    nombre: "Marina Bossi",
+    nombre: "Marina",
     cuando: "Vor 1 Monat",
     texto:
       "Meine Tasche aus Jeansstoff begleitet mich seit Wochen überall hin. Schöne Stoffe, saubere Nähte und jedes Mal werde ich darauf angesprochen. Es kommt bestimmt noch etwas dazu.",
