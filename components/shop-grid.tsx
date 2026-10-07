@@ -685,6 +685,30 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
           <aside className={`${sidebarOpen ? "block" : "hidden"} lg:block w-full lg:w-72 xl:w-80 flex-shrink-0 lg:self-start`}>
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-n-150 space-y-5">
 
+              {/* El buscador, lo primero del lateral: en escritorio estaba
+                  escondido arriba del todo de la pagina, lejos de los filtros
+                  con los que se usa. En el telefono no se repite, que alli ya
+                  esta en la barra de arriba. */}
+              <div className="hidden lg:block relative">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-n-400 pointer-events-none" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  placeholder="Produkte suchen…"
+                  className="w-full pl-10 pr-9 py-2.5 text-sm bg-brand-wash rounded-full border border-brand-tint focus:outline-none focus:bg-white focus:border-brand-pale focus:ring-2 focus:ring-brand/10 transition-all placeholder-n-400"
+                />
+                {search && (
+                  <button
+                    onClick={() => setSearch("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-n-400 hover:text-brand"
+                    aria-label="Suche löschen"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
               <div>
                 <p className="text-[10px] font-black text-n-400 uppercase tracking-[0.15em] mb-3">Verfügbarkeit</p>
                 <ul className="space-y-0.5">
