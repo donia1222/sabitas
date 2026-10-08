@@ -4,10 +4,43 @@
 // Si ambos fallan: fetch a /api/products (1 sola petición gracias a single-flight).
 
 const LS_KEY = "fk-p2"
-const TTL = 300_000  // 5 min
+/**
+ * Un minuto, no cinco.
+ *
+ * Cinco minutos aqui y otros cinco en el servidor se SUMAN: el navegador
+ * espera a que caduque lo suyo y entonces pregunta al servidor, que puede
+ * contestarle con una copia de hace casi cinco minutos. Editabas un producto
+ * y la cuadricula podia tardar diez minutos en enterarse, que es justo lo que
+ * pasaba. Con un minuto a cada lado, el peor caso son dos.
+ */
+const TTL = 60_000
 
-let _cache: { products: any[]; stats: any; at: number } | null = null
+let _cache: { products: any[]; stats: any; at: number; version?: string | null } | null = null
 let _inflight: Promise<{ products: any[]; stats: any }> | null = null
+
+/**
+ * La huella del catálogo: un texto que cambia en cuanto se edita, se crea o
+ * se borra un producto.
+ *
+ * Se pregunta antes de fiarse de lo guardado. Si no ha cambiado, se usa la
+ * copia y no se pide nada más; si ha cambiado, se tira todo —aquí, en el
+ * localStorage, en Vercel y en la caché de fichero del PHP— y se pide de
+ * nuevo. Es lo que hace que un cambio del panel se vea al momento en vez de
+ * en diez minutos.
+ *
+ * Si no se puede saber, se devuelve null y todo sigue midiéndose por reloj,
+ * que es como funcionaba antes. Nunca deja la pantalla sin productos por
+ * esto.
+ */
+async function huellaActual(): Promise<string | null> {
+  try {
+    const r = await fetch("/api/products/version", { cache: "no-store" })
+    const d = await r.json()
+    return d?.success && typeof d.version === "string" ? d.version : null
+  } catch {
+    return null
+  }
+}
 
 // Solo los campos necesarios para mostrar la cuadrícula y la página de producto
 function slim(p: any) {
@@ -32,13 +65,14 @@ function slim(p: any) {
   }
 }
 
-function saveLS(products: any[], stats: any) {
+function saveLS(products: any[], stats: any, version?: string | null) {
   if (typeof window === "undefined") return
   try {
     localStorage.setItem(LS_KEY, JSON.stringify({
       p: products.map(slim),
       s: stats ? { total_products: stats.total_products } : null,
       t: Date.now(),
+      v: version ?? null,
     }))
   } catch {
     // Si falla (quota), intentar con mínimo absoluto
@@ -52,14 +86,14 @@ function saveLS(products: any[], stats: any) {
   }
 }
 
-function loadLS(): { products: any[]; stats: any; at: number } | null {
+function loadLS(): { products: any[]; stats: any; at: number; version?: string | null } | null {
   if (typeof window === "undefined") return null
   try {
     // Formato nuevo
     const raw = localStorage.getItem(LS_KEY)
     if (raw) {
       const obj = JSON.parse(raw)
-      if (obj && Array.isArray(obj.p) && obj.t) return { products: obj.p, stats: obj.s, at: obj.t }
+      if (obj && Array.isArray(obj.p) && obj.t) return { products: obj.p, stats: obj.s, at: obj.t, version: obj.v ?? null }
     }
     // Retrocompatibilidad con clave anterior "fk-products-slim"
     const old = localStorage.getItem("fk-products-slim")
@@ -72,15 +106,21 @@ function loadLS(): { products: any[]; stats: any; at: number } | null {
 }
 
 export async function getCachedProducts(bustServer = false): Promise<{ products: any[]; stats: any }> {
-  // 1. Memoria fresca (solo si no se pide bust de servidor)
-  if (!bustServer && _cache && Date.now() - _cache.at < TTL) {
+  // 0. ¿Ha cambiado algo en el catálogo desde que guardamos esto?
+  //    Una petición mínima que decide si lo guardado sirve o no sirve.
+  const huella = bustServer ? null : await huellaActual()
+  const sirve = (guardado: { version?: string | null } | null) =>
+    !huella || !guardado || guardado.version === huella
+
+  // 1. Memoria fresca, y de después del último cambio
+  if (!bustServer && _cache && Date.now() - _cache.at < TTL && sirve(_cache)) {
     return { products: _cache.products, stats: _cache.stats }
   }
 
-  // 2. localStorage fresco (solo si no se pide bust de servidor)
+  // 2. localStorage fresco, con la misma condición
   if (!bustServer) {
     const ls = loadLS()
-    if (ls && Date.now() - ls.at < TTL) {
+    if (ls && Date.now() - ls.at < TTL && sirve(ls)) {
       _cache = ls
       return { products: ls.products, stats: ls.stats }
     }
@@ -89,13 +129,17 @@ export async function getCachedProducts(bustServer = false): Promise<{ products:
   // 3. Single-flight: si ya hay fetch en curso y no es bust, esperar al mismo
   if (!bustServer && _inflight) return _inflight
 
-  const url = bustServer ? `/api/products?_=${Date.now()}` : `/api/products`
+  // La huella viaja con la petición: así Vercel sabe si SU copia vale, y si no
+  // vale, le dice al PHP que tire también su caché de fichero.
+  const url = bustServer
+    ? `/api/products?_=${Date.now()}`
+    : huella ? `/api/products?v=${encodeURIComponent(huella)}` : `/api/products`
   _inflight = fetch(url)
     .then(async (res) => {
       const data = await res.json()
       if (!data.success) throw new Error(data.error || "Failed")
-      _cache = { products: data.products, stats: data.stats, at: Date.now() }
-      saveLS(data.products, data.stats)
+      _cache = { products: data.products, stats: data.stats, at: Date.now(), version: huella }
+      saveLS(data.products, data.stats, huella)
       return { products: data.products, stats: data.stats }
     })
     .catch((e) => {
@@ -124,8 +168,9 @@ export function updateProductInCache(updated: any) {
     products: _cache.products.map((p: any) => p.id === updated.id ? { ...p, ...updated } : p),
     stats: _cache.stats,
     at: _cache.at,
+    version: _cache.version,
   }
-  saveLS(_cache.products, _cache.stats)
+  saveLS(_cache.products, _cache.stats, _cache.version)
 }
 
 // Elimina un producto del caché sin hacer fetch a PHP

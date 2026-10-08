@@ -1,6 +1,6 @@
 declare global {
   // eslint-disable-next-line no-var
-  var _productsCache: Map<string, { data: unknown; at: number }> | undefined
+  var _productsCache: Map<string, { data: unknown; at: number; version?: string | null }> | undefined
 }
 
 if (!globalThis._productsCache) {

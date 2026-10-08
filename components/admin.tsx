@@ -1407,6 +1407,7 @@ export function Admin({ onClose }: AdminProps) {
       }))
       setSelectedProductIds(new Set())
       setBulkStatus("")
+      getCachedProducts(true).catch(() => {})
     } catch {
       toast({ title: "Fehler", description: "Fehler beim Aktualisieren", variant: "destructive" })
     } finally {
@@ -1476,6 +1477,13 @@ export function Admin({ onClose }: AdminProps) {
           }
           updateProductInCache(updated)
           setProducts(prev => prev.map(p => p.id === updated.id ? updated : p))
+          // Y que se entere el servidor. Parchear la cache del navegador solo
+          // arregla ESTA pestaña: la copia que guarda /api/products seguia
+          // siendo la de antes de editar, con la URL de la imagen vieja, que
+          // ya no existe porque la acabamos de sustituir. De ahi los cuadros
+          // grises en la coleccion. No se espera la respuesta: es un
+          // recordatorio, no un paso del guardado.
+          getCachedProducts(true).catch(() => {})
         } else {
           // Producto nuevo: bust cliente + servidor para traer el ID real de PHP
           loadProducts(true)
@@ -1517,6 +1525,7 @@ export function Admin({ onClose }: AdminProps) {
         setDeleteProductId(null)
         removeProductFromCache(removedId)
         setProducts(prev => prev.filter(p => p.id !== removedId))
+        getCachedProducts(true).catch(() => {})
       } else {
         throw new Error(data.error || "Fehler beim Löschen des Produkts")
       }
