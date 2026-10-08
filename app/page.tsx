@@ -18,6 +18,7 @@ import { ShoppingCartComponent } from "@/components/shopping-cart"
 import { CheckoutPage } from "@/components/checkout-page"
 import { Footer } from "@/components/footer"
 import { FadeSection } from "@/components/fade-section"
+import { avisarCarrito } from "@/lib/carrito"
 
 interface Product {
   id: number
@@ -74,8 +75,10 @@ function StorefrontInner() {
     if (!isInitialLoad) {
       if (cart.length > 0) {
         localStorage.setItem("cantina-cart", JSON.stringify(cart))
+        avisarCarrito()
       } else {
         localStorage.removeItem("cantina-cart")
+        avisarCarrito()
       }
     }
   }, [cart, isInitialLoad])
@@ -202,6 +205,7 @@ function StorefrontInner() {
     console.log('🧹 CLEARING CART: Limpiando carrito completamente, items actuales:', cart.length)
     setCart([])
     localStorage.removeItem("cantina-cart")
+    avisarCarrito()
     console.log('✅ CART CLEARED: Carrito limpiado exitosamente')
   }
 

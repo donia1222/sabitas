@@ -7,6 +7,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingCart, Check, X, ZoomIn, H
 import { ProductImage } from "@/components/product-image"
 import { getCachedProducts } from "@/lib/products-cache"
 import ContactModal from "@/components/contact-modal"
+import { avisarCarrito } from "@/lib/carrito"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -210,6 +211,9 @@ export default function ProductPage() {
           }]
       localStorage.setItem("cantina-cart", JSON.stringify(next))
       localStorage.setItem("cantina-cart-count", next.reduce((s, i) => s + i.quantity, 0).toString())
+      // Sin esto, añadir al carrito desde la ficha no movia el numero de
+      // arriba: el evento `storage` no llega a la pestaña que escribe.
+      avisarCarrito()
       setAdded(true)
       setTimeout(() => setAdded(false), 2000)
     } catch {}

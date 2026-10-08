@@ -21,6 +21,7 @@ import { ProductImage } from "./product-image"
 import { UserProfile } from "./user-profile"
 import { Footer } from "./footer"
 import { CtaContacto } from "@/components/cta-contacto"
+import { avisarCarrito } from "@/lib/carrito"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -476,6 +477,7 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
   const saveCart = (c: CartItem[]) => {
     localStorage.setItem("cantina-cart", JSON.stringify(c))
     localStorage.setItem("cantina-cart-count", c.reduce((s, i) => s + i.quantity, 0).toString())
+    avisarCarrito()
   }
   const addToCart = (product: Product) => {
     if ((product.stock ?? 0) === 0) return
@@ -513,6 +515,7 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
   const clearCart = () => {
     setCart([]); setCartCount(0)
     localStorage.removeItem("cantina-cart"); localStorage.removeItem("cantina-cart-count")
+    avisarCarrito()
   }
   const normalizeOrigin = (s: string) => s.toUpperCase().replace(/[`'']/g, "'").replace(/\s*&\s*/g, " & ").replace(/\s+/g, " ").trim()
   const ORIGIN_ALIASES: Record<string, string> = {

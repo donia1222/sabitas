@@ -7,9 +7,16 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { LoginAuth } from "./login-auth"
 import { features } from "@/lib/features"
 import { descargarVCard } from "@/lib/contacto"
+import { useCuentaCarrito } from "@/hooks/use-carrito"
 
 interface HeaderProps {
   onCartOpen?: () => void
+  /**
+   * La cuenta, si la pantalla ya la lleva en su estado (Home y la coleccion).
+   * Si no se pasa, la cabecera la saca ella sola del carrito guardado, que es
+   * lo que necesitan galeria, blog, sobre mi, contacto, novedades y la ficha
+   * de producto: esas la pintaban sin pasar nada y salia un cero fijo.
+   */
   cartCount?: number
 }
 
@@ -23,8 +30,12 @@ const MENU = [
   { etiqueta: "Kontakt", destino: "/kontakt" },
 ]
 
-export function Header({ onCartOpen, cartCount = 0 }: HeaderProps) {
+export function Header({ onCartOpen, cartCount }: HeaderProps) {
   const router = useRouter()
+  const delAlmacen = useCuentaCarrito()
+  // Manda la pantalla si la lleva: ahi el numero se mueve en el mismo
+  // instante, sin esperar a ningun aviso.
+  const cuenta = cartCount ?? delAlmacen
   const ruta = usePathname()
   const [menuAbierto, setMenuAbierto] = useState(false)
   const [verSubir, setVerSubir] = useState(false)
@@ -137,7 +148,7 @@ export function Header({ onCartOpen, cartCount = 0 }: HeaderProps) {
               aria-label="Warenkorb"
             >
               <ShoppingCart className="w-[18px] h-[18px]" />
-              <span className="text-[13px] font-semibold tabular-nums">{cartCount}</span>
+              <span className="text-[13px] font-semibold tabular-nums">{cuenta}</span>
             </button>
 
             {/* El menu lateral, solo en movil */}
