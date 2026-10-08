@@ -1449,7 +1449,10 @@ const getFinalTotal = () => (isOnlyGutscheine() || paymentMethod === "pickup") ?
     <div className="min-h-screen bg-n-100">
       {/* Header */}
       <div className={`bg-white shadow-sm border-b border-n-200 sticky top-0 z-30 flex-shrink-0 transition-transform duration-300 ${headerVisible ? "translate-y-0" : "-translate-y-full"}`}>
-        <div className="container mx-auto px-4 max-w-7xl h-32 flex items-center justify-between">
+        {/* 64px en movil, donde solo hay flecha, titulo y el sello de SSL.
+            En escritorio 80, que es lo que pide el logo de 56 con aire. Antes
+            eran 128 fijos: el doble de lo que hay que enseñar. */}
+        <div className="container mx-auto px-4 max-w-7xl h-16 sm:h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <button
               onClick={onBackToStore}
@@ -1457,7 +1460,7 @@ const getFinalTotal = () => (isOnlyGutscheine() || paymentMethod === "pickup") ?
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
-            <img src="/sabitas/logo.png" alt="Sabitas" className="h-14 w-auto object-contain hidden sm:block" />
+            <img src="/sabitas/logo.png" alt="Sabitas" className="h-12 w-auto object-contain hidden sm:block" />
             <span className="sm:hidden" style={{ fontFamily: "var(--font-display), Georgia, serif", color: '#111111', fontSize: '1.1rem' }}>Warenkorb</span>
           </div>
           <div className="flex items-center gap-2 text-xs text-n-500">
