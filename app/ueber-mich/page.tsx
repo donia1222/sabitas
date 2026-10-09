@@ -22,7 +22,7 @@ const POR_DEFECTO: Record<string, string> = {
   ueber_signatur: "~ alles handgemacht, alles mit Herz ♡",
   ueber_cta_titel: "Bereit für dein Lieblingsstück?",
   ueber_cta_text:
-    "Schreib mir auf WhatsApp – ich beantworte gerne deine Fragen, zeige dir mehr Bilder oder fertige etwas ganz für dich an.",
+    "Schreib mir auf WhatsApp – ich beantworte gerne deine Fragen, zeige dir mehr Bilder oder fertige etwas nur für dich an.",
   whatsapp_number: "41786138084",
 }
 
