@@ -65,20 +65,21 @@ Hinweise
 Was sind Cookies?
 Cookies sind kleine Textdateien, die beim Besuch dieser Website auf deinem Gerät gespeichert werden.
 
-Technisch notwendige Cookies
-Diese sind für den Betrieb der Seite nötig – zum Beispiel, damit dein Warenkorb beim Weiterklicken erhalten bleibt. Sie lassen sich nicht abschalten.
+Was diese Website speichert
+Diese Seite setzt selber keine Cookies. Was sie braucht, legt sie im lokalen Speicher deines Browsers ab – dein Warenkorb und deine Favoriten, damit sie beim Weiterklicken nicht verloren gehen. Diese Angaben bleiben auf deinem Gerät und werden nirgendwohin gesendet.
 
-Funktionale Cookies
-Merken sich Kleinigkeiten wie zuletzt angesehene Stücke. Du kannst sie abschalten; dann ist die Seite etwas weniger bequem.
+Löschen kannst du das jederzeit selbst: in den Browser-Einstellungen unter «Websitedaten» bzw. «Browserdaten löschen». Danach ist dein Warenkorb leer – sonst ändert sich nichts.
 
-Analyse-Cookies
-Ich setze keine Analyse-Dienste wie Google Analytics ohne deine ausdrückliche Einwilligung ein.
+Besuchszählung
+Ich zähle die Besuche dieser Website mit Vercel Analytics, damit ich sehe, welche Stücke dich interessieren. Dieser Dienst arbeitet ohne Cookies und ohne dich zu identifizieren: es werden keine Profile gebildet und nichts wird mit anderen Websites verknüpft. Darum ist dafür auch keine Einwilligung nötig.
+
+Google Analytics, Werbe-Tracker oder Social-Media-Pixel setze ich nicht ein.
 
 Deine Rechte
-Nach Schweizer DSG und EU-DSGVO kannst du Cookies jederzeit ablehnen oder löschen – über die Einstellungen deines Browsers:
-— Chrome: Einstellungen → Datenschutz → Cookies
-— Firefox: Einstellungen → Datenschutz → Cookies
-— Safari: Einstellungen → Datenschutz → Cookies verwalten
+Nach Schweizer DSG und EU-DSGVO kannst du gespeicherte Daten jederzeit löschen – über die Einstellungen deines Browsers:
+— Chrome: Einstellungen → Datenschutz und Sicherheit → Browserdaten löschen
+— Firefox: Einstellungen → Datenschutz → Cookies und Website-Daten
+— Safari: Einstellungen → Datenschutz → Websitedaten verwalten
 
 Fragen? hello@sabitas.ch`,
   },
@@ -170,8 +171,8 @@ Nur so lange wie nötig oder wie gesetzlich vorgeschrieben.
 8. DEINE RECHTE
 Auskunft, Berichtigung, Löschung, Einschränkung und Datenübertragbarkeit. Schreib mir an hello@sabitas.ch.
 
-9. COOKIES
-Nur technisch notwendige Cookies. Analyse- oder Marketing-Cookies nur mit deiner Einwilligung.`,
+9. COOKIES UND BESUCHSZÄHLUNG
+Diese Website setzt keine Cookies. Warenkorb und Favoriten liegen im lokalen Speicher deines Browsers und bleiben auf deinem Gerät. Die Besuche zähle ich mit Vercel Analytics – ohne Cookies, ohne Profile und ohne dich zu identifizieren. Marketing- oder Werbe-Tracker setze ich nicht ein. Mehr dazu unter «Cookies».`,
   },
   agb: {
     title: "Allgemeine Geschäftsbedingungen (AGB)",
