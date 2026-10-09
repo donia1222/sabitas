@@ -247,7 +247,7 @@ export function HeroSection() {
                   <span className="transition-transform group-hover:translate-x-1">→</span>
                 </button>
                 <button
-                  onClick={() => document.querySelector("#ueber")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() => router.push("/ueber-mich")}
                   className="bg-white border border-brand-pale text-brand font-semibold px-7 py-3.5 text-[14.5px] rounded-full hover:bg-brand-tint/60 transition-colors"
                 >
                   Meine Geschichte
