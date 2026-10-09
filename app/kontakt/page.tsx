@@ -50,6 +50,23 @@ export default function KontaktPage() {
     window.open(`https://wa.me/${numero}?text=${encodeURIComponent(texto)}`, "_blank", "noopener")
   }
 
+  /**
+   * Lo mismo, pero por correo. En el ordenador WhatsApp obliga a tener la
+   * sesion enlazada y mucha gente no la tiene; el programa de correo, en
+   * cambio, lo abre cualquiera. Por eso el boton cambia segun la pantalla:
+   * telefono -> WhatsApp, ordenador -> correo. Son dos botones de verdad,
+   * cada uno con su media query, para que no haya un parpadeo al cargar.
+   */
+  const abrirCorreo = () => {
+    const asunto = nombre.trim() ? `Anfrage von ${nombre.trim()}` : "Anfrage über die Website"
+    const cuerpo = [
+      nombre.trim() ? `Hallo Sabitas, hier ist ${nombre.trim()}.` : "Hallo Sabitas!",
+      mensaje.trim(),
+    ].filter(Boolean).join("\n\n")
+    window.location.href =
+      `mailto:${correo}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`
+  }
+
   const CANALES = [
     {
       icono: MessageCircle,
@@ -88,7 +105,7 @@ export default function KontaktPage() {
               Nachricht schreiben
             </h2>
             <p className="text-n-500 text-[14px] mt-2 leading-relaxed">
-              Füll kurz aus, was du brauchst – der Text landet fertig in WhatsApp,
+              Füll kurz aus, was du brauchst – der Text wird fertig vorbereitet,
               du musst ihn nur noch abschicken.
             </p>
 
@@ -114,13 +131,24 @@ export default function KontaktPage() {
               />
             </label>
 
+            {/* En el telefono: WhatsApp. */}
             <button
               onClick={abrirWhatsApp}
               disabled={!mensaje.trim()}
-              className="mt-6 w-full inline-flex items-center justify-center gap-2.5 bg-brand-soft hover:bg-brand disabled:bg-brand-tint disabled:text-brand/50 disabled:cursor-not-allowed text-white font-semibold text-[15px] px-8 py-4 rounded-full shadow-lg shadow-brand/25 transition-colors"
+              className="mt-6 md:hidden w-full inline-flex items-center justify-center gap-2.5 bg-brand-soft hover:bg-brand disabled:bg-brand-tint disabled:text-brand/50 disabled:cursor-not-allowed text-white font-semibold text-[15px] px-8 py-4 rounded-full shadow-lg shadow-brand/25 transition-colors"
             >
               <MessageCircle className="w-5 h-5" />
               In WhatsApp öffnen
+            </button>
+
+            {/* En el ordenador: el programa de correo. */}
+            <button
+              onClick={abrirCorreo}
+              disabled={!mensaje.trim()}
+              className="mt-6 hidden md:inline-flex w-full items-center justify-center gap-2.5 bg-brand-soft hover:bg-brand disabled:bg-brand-tint disabled:text-brand/50 disabled:cursor-not-allowed text-white font-semibold text-[15px] px-8 py-4 rounded-full shadow-lg shadow-brand/25 transition-colors"
+            >
+              <Mail className="w-5 h-5" />
+              E-Mail schreiben
             </button>
           </div>
 
