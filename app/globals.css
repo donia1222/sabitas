@@ -159,8 +159,9 @@ h1, h2, h3, .font-display {
 /* ── El logo, con su brillo ────────────────────────────────────────────────
    El mismo gesto que en la primera landing: el logo entra creciendo un poco
    y, un momento despues, lo cruza un destello de izquierda a derecha. Aqui
-   pasa una sola vez al cargar; en una cabecera, repetirlo cada pocos
-   segundos acabaria cansando. */
+   se repite cada 3 s, que es lo que pidio: el destello dura metido en una
+   animacion de 3 s y solo ocupa su primer tercio, asi que entre pase y pase
+   el logo se queda quieto. */
 .logo-marco {
   position: relative;
   display: inline-flex;
@@ -178,16 +179,17 @@ h1, h2, h3, .font-display {
   pointer-events: none;
   background: linear-gradient(100deg,
     rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 50%, rgba(255,255,255,0) 100%);
-  animation: logoBrillo 1.5s ease-in-out 0.7s both;
+  animation: logoBrillo 3s ease-in-out 0.7s infinite;
 }
 @keyframes logoEntra {
   from { opacity: 0; transform: scale(0.93) }
   to   { opacity: 1; transform: scale(1) }
 }
 @keyframes logoBrillo {
-  from { left: -35%; opacity: 0 }
-  12%  { opacity: 1 }
-  to   { left: 108%; opacity: 0 }
+  0%   { left: -35%; opacity: 0 }
+  6%   { opacity: 1 }
+  45%  { left: 108%; opacity: 0 }
+  100% { left: 108%; opacity: 0 }   /* el descanso entre destello y destello */
 }
 
 /* ── La bienvenida ────────────────────────────────────────────────────────
