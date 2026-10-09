@@ -378,7 +378,7 @@ export default function ProductPage() {
                 </div>
                 {product.shipping_on_request ? (
                   <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-4">
-                    <p className="text-xs text-amber-700 mb-3">Für Versand oder Abholung im Laden kontaktieren Sie uns bitte.</p>
+                    <p className="text-xs text-amber-700 mb-3">Für Versand oder Abholung im Laden schreib mir bitte kurz.</p>
                     <button
                       type="button"
                       onClick={() => setContactOpen(true)}

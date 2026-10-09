@@ -53,7 +53,7 @@ const CARDS: HighlightCard[] = [
     icon: <Package className="w-3.5 h-3.5 text-brand" />,
     badge: "Auswahl",
     title: "Sorgfältig kuratiert",
-    description: "Wir nehmen nur Produkte ins Sortiment, die wir selbst empfehlen würden.",
+    description: "Ins Sortiment kommt nur, was ich selbst empfehlen würde.",
   },
   {
     id: 5,
@@ -61,7 +61,7 @@ const CARDS: HighlightCard[] = [
     icon: <Sparkles className="w-3.5 h-3.5 text-brand" />,
     badge: "Service",
     title: "Persönliche Beratung",
-    description: "Fragen zu einem Artikel? Wir antworten in der Regel noch am selben Tag.",
+    description: "Fragen zu einem Artikel? Ich antworte in der Regel noch am selben Tag.",
   },
 ]
 
@@ -106,7 +106,7 @@ export default function NeuheitenPage() {
           <div className="w-1 h-7 bg-brand rounded-full" />
           <h1 className="text-3xl font-black text-n-900 tracking-tight">Neue Edition</h1>
         </div>
-        <p className="text-sm text-n-500 ml-4">Die neuesten Artikel im Sortiment und alles, was den Einkauf bei uns ausmacht.</p>
+        <p className="text-sm text-n-500 ml-4">Die neuesten Artikel im Sortiment und alles, was den Einkauf hier ausmacht.</p>
       </div>
 
       {/* First card — full width featured */}
@@ -131,7 +131,7 @@ export default function NeuheitenPage() {
         {/* Section header */}
         <div className="flex items-center gap-3 mb-6">
           <div className="w-1 h-6 bg-brand rounded-full" />
-          <h2 className="text-xl font-black text-n-900 tracking-tight">Unser Sortiment</h2>
+          <h2 className="text-xl font-black text-n-900 tracking-tight">Das Sortiment</h2>
         </div>
 
         {/* Cards grid — 2x2 */}

@@ -2,8 +2,8 @@
 
 import { X, Mail, Phone } from "lucide-react"
 
-const PHONE_DISPLAY = "000 000 00 00"
-const PHONE_HREF = "tel:+41000000000"
+const PHONE_DISPLAY = "078 613 80 84"
+const PHONE_HREF = "tel:+41786138084"
 const EMAIL = "hello@sabitas.ch"
 
 export default function ContactModal({
@@ -28,7 +28,7 @@ export default function ContactModal({
         >
           <X className="w-5 h-5" />
         </button>
-        <h3 className="text-lg font-black text-gray-900 mb-1">Kontaktieren Sie uns</h3>
+        <h3 className="text-lg font-black text-gray-900 mb-1">Kontakt aufnehmen</h3>
         <p className="text-sm text-gray-500 mb-5">Für Versand oder Abholung im Laden.</p>
         <div className="space-y-3">
           <a

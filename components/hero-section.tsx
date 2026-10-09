@@ -365,7 +365,7 @@ export function HeroSection() {
             <div className="flex-1 h-px bg-gradient-to-r from-transparent to-n-200" />
             <p className="text-[13px] font-black uppercase tracking-[0.25em] text-brand flex items-center gap-2">
               <span className="w-1 h-1 rounded-full bg-brand inline-block" />
-              Unsere Marken
+              Marken
               <span className="w-1 h-1 rounded-full bg-brand inline-block" />
             </p>
             <div className="flex-1 h-px bg-gradient-to-l from-transparent to-n-200" />
@@ -392,7 +392,7 @@ export function HeroSection() {
         </div>
       )}
 
-      {/* ── Unsere Top Kategorien (dinámico, solo 9) ── */}
+      {/* ── Top Kategorien (dinámico, solo 9) ── */}
       <div id="spice-discovery" className="bg-brand-wash border-y border-brand-tint py-12">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-6">
@@ -402,7 +402,7 @@ export function HeroSection() {
                 className="font-display font-semibold text-ink mt-3 leading-tight"
                 style={{ fontSize: "clamp(1.7rem, 3.4vw, 2.3rem)", letterSpacing: "-0.03em" }}
               >
-                Unsere Top Kategorien
+                Top Kategorien
               </h2>
               <p className="text-sm text-n-500 mt-1">Schnell und einfach zu den passenden Produkten.</p>
             </div>

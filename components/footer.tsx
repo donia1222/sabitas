@@ -431,7 +431,7 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
       {!isStandalone && (
         <div className="bg-white border-t border-n-200 py-5">
           <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-3 text-center">
-            <span className="text-sm text-n-700">Installieren Sie unsere App für schnelleren Zugriff</span>
+            <span className="text-sm text-n-700">Diese Seite als App installieren – für schnelleren Zugriff</span>
             <InstallPWAButton />
           </div>
         </div>

@@ -130,7 +130,7 @@ export default function GalleryPage() {
 
       <BannerPagina
         miga="Galerie"
-        titulo="Unsere Galerie"
+        titulo="Meine Galerie"
         subtitulo="Inspirationen & Unikate"
         texto="Einblicke in meine Handarbeit – entdecke liebevolle Details, besondere Stoffe und einzigartige Stücke, die bereits ein neues Zuhause gefunden haben."
         foto="/sabitas/telas-e-hilos.jpg"

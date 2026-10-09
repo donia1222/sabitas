@@ -935,7 +935,7 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
               <div className="w-1 self-stretch bg-brand rounded-full flex-shrink-0" />
               <div>
                 <p className="font-black text-brand text-2xl leading-tight">Hauptkategorien</p>
-                <p className="text-sm text-n-500 mt-1">Unser gesamtes Sortiment</p>
+                <p className="text-sm text-n-500 mt-1">Das ganze Sortiment</p>
               </div>
             </div>
 
