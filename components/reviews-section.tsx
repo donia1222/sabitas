@@ -25,7 +25,7 @@ const RESENAS = [
     nombre: "Roberto",
     cuando: "Vor 1 Monat",
     texto:
-      "Ich habe eine Hundeleine gekauft und bin begeistert. Sehr sorgfältig gearbeitet, robust und richtig hübsch – genau so, wie ich es mir vorgestellt hatte.",
+      "Sabrina hat meiner Frau eine Jacke genäht und wir sind beide begeistert. Sehr sorgfältig gearbeitet, sitzt perfekt und richtig hübsch – genau so, wie wir es uns vorgestellt hatten.",
   },
 ]
 
