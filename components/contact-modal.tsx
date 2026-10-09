@@ -4,7 +4,7 @@ import { X, Mail, Phone } from "lucide-react"
 
 const PHONE_DISPLAY = "000 000 00 00"
 const PHONE_HREF = "tel:+41000000000"
-const EMAIL = "hallo@sabitas.ch"
+const EMAIL = "hello@sabitas.ch"
 
 export default function ContactModal({
   open,

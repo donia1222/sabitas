@@ -1868,7 +1868,7 @@ const getFinalTotal = () => (isOnlyGutscheine() || paymentMethod === "pickup") ?
                   <p className="mt-1.5 text-xs text-n-500">
                     Für Lieferungen in andere Länder{" "}
                     <a
-                      href="mailto:hallo@sabitas.ch?subject=Anfrage%20internationale%20Lieferung"
+                      href="mailto:hello@sabitas.ch?subject=Anfrage%20internationale%20Lieferung"
                       className="text-brand font-semibold underline hover:text-brand-dark"
                     >
                       kontaktieren Sie uns bitte direkt

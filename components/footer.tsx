@@ -64,7 +64,7 @@ export function Footer() {
   const legalDefaults = {
     datenschutz: {
       title: "Datenschutzerklärung",
-      content: `Sabitas · Sabrina Steinbeck | Waldeggstrasse 10, 9631 Ulisbach | hallo@sabitas.ch
+      content: `Sabitas · Sabrina Steinbeck | Waldeggstrasse 10, 9631 Ulisbach | hello@sabitas.ch
 
 Diese Datenschutzerklärung informiert Sie gemäss dem Schweizer Datenschutzgesetz (DSG) sowie der EU-Datenschutz-Grundverordnung (DSGVO) über die Verarbeitung Ihrer personenbezogenen Daten.
 
@@ -72,7 +72,7 @@ Diese Datenschutzerklärung informiert Sie gemäss dem Schweizer Datenschutzgese
 Sabitas
 Waldeggstrasse 10, 9631 Ulisbach, Schweiz
 Telefon: +41 78 613 80 84
-E-Mail: hallo@sabitas.ch
+E-Mail: hello@sabitas.ch
 
 2. WELCHE DATEN WIR ERHEBEN
 Im Rahmen der Bestellabwicklung erheben wir folgende Daten: Vor- und Nachname, Lieferadresse, E-Mail-Adresse, Telefonnummer sowie Zahlungsinformationen. Beim Besuch unserer Website werden technische Daten wie IP-Adresse, Browsertyp, Besuchsdauer und aufgerufene Seiten automatisch erfasst.
@@ -93,7 +93,7 @@ Wir setzen technische und organisatorische Sicherheitsmassnahmen ein, um Ihre Da
 Ihre Daten werden nur so lange gespeichert, wie es für den jeweiligen Zweck notwendig ist oder gesetzliche Aufbewahrungsfristen (in der Regel 10 Jahre für Buchhaltungsunterlagen) es erfordern.
 
 8. IHRE RECHTE
-Sie haben jederzeit das Recht auf: Auskunft über Ihre gespeicherten Daten, Berichtigung unrichtiger Daten, Löschung Ihrer Daten (sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen), Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Zur Ausübung Ihrer Rechte wenden Sie sich an: hallo@sabitas.ch
+Sie haben jederzeit das Recht auf: Auskunft über Ihre gespeicherten Daten, Berichtigung unrichtiger Daten, Löschung Ihrer Daten (sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen), Einschränkung der Verarbeitung sowie Datenübertragbarkeit. Zur Ausübung Ihrer Rechte wenden Sie sich an: hello@sabitas.ch
 
 9. COOKIES
 Unsere Website verwendet technisch notwendige Cookies, die für den Betrieb des Shops erforderlich sind. Analytische oder Marketing-Cookies werden nur mit Ihrer ausdrücklichen Einwilligung gesetzt.
@@ -120,7 +120,7 @@ Bezahlen Sie über Ihr bestehendes PayPal-Konto. PayPal bietet einen integrierte
 Allgemeine Hinweise
 — Alle Preise verstehen sich in Schweizer Franken (CHF) inkl. MwSt.
 — Der Kaufbetrag wird erst nach Versandbestätigung belastet.
-— Bei Fragen zur Zahlung erreichen Sie uns unter hallo@sabitas.ch oder +41 78 613 80 84.`,
+— Bei Fragen zur Zahlung erreichen Sie uns unter hello@sabitas.ch oder +41 78 613 80 84.`,
     },
     impressum: {
       title: "Impressum",
@@ -137,7 +137,7 @@ Sabrina Steinbeck
 
 KONTAKT
 Telefon: +41 78 613 80 84
-E-Mail: hallo@sabitas.ch
+E-Mail: hello@sabitas.ch
 Website: www.sabitas.ch
 
 UNTERNEHMENSFORM
@@ -163,13 +163,13 @@ Stand: Februar 2026`,
     },
     rueckgabe: {
       title: "Versand & Rückgabe",
-      content: `Sabitas · Sabrina Steinbeck | Waldeggstrasse 10, 9631 Ulisbach | hallo@sabitas.ch
+      content: `Sabitas · Sabrina Steinbeck | Waldeggstrasse 10, 9631 Ulisbach | hello@sabitas.ch
 
 1. VERSAND
 Wir liefern ausschliesslich innerhalb der Schweiz. Bestellungen werden in der Regel innerhalb von 1–3 Werktagen nach Zahlungseingang versandt. Der Versand erfolgt mit einem zuverlässigen Schweizer Paketdienstleister. Sie erhalten nach dem Versand eine E-Mail mit Ihrer Sendungsverfolgungsnummer. Versandkosten werden transparent im Bestellprozess ausgewiesen.
 
 2. RÜCKGABERECHT
-Sie können bestellte Artikel innerhalb von 14 Tagen ab Erhalt ohne Angabe von Gründen zurückgeben. Bitte kontaktieren Sie uns vor der Rücksendung per E-Mail an hallo@sabitas.ch oder telefonisch unter +41 78 613 80 84.
+Sie können bestellte Artikel innerhalb von 14 Tagen ab Erhalt ohne Angabe von Gründen zurückgeben. Bitte kontaktieren Sie uns vor der Rücksendung per E-Mail an hello@sabitas.ch oder telefonisch unter +41 78 613 80 84.
 
 3. ZUSTAND DER WARE
 Die Ware muss sich in originalem, unbenutztem Zustand befinden und in der Originalverpackung zurückgesendet werden. Bei Produkten wie Messern, Armbrüsten oder Outdoor-Ausrüstung dürfen keine Gebrauchsspuren vorhanden sein.

@@ -19,7 +19,7 @@ export type FooterModalKey = (typeof FOOTER_MODAL_KEYS)[number]
 export const FOOTER_LEGAL_DEFAULTS: Record<FooterModalKey, LegalEntry> = {
   rueckgabe: {
     title: "Versand & Rückgabe",
-    content: `Sabitas | [Adresse ergänzen] | hallo@sabitas.ch | WhatsApp 078 613 80 84
+    content: `Sabitas | [Adresse ergänzen] | hello@sabitas.ch | WhatsApp 078 613 80 84
 
 1. BESTELLUNG
 Bestellt wird über WhatsApp. Leg dir im Shop zusammen, was dir gefällt, und schick mir den Warenkorb – ich melde mich mit Verfügbarkeit, Versandkosten und allem Weiteren.
@@ -44,7 +44,7 @@ Sollte etwas beschädigt ankommen, melde dich sofort bei mir. Dann übernehme ic
   },
   zahlungsarten: {
     title: "Bezahlen",
-    content: `Sabitas | [Adresse ergänzen] | hallo@sabitas.ch | WhatsApp 078 613 80 84
+    content: `Sabitas | [Adresse ergänzen] | hello@sabitas.ch | WhatsApp 078 613 80 84
 
 Aktuell läuft alles persönlich über WhatsApp.
 
@@ -56,11 +56,11 @@ Weil jedes Stück ein Unikat ist und ich lieber kurz mit dir spreche, bevor ich 
 
 Hinweise
 — Alle Preise verstehen sich in Schweizer Franken (CHF).
-— Bei Fragen schreib mir einfach: hallo@sabitas.ch oder WhatsApp 078 613 80 84.`,
+— Bei Fragen schreib mir einfach: hello@sabitas.ch oder WhatsApp 078 613 80 84.`,
   },
   cookies: {
     title: "Cookies",
-    content: `Sabitas | [Adresse ergänzen] | hallo@sabitas.ch | WhatsApp 078 613 80 84
+    content: `Sabitas | [Adresse ergänzen] | hello@sabitas.ch | WhatsApp 078 613 80 84
 
 Was sind Cookies?
 Cookies sind kleine Textdateien, die beim Besuch dieser Website auf deinem Gerät gespeichert werden.
@@ -80,7 +80,7 @@ Nach Schweizer DSG und EU-DSGVO kannst du Cookies jederzeit ablehnen oder lösch
 — Firefox: Einstellungen → Datenschutz → Cookies
 — Safari: Einstellungen → Datenschutz → Cookies verwalten
 
-Fragen? hallo@sabitas.ch`,
+Fragen? hello@sabitas.ch`,
   },
   ueberuns: {
     title: "Über mich",
@@ -101,7 +101,7 @@ Schreib mir – ich fertige auch gerne ganz nach deinen Vorstellungen.
 
 ~ alles handgemacht, alles mit Herz ♡
 
-Sabitas | [Adresse ergänzen] | hallo@sabitas.ch | WhatsApp 078 613 80 84`,
+Sabitas | [Adresse ergänzen] | hello@sabitas.ch | WhatsApp 078 613 80 84`,
   },
   impressum: {
     title: "Impressum",
@@ -117,7 +117,7 @@ INHABERIN
 
 KONTAKT
 WhatsApp: 078 613 80 84
-E-Mail: hallo@sabitas.ch
+E-Mail: hello@sabitas.ch
 Website: www.sabitas.ch
 
 UNTERNEHMENSFORM
@@ -141,13 +141,13 @@ Es gilt ausschliesslich Schweizer Recht.`,
   },
   datenschutz: {
     title: "Datenschutzerklärung",
-    content: `Sabitas | [Adresse ergänzen] | hallo@sabitas.ch | WhatsApp 078 613 80 84
+    content: `Sabitas | [Adresse ergänzen] | hello@sabitas.ch | WhatsApp 078 613 80 84
 
 Diese Erklärung informiert dich nach dem Schweizer Datenschutzgesetz (DSG) und der EU-DSGVO darüber, was mit deinen Daten passiert.
 
 1. VERANTWORTLICHE STELLE
 Sabitas, [Adresse ergänzen], Schweiz
-E-Mail: hallo@sabitas.ch
+E-Mail: hello@sabitas.ch
 
 2. WELCHE DATEN
 Wenn du mir über WhatsApp oder E-Mail schreibst, erhalte ich die Angaben, die du mir selbst schickst – zum Beispiel Name, Telefonnummer und Lieferadresse. Beim Besuch der Website werden technische Daten wie IP-Adresse und Browsertyp automatisch erfasst.
@@ -168,14 +168,14 @@ Die Website ist mit SSL/TLS verschlüsselt.
 Nur so lange wie nötig oder wie gesetzlich vorgeschrieben.
 
 8. DEINE RECHTE
-Auskunft, Berichtigung, Löschung, Einschränkung und Datenübertragbarkeit. Schreib mir an hallo@sabitas.ch.
+Auskunft, Berichtigung, Löschung, Einschränkung und Datenübertragbarkeit. Schreib mir an hello@sabitas.ch.
 
 9. COOKIES
 Nur technisch notwendige Cookies. Analyse- oder Marketing-Cookies nur mit deiner Einwilligung.`,
   },
   agb: {
     title: "Allgemeine Geschäftsbedingungen (AGB)",
-    content: `Sabitas | [Adresse ergänzen] | hallo@sabitas.ch | WhatsApp 078 613 80 84
+    content: `Sabitas | [Adresse ergänzen] | hello@sabitas.ch | WhatsApp 078 613 80 84
 
 1. GELTUNGSBEREICH
 Diese Bedingungen gelten für alle Bestellungen, die über sabitas.ch angefragt und per WhatsApp abgeschlossen werden.

@@ -21,7 +21,7 @@ export const CONTACTO = {
   telefono: "+41 78 613 80 84",
   /** El mismo numero sin espacios, para los enlaces de llamada y WhatsApp. */
   telefonoPlano: "+41786138084",
-  email: "hallo@sabitas.ch",
+  email: "hello@sabitas.ch",
   web: "https://sabitas.ch",
 
   calle: "Waldeggstrasse 10",

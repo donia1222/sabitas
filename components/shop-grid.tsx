@@ -177,7 +177,7 @@ const ProductCard = memo(function ProductCard({ product, addedIds, wishlist, onS
             </button>
           ) : (
             <a
-              href={`mailto:hallo@sabitas.ch?subject=Verfügbarkeitsanfrage: ${encodeURIComponent(product.name)}&body=Guten Tag,%0A%0Aich würde gerne wissen, ob der folgende Artikel wieder verfügbar ist:%0A%0AArtikel: ${encodeURIComponent(product.name)}%0AArtikel-Nr.: ${product.id}%0A%0AVielen Dank!`}
+              href={`mailto:hello@sabitas.ch?subject=Verfügbarkeitsanfrage: ${encodeURIComponent(product.name)}&body=Guten Tag,%0A%0Aich würde gerne wissen, ob der folgende Artikel wieder verfügbar ist:%0A%0AArtikel: ${encodeURIComponent(product.name)}%0AArtikel-Nr.: ${product.id}%0A%0AVielen Dank!`}
               onClick={e => e.stopPropagation()}
               className="w-full h-9 rounded-full text-[12px] font-semibold inline-flex items-center justify-center border border-n-200 text-n-600 hover:border-brand hover:text-brand transition-colors"
             >

@@ -23,7 +23,7 @@ const POR_DEFECTO: Record<string, string> = {
   kontakt_text:
     "Eine Frage zu einem Stück, ein Wunsch nach etwas Eigenem oder einfach Hallo sagen: am schnellsten erreichst du mich über WhatsApp.",
   whatsapp_number: "41786138084",
-  kontakt_email: "hallo@sabitas.ch",
+  kontakt_email: "hello@sabitas.ch",
 }
 
 export default function KontaktPage() {

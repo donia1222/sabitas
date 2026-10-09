@@ -440,7 +440,7 @@ export default function GutscheineGrid() {
                 <li>Nach Zahlungseingang erhalten Sie den Gutschein-Code per E-Mail.</li>
                 <li>Kein Mindestbestellwert. Nicht kombinierbar mit anderen Aktionen.</li>
                 <li>Kein Rückgeld auf Gutscheine.</li>
-                <li>Bei Fragen: <a href="mailto:hallo@sabitas.ch" className="text-[#b40000] underline">hallo@sabitas.ch</a></li>
+                <li>Bei Fragen: <a href="mailto:hello@sabitas.ch" className="text-[#b40000] underline">hello@sabitas.ch</a></li>
               </ul>
             </div>
           </div>

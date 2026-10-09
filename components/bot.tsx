@@ -477,7 +477,7 @@ export default function SpaceChat() {
 
   // Enviar consulta a WhatsApp y resetear flujo
   const sendContactRequest = () => {
-    const whatsappNumber = "+41765608645"
+    const whatsappNumber = "+41786138084"
 
     const message = `Hallo, ich habe eine Anfrage zu Ihren Lederprodukten.
 

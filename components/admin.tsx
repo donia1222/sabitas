@@ -1656,7 +1656,7 @@ export function Admin({ onClose }: AdminProps) {
     doc.text("FOTOGRAFIE-EDITIONEN", margin, 41)
     doc.text("Waldeggstrasse 10, 9631 Ulisbach", margin, 46)
     doc.text("Tel: 000 000 00 00", margin, 51)
-    doc.text("hallo@sabitas.ch", margin, 56)
+    doc.text("hello@sabitas.ch", margin, 56)
     doc.text("MWST-Nr: CHE-112.174.541", margin, 61)
 
     // Titel Rechnung
