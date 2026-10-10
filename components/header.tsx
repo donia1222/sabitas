@@ -217,33 +217,36 @@ export function Header({ onCartOpen, cartCount }: HeaderProps) {
                       pequena. Los datos salen de lib/contacto.ts, el mismo
                       sitio del que come la tarjeta de visita. */}
                   <FadeSection delay={(MENU.length + 1) * 60}>
-                    <div className="mt-7 pt-5 border-t border-brand-tint space-y-1">
-                      <p className="px-1 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-n-400">
+                    <div className="mt-5 pt-4 border-t border-brand-tint">
+                      <p className="px-1 pb-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-n-400">
                         Direkt erreichbar
                       </p>
-                      <a
-                        href={`mailto:${CONTACTO.email}`}
-                        onClick={() => setMenuAbierto(false)}
-                        className="flex items-center gap-2.5 px-1 py-2 rounded-xl text-[14px] text-n-700 hover:text-brand transition-colors"
-                      >
-                        <Mail className="w-4 h-4 shrink-0 text-brand" />
-                        <span className="truncate">{CONTACTO.email}</span>
-                      </a>
-                      <a
-                        href={`tel:${CONTACTO.telefonoPlano}`}
-                        onClick={() => setMenuAbierto(false)}
-                        className="flex items-center gap-2.5 px-1 py-2 rounded-xl text-[14px] text-n-700 hover:text-brand transition-colors"
-                      >
-                        <Phone className="w-4 h-4 shrink-0 text-brand" />
-                        <span>{CONTACTO.telefono}</span>
-                      </a>
+                      {/* Los dos, uno al lado del otro: telefono a la izquierda
+                          y correo a la derecha. El cajon mide unos 320px, asi
+                          que en media columna «hello@sabitas.ch» no cabe en la
+                          misma linea que el icono: el icono va arriba y el
+                          texto debajo, y asi los dos quedan del mismo alto. */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <a
+                          href={`tel:${CONTACTO.telefonoPlano}`}
+                          onClick={() => setMenuAbierto(false)}
+                          className="flex flex-col items-center gap-1.5 rounded-2xl bg-white border border-brand-tint hover:border-brand-pale px-2 py-3 text-center transition-colors"
+                        >
+                          <Phone className="w-4 h-4 text-brand" />
+                          <span className="text-[12.5px] text-n-700 leading-tight">{CONTACTO.telefono}</span>
+                        </a>
+                        <a
+                          href={`mailto:${CONTACTO.email}`}
+                          onClick={() => setMenuAbierto(false)}
+                          className="flex flex-col items-center gap-1.5 rounded-2xl bg-white border border-brand-tint hover:border-brand-pale px-2 py-3 text-center transition-colors"
+                        >
+                          <Mail className="w-4 h-4 text-brand" />
+                          <span className="text-[12.5px] text-n-700 leading-tight break-all">{CONTACTO.email}</span>
+                        </a>
+                      </div>
                     </div>
                   </FadeSection>
                 </nav>
-
-                <p className="px-6 py-5 text-[13px] text-n-500 border-t border-brand-tint bg-white">
-                  Handgemacht in der Schweiz · Jedes Stück ein Unikat
-                </p>
               </SheetContent>
             </Sheet>
           </div>
