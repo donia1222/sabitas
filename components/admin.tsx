@@ -2635,24 +2635,38 @@ export function Admin({ onClose }: AdminProps) {
                     azul, celeste y verde: el color sugeria una jerarquia que no
                     existe —son tres niveles del mismo arbol, no tres cosas
                     distintas—. Lo que los distingue es el texto. */}
+                {/* Sabrina solo necesita un nivel: categoria y productos. Los dos
+                    niveles de abajo se quedan a la vista —el arbol de tres niveles
+                    sigue entero en la tienda y en la lista de aqui— pero no se
+                    pueden pulsar, para que no se lie creando subniveles que no
+                    quiere. El dia que los quiera, se quita el `desactivado`. */}
                 {[
-                  { titulo: "Neue Hauptkategorie", pie: "Oberste Ebene erstellen",
+                  { titulo: "Neue Hauptkategorie", pie: "Oberste Ebene erstellen", desactivado: false,
                     alPulsar: () => { setEditingCategory(null); setForceHaupt(true); setCatIsHaupt(true); setCatCreateKind(null); setIsCategoryModalOpen(true) } },
-                  { titulo: "Kategorie erstellen", pie: "In eine Hauptkategorie",
+                  { titulo: "Kategorie erstellen", pie: "Spater verfugbar", desactivado: true,
                     alPulsar: () => { setEditingCategory(null); setForceHaupt(false); setCatIsHaupt(false); setCatCreateKind("kategorie"); setIsCategoryModalOpen(true) } },
-                  { titulo: "Subkategorie erstellen", pie: "In eine Kategorie",
+                  { titulo: "Subkategorie erstellen", pie: "Spater verfugbar", desactivado: true,
                     alPulsar: () => { setEditingCategory(null); setForceHaupt(false); setCatIsHaupt(false); setCatCreateKind("subkategorie"); setIsCategoryModalOpen(true) } },
-                ].map(({ titulo, pie, alPulsar }) => (
+                ].map(({ titulo, pie, alPulsar, desactivado }) => (
                   <button
                     key={titulo}
-                    onClick={alPulsar}
-                    className="group flex items-center gap-3.5 rounded-2xl border border-dashed border-brand-pale bg-white hover:border-brand hover:bg-brand-wash/60 px-4 py-4 text-left transition-colors"
+                    onClick={desactivado ? undefined : alPulsar}
+                    disabled={desactivado}
+                    aria-disabled={desactivado}
+                    title={desactivado ? "Momentan nicht verfugbar" : undefined}
+                    className={desactivado
+                      ? "flex items-center gap-3.5 rounded-2xl border border-dashed border-n-200 bg-n-50/60 px-4 py-4 text-left opacity-60 cursor-not-allowed"
+                      : "group flex items-center gap-3.5 rounded-2xl border border-dashed border-brand-pale bg-white hover:border-brand hover:bg-brand-wash/60 px-4 py-4 text-left transition-colors"}
                   >
-                    <span className="w-10 h-10 shrink-0 rounded-full bg-brand-tint text-brand flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors">
-                      <Plus className="w-5 h-5" />
+                    <span className={desactivado
+                      ? "w-10 h-10 shrink-0 rounded-full bg-n-100 text-n-400 flex items-center justify-center"
+                      : "w-10 h-10 shrink-0 rounded-full bg-brand-tint text-brand flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-colors"}>
+                      {desactivado ? <Lock className="w-4 h-4" /> : <Plus className="w-5 h-5" />}
                     </span>
                     <span className="min-w-0">
-                      <span className="block font-semibold text-ink text-[15px] leading-tight">{titulo}</span>
+                      <span className={desactivado
+                        ? "block font-semibold text-n-400 text-[15px] leading-tight"
+                        : "block font-semibold text-ink text-[15px] leading-tight"}>{titulo}</span>
                       <span className="block text-n-400 text-[12.5px] mt-0.5">{pie}</span>
                     </span>
                   </button>
