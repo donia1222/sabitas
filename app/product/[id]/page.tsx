@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Header } from "@/components/header"
 import { useRouter, useParams, useSearchParams } from "next/navigation"
-import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingCart, Check, X, ZoomIn, Heart } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingCart, Check, X, ZoomIn, Heart, Link2 } from "lucide-react"
 import { ProductImage } from "@/components/product-image"
 import { getCachedProducts } from "@/lib/products-cache"
 import ContactModal from "@/components/contact-modal"
@@ -92,6 +92,7 @@ export default function ProductPage() {
   const [contactOpen, setContactOpen] = useState(false)
   const [cartCount, setCartCount] = useState(0)
   const [isWished, setIsWished] = useState(false)
+  const [compartido, setCompartido] = useState(false)
   const [lightbox, setLightbox] = useState(false)
   const [zoom, setZoom] = useState({ x: 50, y: 50, active: false })
   const lightboxImgRef = useRef<HTMLDivElement>(null)
@@ -145,6 +146,27 @@ export default function ProductPage() {
       const next = isWished ? list.filter(x => x !== product.id) : [...list, product.id]
       localStorage.setItem("shop-wishlist", JSON.stringify(next))
       setIsWished(!isWished)
+    } catch {}
+  }
+
+  // Compartir el producto. Igual que en el blog: en el movil sale la hoja
+  // nativa del sistema; en el ordenador no hay navigator.share, asi que se
+  // copia el enlace al portapapeles y el boton lo dice durante dos segundos.
+  const compartirProducto = async () => {
+    if (!product) return
+    const url = `${window.location.origin}/product/${product.id}`
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: product.name, url })
+        return
+      } catch {
+        // Cancelado o no soportado -> se cae al portapapeles
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url)
+      setCompartido(true)
+      setTimeout(() => setCompartido(false), 2000)
     } catch {}
   }
 
@@ -427,6 +449,24 @@ export default function ProductPage() {
                   <Heart className={`w-4 h-4 ${isWished ? "fill-current" : ""}`} />
                   {isWished ? "Auf der Wunschliste" : "Zur Wunschliste hinzufügen"}
                 </button>
+
+                {/* Compartir. Va con aire de enlace, sin relleno ni borde: es
+                    el tercero en importancia detras del carrito y la lista de
+                    deseos, y si llevara caja parecerian tres botones iguales. */}
+                <div className="flex justify-center" style={{ marginTop: '10px' }}>
+                  <button
+                    onClick={compartirProducto}
+                    aria-label="Produkt teilen"
+                    className={`inline-flex items-center gap-1.5 text-[13px] font-semibold rounded-full px-3 py-1.5 transition-colors ${
+                      compartido
+                        ? "text-brand bg-brand/10"
+                        : "text-n-400 hover:text-brand hover:bg-brand/8"
+                    }`}
+                  >
+                    {compartido ? <Check className="w-3.5 h-3.5" /> : <Link2 className="w-3.5 h-3.5" />}
+                    {compartido ? "Link kopiert!" : "Produkt teilen"}
+                  </button>
+                </div>
               </div>
             </div>
 

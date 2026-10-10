@@ -27,7 +27,14 @@ function formatDate(iso: string) {
 }
 
 // Teilen-Button: nutzt Web Share API (mobil) bzw. kopiert den Link in die Zwischenablage
-function ShareButton({ post, className = "" }: { post: BlogPost; className?: string }) {
+//
+// Dos formas del mismo boton:
+//   «pie»      — el del final del articulo. Antes era bg-brand/8, un 8% de
+//                color sobre blanco: no se veia. Ahora va relleno.
+//   «flotante» — arriba a la izquierda, haciendo pareja con la X de cerrar.
+//                Va sobre la foto, asi que lleva el mismo blanco translucido
+//                con desenfoque que la X para leerse sobre cualquier imagen.
+function ShareButton({ post, variante = "pie", className = "" }: { post: BlogPost; variante?: "pie" | "flotante"; className?: string }) {
   const [copied, setCopied] = useState(false)
 
   const handleShare = async (e: React.MouseEvent) => {
@@ -48,16 +55,24 @@ function ShareButton({ post, className = "" }: { post: BlogPost; className?: str
     } catch {}
   }
 
+  const flotante = variante === "flotante"
+  const base = "inline-flex items-center gap-2 font-bold rounded-full transition-all"
+  const forma = flotante
+    ? "h-9 px-3.5 text-[13px] shadow-sm backdrop-blur-sm hover:scale-105"
+    : "px-4 py-2 text-sm shadow-sm"
+  const colores = copied
+    ? (flotante ? "bg-brand text-white border border-brand" : "bg-n-900 text-white")
+    : (flotante
+        ? "bg-white/90 hover:bg-white text-n-700 border border-n-150"
+        : "bg-brand text-white hover:bg-brand/90")
+
   return (
     <button
       onClick={handleShare}
-      className={`inline-flex items-center gap-2 text-sm font-bold rounded-full px-4 py-2 transition-all ${
-        copied
-          ? "bg-brand text-white"
-          : "bg-brand/8 text-brand hover:bg-brand/15"
-      } ${className}`}
+      aria-label="Beitrag teilen"
+      className={`${base} ${forma} ${colores} ${className}`}
     >
-      {copied ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
+      {copied ? <Check className="w-4 h-4 shrink-0" /> : <Share2 className="w-4 h-4 shrink-0" />}
       {copied ? "Link kopiert!" : "Teilen"}
     </button>
   )
@@ -174,10 +189,14 @@ function PostModal({ post, onClose }: { post: BlogPost; onClose: () => void }) {
           className="relative bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
           onClick={e => e.stopPropagation()}
         >
+          {/* Teilen (links) y Schliessen (rechts), a la misma altura */}
+          <ShareButton post={post} variante="flotante" className="absolute top-4 left-4 z-10" />
+
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 w-9 h-9 bg-white/90 hover:bg-white border border-n-150 rounded-full flex items-center justify-center shadow-sm transition-all hover:scale-105"
+            aria-label="Schliessen"
+            className="absolute top-4 right-4 z-10 w-9 h-9 bg-white/90 hover:bg-white border border-n-150 rounded-full flex items-center justify-center shadow-sm backdrop-blur-sm transition-all hover:scale-105"
           >
             <X className="w-4 h-4 text-n-700" />
           </button>
