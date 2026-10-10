@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import { ShoppingCart, Menu, ArrowUp, Download, X } from "lucide-react"
+import { ShoppingCart, Menu, ArrowUp, Download, X, Mail, Phone } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
 import { LoginAuth } from "./login-auth"
 import { features } from "@/lib/features"
-import { descargarVCard } from "@/lib/contacto"
+import { descargarVCard, CONTACTO } from "@/lib/contacto"
+import { FadeSection } from "@/components/fade-section"
 import { useCuentaCarrito } from "@/hooks/use-carrito"
 
 interface HeaderProps {
@@ -164,12 +165,13 @@ export function Header({ onCartOpen, cartCount }: HeaderProps) {
 
               <SheetContent
                 side="right"
+                sinCerrar
                 className="w-[86%] sm:w-80 p-0 border-l border-brand-tint bg-brand-wash flex flex-col"
               >
                 <SheetTitle className="sr-only">Navigation</SheetTitle>
 
                 <div className="flex items-center justify-between px-5 py-4 bg-white border-b border-brand-tint">
-                  <img src="/sabitas/logo.png" alt="Sabitas" className="h-10 w-auto object-contain" />
+                  <img src="/sabitas/logo.png" alt="Sabitas" className="h-14 w-auto object-contain" />
                   <button
                     onClick={() => setMenuAbierto(false)}
                     className="h-9 w-9 flex items-center justify-center rounded-full text-n-500 hover:bg-brand-tint hover:text-brand transition-colors"
@@ -180,9 +182,12 @@ export function Header({ onCartOpen, cartCount }: HeaderProps) {
                 </div>
 
                 <nav className="flex-1 overflow-y-auto px-4 py-5 space-y-1.5">
-                  {MENU.map((item) => (
+                  {/* Entran una detras de otra, 60ms de diferencia. Con el
+                      menu recien abierto todas estan ya en pantalla, asi que
+                      lo unico que las separa es el retraso. */}
+                  {MENU.map((item, i) => (
+                    <FadeSection key={item.etiqueta} delay={i * 60}>
                     <button
-                      key={item.etiqueta}
                       onClick={() => ir(item.destino)}
                       className={`w-full text-left px-4 py-3.5 rounded-2xl text-[15px] font-semibold border transition-colors ${
                         estoyEn(item.destino)
@@ -193,15 +198,47 @@ export function Header({ onCartOpen, cartCount }: HeaderProps) {
                     >
                       {item.etiqueta}
                     </button>
+                    </FadeSection>
                   ))}
 
-                  <button
-                    onClick={() => { setMenuAbierto(false); descargarVCard() }}
-                    className="w-full flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-brand bg-brand-tint/70 hover:bg-brand-tint transition-colors mt-3"
-                  >
-                    <Download className="w-4 h-4 shrink-0" />
-                    Visitenkarte speichern
-                  </button>
+                  <FadeSection delay={MENU.length * 60}>
+                    <button
+                      onClick={() => { setMenuAbierto(false); descargarVCard() }}
+                      className="w-full flex items-center gap-2.5 px-4 py-3.5 rounded-2xl text-[15px] font-semibold text-brand bg-brand-tint/70 hover:bg-brand-tint transition-colors mt-3"
+                    >
+                      <Download className="w-4 h-4 shrink-0" />
+                      Visitenkarte speichern
+                    </button>
+                  </FadeSection>
+
+                  {/* El hueco blanco que quedaba debajo. Correo y telefono
+                      directos: en el movil, pulsar marca o abre el correo, que
+                      es justo lo que se quiere de un menu de una tienda
+                      pequena. Los datos salen de lib/contacto.ts, el mismo
+                      sitio del que come la tarjeta de visita. */}
+                  <FadeSection delay={(MENU.length + 1) * 60}>
+                    <div className="mt-7 pt-5 border-t border-brand-tint space-y-1">
+                      <p className="px-1 pb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-n-400">
+                        Direkt erreichbar
+                      </p>
+                      <a
+                        href={`mailto:${CONTACTO.email}`}
+                        onClick={() => setMenuAbierto(false)}
+                        className="flex items-center gap-2.5 px-1 py-2 rounded-xl text-[14px] text-n-700 hover:text-brand transition-colors"
+                      >
+                        <Mail className="w-4 h-4 shrink-0 text-brand" />
+                        <span className="truncate">{CONTACTO.email}</span>
+                      </a>
+                      <a
+                        href={`tel:${CONTACTO.telefonoPlano}`}
+                        onClick={() => setMenuAbierto(false)}
+                        className="flex items-center gap-2.5 px-1 py-2 rounded-xl text-[14px] text-n-700 hover:text-brand transition-colors"
+                      >
+                        <Phone className="w-4 h-4 shrink-0 text-brand" />
+                        <span>{CONTACTO.telefono}</span>
+                      </a>
+                    </div>
+                  </FadeSection>
                 </nav>
 
                 <p className="px-6 py-5 text-[13px] text-n-500 border-t border-brand-tint bg-white">

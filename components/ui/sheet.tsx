@@ -51,12 +51,22 @@ const sheetVariants = cva(
 
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  /**
+   * Quita la X que este componente pinta por su cuenta.
+   *
+   * Hace falta cuando el panel ya trae la suya dentro, como el menu del movil
+   * en header.tsx, que la lleva junto al logo. Sin esto salen las dos, una
+   * encima de otra. Por defecto sigue saliendo, para no cambiar el carrito ni
+   * ningun otro panel que ya contaba con ella.
+   */
+  sinCerrar?: boolean
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
->(({ side = "right", className, children, ...props }, ref) => (
+>(({ side = "right", className, children, sinCerrar = false, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <SheetPrimitive.Content
@@ -65,10 +75,12 @@ const SheetContent = React.forwardRef<
       {...props}
     >
       {children}
-      <SheetPrimitive.Close className="absolute right-3 top-3 rounded-full w-8 h-8 flex items-center justify-center bg-n-100 hover:bg-n-200 transition-colors opacity-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
-        <X className="h-5 w-5 text-n-800" />
-        <span className="sr-only">Close</span>
-      </SheetPrimitive.Close>
+      {!sinCerrar && (
+        <SheetPrimitive.Close className="absolute right-3 top-3 rounded-full w-8 h-8 flex items-center justify-center bg-n-100 hover:bg-n-200 transition-colors opacity-90 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
+          <X className="h-5 w-5 text-n-800" />
+          <span className="sr-only">Close</span>
+        </SheetPrimitive.Close>
+      )}
     </SheetPrimitive.Content>
   </SheetPortal>
 ))

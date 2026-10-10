@@ -6,6 +6,7 @@ import { BannerPagina } from "@/components/banner-pagina"
 import { useRouter } from "next/navigation"
 import { getCachedCategories } from "@/lib/categories-cache"
 import { ArrowLeft, ChevronLeft, Calendar, X, ChevronRight, Menu, Newspaper, Images, Download, ShoppingCart, Gift, Share2, Check } from "lucide-react"
+import { FadeSection } from "@/components/fade-section"
 import { Footer } from "@/components/footer"
 import { CtaContacto } from "@/components/cta-contacto"
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
@@ -402,8 +403,8 @@ export default function BlogPage() {
           return (
             <>
               {grandes.map((post, i) => (
+                <FadeSection key={post.id} delay={Math.min(i, 3) * 120}>
                 <article
-                  key={post.id}
                   onClick={() => setSelectedPost(post)}
                   className="group bg-white rounded-3xl overflow-hidden border border-brand-tint shadow-[0_22px_50px_-36px_rgba(107,79,147,0.9)] hover:shadow-[0_26px_55px_-30px_rgba(107,79,147,0.9)] transition-shadow cursor-pointer mb-6 last:mb-0 grid lg:grid-cols-[1.15fr_1fr]"
                 >
@@ -447,10 +448,14 @@ export default function BlogPage() {
                     </span>
                   </div>
                 </article>
+                </FadeSection>
               ))}
 
               {restantes.length > 0 && (
-                <>
+                <FadeSection>
+                  {/* Aqui la fila entera entra de una pieza, no tarjeta a
+                      tarjeta: es un carrusel horizontal y meter un envoltorio
+                      por tarjeta le romperia el ancho fijo de cada una. */}
                   <div className="flex items-center gap-3 mt-12 mb-6">
                     <div className="w-1 h-6 bg-brand-pale rounded-full" />
                     <h2 className="font-display text-[21px] font-semibold text-ink tracking-tight">Weitere Beiträge</h2>
@@ -486,7 +491,7 @@ export default function BlogPage() {
                       </article>
                     ))}
                   </div>
-                </>
+                </FadeSection>
               )}
             </>
           )

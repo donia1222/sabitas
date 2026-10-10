@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
+import { FadeSection } from "@/components/fade-section"
 import { BannerPagina } from "@/components/banner-pagina"
 import { useRouter } from "next/navigation"
 import { getCachedCategories } from "@/lib/categories-cache"
@@ -156,9 +157,13 @@ export default function GalleryPage() {
 
         {!loading && images.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {/* Cada foto entra por su cuenta al asomar, y el retraso va por
+                columna —de ahi el %4— para que caigan en cascada en vez de
+                aparecer la fila entera a la vez. Con el modulo, la foto
+                numero 40 no espera cuatro segundos: espera como la cuarta. */}
             {images.map((img, i) => (
+              <FadeSection key={img.id} delay={(i % 4) * 90}>
               <div
-                key={img.id}
                 onClick={() => setLightboxIndex(i)}
                 className="bg-white rounded-2xl overflow-hidden border border-brand-tint shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-zoom-in group"
               >
@@ -176,6 +181,7 @@ export default function GalleryPage() {
                   </div>
                 )}
               </div>
+              </FadeSection>
             ))}
           </div>
         )}

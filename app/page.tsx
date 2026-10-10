@@ -270,7 +270,9 @@ function StorefrontInner() {
       <HeroSection />
 
       {/* Como nace cada pieza: tres pasos, los mismos que en su web. */}
-      <ProcesoSection />
+      <FadeSection>
+        <ProcesoSection />
+      </FadeSection>
 
       {/* Bloque editorial: titular de seccion + banners, sobre fondo papel */}
       <FadeSection>
@@ -289,12 +291,19 @@ function StorefrontInner() {
               </p>
             </div>
 
-            <div className="mb-4">
+            {/* Escalonados: el destacado, y 120ms despues cada uno de los
+                dos de abajo. Entrando a la vez parecia un salto; asi se lee
+                como que la seccion se va montando sola. */}
+            <FadeSection delay={120} className="mb-4">
               <HighlightBanner />
-            </div>
+            </FadeSection>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <BlogBanner />
-              <GalleryBanner />
+              <FadeSection delay={240}>
+                <BlogBanner />
+              </FadeSection>
+              <FadeSection delay={360}>
+                <GalleryBanner />
+              </FadeSection>
             </div>
           </div>
         </section>
@@ -323,7 +332,9 @@ function StorefrontInner() {
       />
 
       {/* La llamada de contacto, justo encima del pie. */}
-      <CtaContacto />
+      <FadeSection>
+        <CtaContacto />
+      </FadeSection>
 
       <Footer />
     </div>

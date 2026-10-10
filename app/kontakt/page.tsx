@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Header } from "@/components/header"
+import { FadeSection } from "@/components/fade-section"
 import { Footer } from "@/components/footer"
 import { BannerPagina } from "@/components/banner-pagina"
 import { MessageCircle, Mail, Clock, Sparkles } from "lucide-react"
@@ -100,6 +101,7 @@ export default function KontaktPage() {
         <div className="grid lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-start">
 
           {/* El formulario: no manda nada, abre WhatsApp con el texto escrito. */}
+          <FadeSection>
           <div className="bg-white border border-brand-tint rounded-3xl p-6 sm:p-8 shadow-[0_22px_50px_-38px_rgba(107,79,147,0.9)]">
             <h2 className="font-display font-semibold text-ink text-[22px] leading-tight">
               Nachricht schreiben
@@ -151,12 +153,13 @@ export default function KontaktPage() {
               E-Mail schreiben
             </button>
           </div>
+          </FadeSection>
 
           {/* Los canales y lo que puede esperar. */}
           <div className="space-y-4">
-            {CANALES.map(({ icono: Icono, titulo, texto, accion, href }) => (
+            {CANALES.map(({ icono: Icono, titulo, texto, accion, href }, i) => (
+              <FadeSection key={titulo} delay={160 + i * 110}>
               <a
-                key={titulo}
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
                 rel="noopener noreferrer"
@@ -171,8 +174,10 @@ export default function KontaktPage() {
                   <span className="block text-brand font-semibold text-[13.5px] mt-2">{accion} →</span>
                 </span>
               </a>
+              </FadeSection>
             ))}
 
+            <FadeSection delay={160 + CANALES.length * 110}>
             <div className="flex items-start gap-4 bg-brand-wash border border-brand-tint rounded-2xl p-5">
               <span className="w-11 h-11 shrink-0 rounded-full bg-white text-brand flex items-center justify-center">
                 <Clock className="w-5 h-5" />
@@ -185,7 +190,9 @@ export default function KontaktPage() {
                 </p>
               </div>
             </div>
+            </FadeSection>
 
+            <FadeSection delay={160 + (CANALES.length + 1) * 110}>
             <div
               className="flex items-start gap-4 rounded-2xl p-5"
               style={{ background: "linear-gradient(135deg, #ECE2F7, #CDEEDE)" }}
@@ -201,6 +208,7 @@ export default function KontaktPage() {
                 </p>
               </div>
             </div>
+            </FadeSection>
           </div>
         </div>
       </section>

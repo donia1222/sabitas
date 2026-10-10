@@ -84,6 +84,12 @@ export default function RootLayout({
               "try{if(!localStorage.getItem('sabitas_bienvenida_vista'))document.documentElement.dataset.bienvenida='1'}catch(e){}",
           }}
         />
+        {/* Red de seguridad: los bloques con fade salen del servidor con
+            opacity:0 y es el JavaScript quien los enciende. Si el JS no llega,
+            esto los deja visibles en vez de dejar la pagina en blanco. */}
+        <noscript>
+          <style>{`[data-fade]{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
       </head>
       <body><Bienvenida />{children} <Analytics /></body>
     </html>

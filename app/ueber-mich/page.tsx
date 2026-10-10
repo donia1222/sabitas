@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Header } from "@/components/header"
+import { FadeSection } from "@/components/fade-section"
 import { Footer } from "@/components/footer"
 import { Heart, Gem, Leaf, Flower2, MessageCircle } from "lucide-react"
 
@@ -89,12 +90,15 @@ export default function UeberMichPage() {
 
         <div className="relative container mx-auto px-4 lg:px-8 py-12 lg:py-16">
           <div className="grid lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] gap-10 lg:gap-14 items-center max-w-5xl">
-            <img
-              src="/sabitas/retrato.jpg"
-              alt="Sabitas"
-              className="w-[260px] sm:w-[320px] lg:w-full mx-auto lg:mx-0 rounded-3xl"
-            />
+            <FadeSection>
+              <img
+                src="/sabitas/retrato.jpg"
+                alt="Sabitas"
+                className="w-[260px] sm:w-[320px] lg:w-full mx-auto lg:mx-0 rounded-3xl"
+              />
+            </FadeSection>
 
+            <FadeSection delay={160}>
             <div>
               <p className="text-brand text-[12px] font-semibold uppercase tracking-[0.22em]">
                 {t("ueber_eyebrow")}
@@ -120,6 +124,7 @@ export default function UeberMichPage() {
                 {t("ueber_signatur")}
               </p>
             </div>
+            </FadeSection>
           </div>
         </div>
       </section>
@@ -128,10 +133,10 @@ export default function UeberMichPage() {
       <section className="bg-white">
         <div className="container mx-auto px-4 lg:px-8 -mt-6 lg:-mt-10 relative z-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-            {VALORES.map(({ icono: Icono, titulo, texto }) => (
+            {VALORES.map(({ icono: Icono, titulo, texto }, i) => (
+              <FadeSection key={titulo} delay={i * 110}>
               <div
-                key={titulo}
-                className="bg-white border border-brand-tint rounded-2xl px-5 py-7 text-center shadow-[0_18px_40px_-30px_rgba(107,79,147,0.9)]"
+                className="bg-white border border-brand-tint rounded-2xl px-5 py-7 text-center shadow-[0_18px_40px_-30px_rgba(107,79,147,0.9)] h-full"
               >
                 <span className="w-12 h-12 mx-auto rounded-full bg-brand-tint text-brand flex items-center justify-center">
                   <Icono className="w-5 h-5" />
@@ -139,12 +144,14 @@ export default function UeberMichPage() {
                 <p className="font-semibold text-ink text-[16px] mt-4">{titulo}</p>
                 <p className="text-n-500 text-[14px] mt-1.5 leading-snug">{texto}</p>
               </div>
+              </FadeSection>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Escríbeme ── */}
+      <FadeSection>
       <section className="container mx-auto px-4 lg:px-8 py-14 lg:py-20">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-tint via-brand-wash to-[#e6f4ec] px-7 py-10 lg:px-14 lg:py-14">
           <div className="relative z-10 grid lg:grid-cols-[1.2fr_auto] gap-8 items-center">
@@ -196,6 +203,7 @@ export default function UeberMichPage() {
           </svg>
         </div>
       </section>
+      </FadeSection>
 
       <Footer />
     </div>
