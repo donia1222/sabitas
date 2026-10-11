@@ -93,7 +93,7 @@ export function DiagnosticoGuardado({
         {texto}
       </pre>
 
-      <div className="px-3 pb-2.5">
+      <div className="px-3 pb-2.5 flex flex-wrap gap-2">
         <button
           type="button"
           onClick={copiar}
@@ -102,6 +102,7 @@ export function DiagnosticoGuardado({
           {copiado ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
           {copiado ? "Kopiert" : "Text kopieren"}
         </button>
+        <BotonSonda />
       </div>
     </div>
   )
@@ -168,4 +169,57 @@ export function describirFormulario(fd: FormData): string {
     }
   })
   return partes.length ? partes.join(" · ") : "(el formulario va VACIO)"
+}
+
+/**
+ * PROVISIONAL · manda un formulario minimo a /api/diag-upload y enseña, en
+ * crudo, lo que ha llegado al servidor.
+ *
+ * Arma el formulario EL NAVEGADOR, exactamente igual que el de guardar, asi
+ * que lo que se vea aqui es como serializa multipart este Safari. Es lo unico
+ * que nos falta por mirar: los dos parsers —el de Node y el de PHP— se
+ * atragantan con lo mismo, y eso no pasa con un cuerpo normal.
+ *
+ * No guarda nada en ningun sitio.
+ */
+function BotonSonda() {
+  const [estado, setEstado] = useState<"quieto" | "yendo" | "listo">("quieto")
+  const [salida, setSalida] = useState("")
+
+  const lanzar = async () => {
+    setEstado("yendo")
+    try {
+      // Un fichero diminuto hecho aqui mismo, para no depender de la galeria.
+      const trozo = new Blob([new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8])], { type: "image/jpeg" })
+      const fd = new FormData()
+      fd.append("texto", "hola")
+      fd.append("numero", "247")
+      fd.append("image", new File([trozo], "sonda.jpg", { type: "image/jpeg" }))
+
+      const r = await fetch("/api/diag-upload", { method: "POST", body: fd })
+      setSalida(JSON.stringify(await r.json(), null, 1))
+    } catch (e: any) {
+      setSalida(`la sonda tampoco pudo salir · ${e?.name}: ${e?.message}`)
+    } finally {
+      setEstado("listo")
+    }
+  }
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={lanzar}
+        disabled={estado === "yendo"}
+        className="inline-flex items-center rounded-lg bg-white border border-red-300 text-red-800 text-[12px] font-bold px-3 py-1.5 disabled:opacity-50"
+      >
+        {estado === "yendo" ? "Prüfe…" : "Technische Prüfung"}
+      </button>
+      {salida && (
+        <pre className="w-full mt-1 rounded-lg bg-white border border-red-200 p-2 text-[10.5px] leading-snug text-red-900 whitespace-pre-wrap break-all font-mono">
+          {salida}
+        </pre>
+      )}
+    </>
+  )
 }
