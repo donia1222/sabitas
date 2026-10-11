@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cabecerasAdmin } from "@/lib/admin-token"
+// Safari de iOS rompe `req.formData()`: se reenvian los bytes tal cual.
+import { reenviarAlPhp } from "@/lib/reenviar-multipart"
 import { isPhpBlocked, reportPhpError, clearPhpBlock } from "@/lib/php-guard"
 import { phpFetch } from "@/lib/php-queue"
 
@@ -75,8 +77,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const formData = await req.formData()
-    const res = await fetch(`${BASE}/save_site_settings.php`, { method: "POST", headers: cabecerasAdmin(), body: formData })
+    const res = await reenviarAlPhp(req, `${BASE}/save_site_settings.php`, cabecerasAdmin())
     if (!res.ok) throw new Error(`${res.status}`)
     const data = await res.json()
     global.__siteCache = null

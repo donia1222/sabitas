@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cabecerasAdmin } from "@/lib/admin-token"
+// Safari de iOS rompe `req.formData()`: se reenvian los bytes tal cual.
+import { reenviarAlPhp } from "@/lib/reenviar-multipart"
 import { clearCache } from "../cache"
 
 const PHP_URL = process.env.NEXT_PUBLIC_API_BASE_URL + "/add_category.php"
 
 export async function POST(req: NextRequest) {
   try {
-    // Reenviar como multipart (conserva la imagen si la hay)
-    const formData = await req.formData()
-
-    const res = await fetch(PHP_URL, {
-      method: "POST", headers: cabecerasAdmin(),
-      body: formData,
-    })
+    // Los bytes del formulario pasan enteros al PHP, con su boundary.
+    const res = await reenviarAlPhp(req, PHP_URL, cabecerasAdmin())
     const text = await res.text()
     const data = JSON.parse(text)
     if (data.success) clearCache()
