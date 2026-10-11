@@ -33,4 +33,11 @@ roberto-portfolio/
 
 # El backend PHP vive fuera del proyecto (~/Desktop/sabitas-api) y se sube a
 # Hostpoint a mano. Aqui no pinta nada: esto se despliega en Vercel.
-api/
+#
+# OJO con la barra de delante. Sin ella, «api/» casa con CUALQUIER carpeta
+# llamada api en cualquier nivel — incluida «app/api/», que son las rutas de
+# Next y son justo lo que SI hay que subir. El 11/10/2026 una ruta nueva
+# (app/api/diag-upload) se quedo sin subir en silencio y daba 404 en
+# produccion: nadie aviso, git simplemente la ignoro. Con «/api/» solo se
+# ignora la de la raiz, que es la que se queria ignorar.
+/api/

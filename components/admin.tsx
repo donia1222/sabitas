@@ -1553,7 +1553,13 @@ export function Admin({ onClose }: AdminProps) {
           setProductSaving(false)
           return
         }
-        formData.append(`image_${i}`, foto)
+        // «set» y NO «append». Esto es lo que fallaba el 11/10/2026 en el
+        // iPhone: `new FormData(form)` ya habia metido el fichero ORIGINAL
+        // del <input>, y con append se mandaban los dos —el original del
+        // disco y el encogido de memoria— con el mismo nombre. El del disco
+        // es el que Safari no consigue leer al enviar, asi que el cuerpo
+        // salia roto igual. Con «set» se queda solo el bueno.
+        formData.set(`image_${i}`, foto)
       } else if (isEditing) {
         if (removedImages[i]) {
           formData.append(`remove_image_${i}`, 'true')
@@ -1568,6 +1574,12 @@ export function Admin({ onClose }: AdminProps) {
       apuntarP(`destino: ${url}`)
       apuntarP(`navegador: ${navigator.userAgent}`)
       apuntarP(`pantalla: ${window.innerWidth}x${window.innerHeight} · red: ${navigator.onLine ? "online" : "OFFLINE"}`)
+      // Los huecos sin foto dejan un fichero de 0 bytes en el formulario.
+      // No aportan nada y son una referencia mas al disco: fuera.
+      for (let i = 0; i < 4; i++) {
+        const v = formData.get(`image_${i}`)
+        if (v instanceof File && v.size === 0) formData.delete(`image_${i}`)
+      }
       apuntarP(`campos: ${describirFormulario(formData)}`)
       apuntarP("enviando…")
 

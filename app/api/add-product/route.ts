@@ -8,9 +8,21 @@ const PHP = process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") + "/add_pro
 export async function POST(req: NextRequest) {
   try {
     const res = await reenviarAlPhp(req, PHP, cabecerasAdmin())
-    if (!res.ok) throw new Error(`${res.status}`)
-    const data = await res.json()
-    return NextResponse.json(data)
+    const crudo = await res.text()
+
+    // El motivo que da el PHP se pasa tal cual. Antes se tiraba y se mandaba
+    // solo el numero —«error: 400»—, que no dice nada a nadie: el 11/10/2026
+    // costo un intento entero averiguar que detras de ese 400 habia un «falta
+    // el nombre del producto».
+    try {
+      const data = JSON.parse(crudo)
+      return NextResponse.json(data, { status: res.ok ? 200 : res.status })
+    } catch {
+      return NextResponse.json(
+        { success: false, error: `Respuesta inesperada del servidor (HTTP ${res.status})`, php: crudo.slice(0, 300) },
+        { status: 502 },
+      )
+    }
   } catch (e: any) {
     return NextResponse.json({ success: false, error: e.message }, { status: 502 })
   }
