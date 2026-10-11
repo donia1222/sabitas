@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AlertTriangle, Copy, Check, X } from "lucide-react"
 
 /**
@@ -26,6 +26,17 @@ export function DiagnosticoGuardado({
   onCerrar: () => void
 }) {
   const [copiado, setCopiado] = useState(false)
+
+  // Traer el cartel a la vista en cuanto aparece: en el movil sale por debajo
+  // de lo que se esta mirando y es facil no verlo.
+  useEffect(() => {
+    if (lineas.length === 0) return
+    const t = setTimeout(() => {
+      document.getElementById("diag-texto")?.scrollIntoView({ behavior: "smooth", block: "center" })
+    }, 60)
+    return () => clearTimeout(t)
+  }, [lineas.length])
+
   if (lineas.length === 0) return null
 
   const texto = lineas.join("\n")
@@ -73,7 +84,11 @@ export function DiagnosticoGuardado({
 
       <pre
         id="diag-texto"
-        className="px-3 py-2.5 text-[11px] leading-relaxed text-red-900 whitespace-pre-wrap break-words font-mono max-h-52 overflow-y-auto"
+        /* Sin altura maxima a proposito: lo que hace falta leer son las
+           ULTIMAS lineas, y con un recorte y una barra interior se quedaban
+           escondidas justo las que importan. Que crezca; el modal ya tiene
+           su propio scroll. */
+        className="px-3 py-2.5 text-[11px] leading-relaxed text-red-900 whitespace-pre-wrap break-words font-mono"
       >
         {texto}
       </pre>
@@ -133,4 +148,24 @@ export async function fetchConTope(
   } finally {
     clearTimeout(reloj)
   }
+}
+
+/**
+ * Lo que de verdad va dentro del formulario, campo por campo.
+ *
+ * Añadido el 11/10/2026 despues de que el PHP contestara «falta el nombre»:
+ * sin esto no hay forma de saber desde el movil si un campo viaja vacio o
+ * directamente no viaja.
+ */
+export function describirFormulario(fd: FormData): string {
+  const partes: string[] = []
+  fd.forEach((valor, clave) => {
+    if (valor instanceof File) {
+      partes.push(`${clave}=[fichero ${valor.name} ${valor.size}B]`)
+    } else {
+      const t = String(valor)
+      partes.push(`${clave}=${t === "" ? "(VACIO)" : JSON.stringify(t.slice(0, 60))}`)
+    }
+  })
+  return partes.length ? partes.join(" · ") : "(el formulario va VACIO)"
 }

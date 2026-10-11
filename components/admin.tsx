@@ -65,7 +65,7 @@ import { Badge } from "@/components/ui/badge"
 // Encoger las fotos antes de subirlas: sin esto, desde el movil no llegan.
 import { encogerImagen, enMB, LIMITE_SUBIDA_BYTES } from "@/lib/encoger-imagen"
 // PROVISIONAL · el cartel que sale cuando guardar falla (11/10/2026)
-import { DiagnosticoGuardado, crearApunte, describirFichero, fetchConTope } from "@/components/diagnostico-guardado"
+import { DiagnosticoGuardado, crearApunte, describirFichero, describirFormulario, fetchConTope } from "@/components/diagnostico-guardado"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { features, PAQUETE } from "@/lib/features"
@@ -1209,6 +1209,7 @@ export function Admin({ onClose }: AdminProps) {
         }
         formData.set("image", pequena)
       }
+      apuntar(`campos: ${describirFormulario(formData)}`)
       apuntar("enviando…")
       // Con tope: si la peticion se queda colgada, el boton deja de girar y
       // el cartel dice donde se quedo, en vez de girar para siempre.
@@ -1567,6 +1568,7 @@ export function Admin({ onClose }: AdminProps) {
       apuntarP(`destino: ${url}`)
       apuntarP(`navegador: ${navigator.userAgent}`)
       apuntarP(`pantalla: ${window.innerWidth}x${window.innerHeight} · red: ${navigator.onLine ? "online" : "OFFLINE"}`)
+      apuntarP(`campos: ${describirFormulario(formData)}`)
       apuntarP("enviando…")
 
       const response = await fetchConTope(url, {
