@@ -63,7 +63,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 // Encoger las fotos antes de subirlas: sin esto, desde el movil no llegan.
-import { encogerImagen, enMB, LIMITE_SUBIDA_BYTES } from "@/lib/encoger-imagen"
+import { encogerImagen, enMB, LIMITE_SUBIDA_BYTES, fotoParaSubir } from "@/lib/encoger-imagen"
 // PROVISIONAL · el cartel que sale cuando guardar falla (11/10/2026)
 import { fetchConTope } from "@/lib/fetch-con-tope"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -590,18 +590,20 @@ export function Admin({ onClose }: AdminProps) {
     try {
       const fd = new FormData()
       Object.entries(siteForm).forEach(([k, v]) => fd.append(k, v ?? ""))
-      ;[1, 2, 3].forEach(slot => {
+      // Las fotos se rehacen una a una (ver lib/encoger-imagen.ts).
+      for (const slot of [1, 2, 3]) {
         const f = siteImageFiles[slot]
-        if (f) fd.append(`hero_image_${slot}`, f)
-      })
-      const res = await fetch(`/api/site-settings`, { method: "POST", body: fd })
+        if (f) fd.append(`hero_image_${slot}`, await fotoParaSubir(f))
+      }
+      const res = await fetchConTope(`/api/site-settings`, { method: "POST", body: fd })
       const data = await res.json()
       if (!data.success) throw new Error(data.error || "Fehler beim Speichern")
       setSiteSavedMsg("Gespeichert ✓")
       setTimeout(() => setSiteSavedMsg(""), 3000)
       loadSiteSettings()
     } catch (e: any) {
-      toast({ title: "Fehler", description: e.message, variant: "destructive" })
+      // AbortError = se agoto el tope de fetchConTope.
+      toast({ title: "Fehler", description: e?.name === "AbortError" ? "Zeitüberschreitung" : e.message, variant: "destructive" })
     } finally {
       setSiteSaving(false)
     }
@@ -704,19 +706,24 @@ export function Admin({ onClose }: AdminProps) {
       }
       fd.append("title", blogForm.title)
       fd.append("content", blogForm.content)
-      blogImageFiles.forEach((f, i) => { if (f) fd.append(fields[i], f) })
+      // Las fotos se rehacen una a una (ver galeria y lib/encoger-imagen.ts).
+      // Con for..of y no forEach porque hay que esperar a cada una.
+      for (let i = 0; i < blogImageFiles.length; i++) {
+        const f = blogImageFiles[i]
+        if (f) fd.append(fields[i], await fotoParaSubir(f))
+      }
       blogImageUrls.forEach((u, i) => { if (u.trim() && !blogImageFiles[i]) fd.append(fields[i] + "_url", u.trim()) })
       const url = currentEditingPost
         ? `/api/blog/edit`
         : `/api/blog/add`
-      const res = await fetch(url, { method: "POST", body: fd })
+      const res = await fetchConTope(url, { method: "POST", body: fd })
       const d = await res.json()
       if (!d.success) throw new Error(d.error)
       toast({ title: currentEditingPost ? "Post aktualisiert" : "Post erstellt" })
       setIsBlogModalOpen(false)
       await loadBlogPosts()
     } catch (e: any) {
-      toast({ title: "Fehler", description: e.message, variant: "destructive" })
+      toast({ title: "Fehler", description: e?.name === "AbortError" ? "Zeitüberschreitung" : e.message, variant: "destructive" })
     } finally { setBlogSaving(false) }
   }
 
@@ -758,16 +765,19 @@ export function Admin({ onClose }: AdminProps) {
     setGallerySaving(true)
     try {
       const fd = new FormData()
-      fd.append("image", galleryFile)
+      // La foto se rehace antes de meterla: un File del <input> es un puntero
+      // al disco y en el iPhone esa lectura puede fallar al enviar, dejando el
+      // cuerpo vacio. Ver lib/encoger-imagen.ts (11/10/2026).
+      fd.append("image", await fotoParaSubir(galleryFile))
       if (galleryTitle.trim()) fd.append("title", galleryTitle.trim())
-      const res = await fetch("/api/gallery/add", { method: "POST", body: fd })
+      const res = await fetchConTope("/api/gallery/add", { method: "POST", body: fd })
       const d = await res.json()
       if (!d.success) throw new Error(d.error)
       toast({ title: "Bild hochgeladen" })
       setIsGalleryModalOpen(false)
       await loadGalleryImages()
     } catch (e: any) {
-      toast({ title: "Fehler", description: e.message, variant: "destructive" })
+      toast({ title: "Fehler", description: e?.name === "AbortError" ? "Zeitüberschreitung" : e.message, variant: "destructive" })
     } finally { setGallerySaving(false) }
   }
 
@@ -825,20 +835,21 @@ export function Admin({ onClose }: AdminProps) {
       fd.append("subtitle", annForm.subtitle)
       fd.append("product_url", annForm.product_url)
       fd.append("show_once", annForm.show_once ? "1" : "")
-      ;([0, 1] as const).forEach(i => {
+      // Las fotos se rehacen una a una (ver lib/encoger-imagen.ts).
+      for (const i of [0, 1] as const) {
         const key = i === 0 ? "image1" : "image2"
         if (annRemovedImages[i]) fd.append(`remove_${key}`, "1")
-        if (annImageFiles[i]) fd.append(key, annImageFiles[i]!)
+        if (annImageFiles[i]) fd.append(key, await fotoParaSubir(annImageFiles[i]!))
         else if (annImageUrls[i]) fd.append(`${key}_url`, annImageUrls[i])
-      })
-      const res = await fetch("/api/announcement/save", { method: "POST", body: fd })
+      }
+      const res = await fetchConTope("/api/announcement/save", { method: "POST", body: fd })
       const d = await res.json()
       if (!d.success) throw new Error(d.error)
       toast({ title: editingAnn ? "Aktualisiert" : "Erstellt" })
       setIsAnnModalOpen(false)
       await loadAnnouncements()
     } catch (e: any) {
-      toast({ title: "Fehler", description: e.message, variant: "destructive" })
+      toast({ title: "Fehler", description: e?.name === "AbortError" ? "Zeitüberschreitung" : e.message, variant: "destructive" })
     } finally { setAnnSaving(false) }
   }
 

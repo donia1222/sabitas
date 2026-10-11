@@ -110,3 +110,23 @@ export async function encogerImagen(file: File): Promise<File> {
 export function enMB(bytes: number): string {
   return (bytes / (1024 * 1024)).toFixed(1).replace(".", ",") + " MB"
 }
+
+/**
+ * Lo que hay que llamar antes de meter una foto en un FormData.
+ *
+ * Hace las dos cosas de golpe: la rehace —para que viajen bytes de memoria y
+ * no un puntero al disco, que es lo que fallaba en el iPhone— y corta si
+ * despues de encogerla sigue sin caber en el limite de Vercel.
+ *
+ * Si no cabe lanza un error con el texto ya escrito en aleman: quien la llame
+ * lo recoge en su try/catch de siempre y sale en el toast.
+ */
+export async function fotoParaSubir(file: File): Promise<File> {
+  const pequena = await encogerImagen(file)
+  if (pequena.size > LIMITE_SUBIDA_BYTES) {
+    throw new Error(
+      `«${file.name}» ist ${enMB(pequena.size)} gross. Bitte ein kleineres Bild wählen.`,
+    )
+  }
+  return pequena
+}
