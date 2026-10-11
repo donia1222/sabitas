@@ -1,0 +1,136 @@
+"use client"
+
+import { useState } from "react"
+import { AlertTriangle, Copy, Check, X } from "lucide-react"
+
+/**
+ * El cartel que sale cuando guardar falla.
+ *
+ * PROVISIONAL · 11/10/2026. Esta aqui para cazar un fallo que solo aparece a
+ * veces y solo en el movil: se añade una imagen a una categoria o a un
+ * producto, se pulsa guardar, y no pasa nada —ni se guarda, ni se cierra el
+ * modal, ni se ve ningun error—. En el movil no hay consola donde mirar, asi
+ * que el error tiene que salir en la propia pantalla.
+ *
+ * Se quita en cuanto sepamos que era.
+ *
+ * No se enseña nunca si todo va bien, asi que Sabrina no lo vera salvo que
+ * le falle justo eso que nos falta por entender. Y si le sale, al menos sabra
+ * que ha pasado algo en vez de quedarse mirando un boton que gira.
+ */
+export function DiagnosticoGuardado({
+  lineas,
+  onCerrar,
+}: {
+  lineas: string[]
+  onCerrar: () => void
+}) {
+  const [copiado, setCopiado] = useState(false)
+  if (lineas.length === 0) return null
+
+  const texto = lineas.join("\n")
+
+  const copiar = async () => {
+    try {
+      await navigator.clipboard.writeText(texto)
+      setCopiado(true)
+      setTimeout(() => setCopiado(false), 2500)
+    } catch {
+      // Safari puede negarse si no viene de un gesto directo. Entonces se
+      // selecciona el texto y que lo copie a mano.
+      const el = document.getElementById("diag-texto")
+      if (el) {
+        const r = document.createRange()
+        r.selectNodeContents(el)
+        const s = window.getSelection()
+        s?.removeAllRanges()
+        s?.addRange(r)
+      }
+    }
+  }
+
+  return (
+    <div className="mx-6 mb-3 rounded-xl border-2 border-red-300 bg-red-50 overflow-hidden">
+      <div className="flex items-start gap-2 px-3 py-2.5 border-b border-red-200">
+        <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+        <div className="min-w-0 flex-1">
+          <p className="text-[13px] font-bold text-red-900 leading-tight">
+            Speichern fehlgeschlagen
+          </p>
+          <p className="text-[11.5px] text-red-700 leading-snug mt-0.5">
+            Bitte diesen Text kopieren und an Roberto schicken.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onCerrar}
+          aria-label="Schliessen"
+          className="shrink-0 w-6 h-6 rounded-full text-red-400 hover:text-red-700 hover:bg-red-100 flex items-center justify-center"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      <pre
+        id="diag-texto"
+        className="px-3 py-2.5 text-[11px] leading-relaxed text-red-900 whitespace-pre-wrap break-words font-mono max-h-52 overflow-y-auto"
+      >
+        {texto}
+      </pre>
+
+      <div className="px-3 pb-2.5">
+        <button
+          type="button"
+          onClick={copiar}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-[12px] font-bold px-3 py-1.5"
+        >
+          {copiado ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          {copiado ? "Kopiert" : "Text kopieren"}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * Apunta lo que va pasando mientras se guarda, para poder enseñarlo si falla.
+ *
+ * La gracia esta en que apunta ANTES de cada paso, no despues: si la peticion
+ * se queda colgada para siempre, la ultima linea dice exactamente donde se
+ * quedo.
+ */
+export function crearApunte() {
+  const t0 = Date.now()
+  const lineas: string[] = []
+  const apuntar = (texto: string) => {
+    lineas.push(`${String(Date.now() - t0).padStart(5, " ")} ms · ${texto}`)
+  }
+  return { lineas, apuntar }
+}
+
+/** Lo que se puede contar de un fichero sin abrirlo. */
+export function describirFichero(f: File | null | undefined): string {
+  if (!f) return "sin fichero"
+  const mb = (f.size / (1024 * 1024)).toFixed(2)
+  return `«${f.name}» · ${f.type || "sin tipo"} · ${f.size} bytes (${mb} MB)`
+}
+
+/**
+ * Un fetch que no se puede quedar colgado para siempre.
+ *
+ * Sin esto, el boton gira hasta que ella cierra la pagina y no sabemos si la
+ * peticion salio, llego o volvio.
+ */
+export async function fetchConTope(
+  url: string,
+  opciones: RequestInit,
+  segundos = 45,
+): Promise<Response> {
+  const corte = new AbortController()
+  const reloj = setTimeout(() => corte.abort(), segundos * 1000)
+  try {
+    return await fetch(url, { ...opciones, signal: corte.signal })
+  } finally {
+    clearTimeout(reloj)
+  }
+}
