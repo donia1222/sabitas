@@ -26,6 +26,10 @@ export function DiagnosticoGuardado({
   onCerrar: () => void
 }) {
   const [copiado, setCopiado] = useState(false)
+  // El resultado de la sonda vive AQUI y no dentro del boton, para que
+  // «Text kopieren» se lo lleve tambien. Antes se copiaba solo el registro y
+  // el resultado de la sonda se quedaba en pantalla sin que nadie lo mandara.
+  const [sonda, setSonda] = useState("")
 
   // Traer el cartel a la vista en cuanto aparece: en el movil sale por debajo
   // de lo que se esta mirando y es facil no verlo.
@@ -39,7 +43,7 @@ export function DiagnosticoGuardado({
 
   if (lineas.length === 0) return null
 
-  const texto = lineas.join("\n")
+  const texto = lineas.join("\n") + (sonda ? "\n\n── PRUEBA TECNICA ──\n" + sonda : "")
 
   const copiar = async () => {
     try {
@@ -102,7 +106,7 @@ export function DiagnosticoGuardado({
           {copiado ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
           {copiado ? "Kopiert" : "Text kopieren"}
         </button>
-        <BotonSonda />
+        <BotonSonda salida={sonda} setSalida={setSonda} />
       </div>
     </div>
   )
@@ -182,9 +186,8 @@ export function describirFormulario(fd: FormData): string {
  *
  * No guarda nada en ningun sitio.
  */
-function BotonSonda() {
+function BotonSonda({ salida, setSalida }: { salida: string; setSalida: (s: string) => void }) {
   const [estado, setEstado] = useState<"quieto" | "yendo" | "listo">("quieto")
-  const [salida, setSalida] = useState("")
 
   const lanzar = async () => {
     setEstado("yendo")
