@@ -65,7 +65,7 @@ import { Badge } from "@/components/ui/badge"
 // Encoger las fotos antes de subirlas: sin esto, desde el movil no llegan.
 import { encogerImagen, enMB, LIMITE_SUBIDA_BYTES } from "@/lib/encoger-imagen"
 // PROVISIONAL · el cartel que sale cuando guardar falla (11/10/2026)
-import { DiagnosticoGuardado, crearApunte, describirFichero, describirFormulario, fetchConTope } from "@/components/diagnostico-guardado"
+import { fetchConTope } from "@/lib/fetch-con-tope"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { features, PAQUETE } from "@/lib/features"
@@ -90,7 +90,6 @@ interface OrderItem {
   badge: string
   origin: string
 }
-
 
 interface Order {
   id: number
@@ -328,7 +327,6 @@ export function Admin({ onClose }: AdminProps) {
     errors?: string[]
     error?: string
   } | null>(null)
-
 
   // Excel Add (sin borrar) State
   const [addFile, setAddFile] = useState<File | null>(null)
@@ -1180,26 +1178,13 @@ export function Admin({ onClose }: AdminProps) {
     const url = isEditing ? `/api/categories/edit` : `/api/categories/add`
 
     setCategorySaving(true)
-    setDiagCategoria([])
-
-    // PROVISIONAL · apuntar cada paso para poder enseñarlo si falla.
-    const { lineas, apuntar } = crearApunte()
-    const fallo = (que: string) => { apuntar(que); setDiagCategoria([...lineas]) }
-
     try {
-      apuntar(`navegador: ${navigator.userAgent}`)
-      apuntar(`pantalla: ${window.innerWidth}x${window.innerHeight} · red: ${navigator.onLine ? "online" : "OFFLINE"}`)
-      apuntar(`destino: ${url}`)
-
+      // La foto se rehace antes de enviarla. Ver lib/encoger-imagen.ts: un
+      // File del <input> apunta al disco y Safari de iOS puede no leerlo.
       const foto = formData.get("image")
-      apuntar(`imagen elegida: ${describirFichero(foto instanceof File && foto.size > 0 ? foto : null)}`)
-
       if (foto instanceof File && foto.size > 0) {
-        apuntar("encogiendo la imagen…")
         const pequena = await encogerImagen(foto)
-        apuntar(`encogida: ${describirFichero(pequena)}`)
         if (pequena.size > LIMITE_SUBIDA_BYTES) {
-          fallo(`demasiado grande: ${enMB(pequena.size)}`)
           toast({
             title: "Bild zu gross",
             description: `«${foto.name}» ist ${enMB(pequena.size)} gross. Bitte ein kleineres Bild wählen.`,
@@ -1209,21 +1194,14 @@ export function Admin({ onClose }: AdminProps) {
         }
         formData.set("image", pequena)
       }
-      apuntar(`campos: ${describirFormulario(formData)}`)
-      apuntar("enviando…")
-      // Con tope: si la peticion se queda colgada, el boton deja de girar y
-      // el cartel dice donde se quedo, en vez de girar para siempre.
+      // Con tope: si la peticion se queda colgada, el boton deja de girar.
       const response = await fetchConTope(url, { method: "POST", body: formData })
-      apuntar(`respuesta: HTTP ${response.status} ${response.statusText || ""}`.trim())
-
       const crudo = await response.text()
-      apuntar(`cuerpo (${crudo.length} caracteres): ${crudo.slice(0, 300)}`)
 
       let data: any
       try {
         data = JSON.parse(crudo)
       } catch {
-        fallo("la respuesta no es JSON — probablemente no llego al servidor")
         throw new Error(`Unerwartete Antwort (HTTP ${response.status})`)
       }
 
@@ -1237,12 +1215,10 @@ export function Admin({ onClose }: AdminProps) {
         setEditingCategory(null)
         form.reset()
       } else {
-        fallo(`el servidor dice que no: ${data.error ?? "sin motivo"}`)
         throw new Error(data.error || "Fehler")
       }
     } catch (error: any) {
       // AbortError = se agoto el tope. Es la pista de que se quedo colgada.
-      fallo(`EXCEPCION ${error?.name ?? "?"}: ${error?.message ?? error}`)
       toast({
         title: "Fehler",
         description: error?.name === "AbortError" ? "Zeitüberschreitung" : error.message,
@@ -1509,20 +1485,11 @@ export function Admin({ onClose }: AdminProps) {
   // Lo mismo al guardar una categoria, y por lo mismo: tambien puede llevar
   // imagen, asi que tambien tarda y tambien se vuelve a pulsar.
   const [categorySaving, setCategorySaving] = useState(false)
-  // PROVISIONAL · lo que paso en el ultimo intento fallido de guardar.
-  const [diagCategoria, setDiagCategoria] = useState<string[]>([])
-  const [diagProducto, setDiagProducto] = useState<string[]>([])
 
   const handleProductSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (productSaving) return
     setProductSaving(true)
-    setDiagProducto([])
-
-    // PROVISIONAL · lo mismo que en las categorias: apuntar cada paso para
-    // poder enseñarlo en pantalla si falla. Ver diagnostico-guardado.tsx.
-    const { lineas: lineasP, apuntar: apuntarP } = crearApunte()
-    const falloP = (que: string) => { apuntarP(que); setDiagProducto([...lineasP]) }
 
     const formData = new FormData(e.currentTarget)
     const isEditing = currentEditingProduct !== null && !isDuplicating
@@ -1538,13 +1505,10 @@ export function Admin({ onClose }: AdminProps) {
         // Encoger antes de subir. Sin esto, una foto hecha con el movil
         // (4-8 MB) nunca llegaba: Vercel corta a los 4,5 MB y el guardado se
         // quedaba colgado. Ver lib/encoger-imagen.ts.
-        apuntarP(`imagen ${i}: ${describirFichero(imageInput.files[0])}`)
         const foto = await encogerImagen(imageInput.files[0])
-        apuntarP(`imagen ${i} encogida: ${describirFichero(foto)}`)
         // Red de seguridad: si aun asi no cabe —un formato que el navegador
         // no sabe dibujar—, decirselo claro en vez de dejarla esperando.
         if (foto.size > LIMITE_SUBIDA_BYTES) {
-          falloP(`imagen ${i} demasiado grande: ${enMB(foto.size)}`)
           toast({
             title: "Bild zu gross",
             description: `«${imageInput.files[0].name}» ist ${enMB(foto.size)} gross. Bitte ein kleineres Bild wählen.`,
@@ -1571,32 +1535,24 @@ export function Admin({ onClose }: AdminProps) {
 
     try {
       const url = isEditing ? `/api/edit-product` : `/api/add-product`
-      apuntarP(`destino: ${url}`)
-      apuntarP(`navegador: ${navigator.userAgent}`)
-      apuntarP(`pantalla: ${window.innerWidth}x${window.innerHeight} · red: ${navigator.onLine ? "online" : "OFFLINE"}`)
       // Los huecos sin foto dejan un fichero de 0 bytes en el formulario.
       // No aportan nada y son una referencia mas al disco: fuera.
       for (let i = 0; i < 4; i++) {
         const v = formData.get(`image_${i}`)
         if (v instanceof File && v.size === 0) formData.delete(`image_${i}`)
       }
-      apuntarP(`campos: ${describirFormulario(formData)}`)
-      apuntarP("enviando…")
 
       const response = await fetchConTope(url, {
         method: "POST",
         body: formData,
       })
-      apuntarP(`respuesta: HTTP ${response.status} ${response.statusText || ""}`.trim())
 
       const crudo = await response.text()
-      apuntarP(`cuerpo (${crudo.length} caracteres): ${crudo.slice(0, 300)}`)
 
       let data: any
       try {
         data = JSON.parse(crudo)
       } catch {
-        falloP("la respuesta no es JSON — probablemente no llego al servidor")
         throw new Error(`Unerwartete Antwort (HTTP ${response.status})`)
       }
 
@@ -1640,12 +1596,10 @@ export function Admin({ onClose }: AdminProps) {
           loadProducts(true)
         }
       } else {
-        falloP(`el servidor dice que no: ${data.error ?? "sin motivo"}`)
         throw new Error(data.error || "Fehler beim Speichern des Produkts")
       }
     } catch (error: any) {
       console.error("Error saving product:", error)
-      falloP(`EXCEPCION ${error?.name ?? "?"}: ${error?.message ?? error}`)
       toast({
         title: "Fehler",
         description: error?.name === "AbortError"
@@ -4766,8 +4720,6 @@ export function Admin({ onClose }: AdminProps) {
                 </div>
               </div>
 
-              <DiagnosticoGuardado lineas={diagProducto} onCerrar={() => setDiagProducto([])} />
-
               <div className="flex justify-end space-x-2 pt-4">
                 {currentEditingProduct && !isDuplicating && (
                   <Button type="button" variant="outline" onClick={duplicateCurrentProduct} disabled={productSaving} className="mr-auto bg-white text-brand border-brand hover:bg-brand/10">
@@ -4942,7 +4894,6 @@ export function Admin({ onClose }: AdminProps) {
                   />
                 </div>
               </div>
-              <DiagnosticoGuardado lineas={diagCategoria} onCerrar={() => setDiagCategoria([])} />
               <div className="flex justify-end gap-2 px-6 py-4 border-t border-gray-100 bg-white shrink-0">
                 <Button type="button" variant="outline" disabled={categorySaving} onClick={() => { setIsCategoryModalOpen(false); setEditingCategory(null) }} className="bg-white text-gray-700 hover:bg-gray-50">
                   Abbrechen
