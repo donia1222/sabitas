@@ -196,10 +196,15 @@ function BotonSonda() {
       fd.append("numero", "247")
       fd.append("image", new File([trozo], "sonda.jpg", { type: "image/jpeg" }))
 
-      const r = await fetch("/api/diag-upload", { method: "POST", body: fd })
-      setSalida(JSON.stringify(await r.json(), null, 1))
+      const r = await fetchConTope("/api/diag-upload", { method: "POST", body: fd }, 20)
+      const crudo = await r.text()
+      try {
+        setSalida(`HTTP ${r.status}\n` + JSON.stringify(JSON.parse(crudo), null, 1))
+      } catch {
+        setSalida(`HTTP ${r.status}\n${crudo.slice(0, 500)}`)
+      }
     } catch (e: any) {
-      setSalida(`la sonda tampoco pudo salir · ${e?.name}: ${e?.message}`)
+      setSalida(`LA SONDA NI SALIO · ${e?.name}: ${e?.message}`)
     } finally {
       setEstado("listo")
     }
@@ -215,10 +220,15 @@ function BotonSonda() {
       >
         {estado === "yendo" ? "Prüfe…" : "Technische Prüfung"}
       </button>
-      {salida && (
-        <pre className="w-full mt-1 rounded-lg bg-white border border-red-200 p-2 text-[10.5px] leading-snug text-red-900 whitespace-pre-wrap break-all font-mono">
-          {salida}
-        </pre>
+      {estado === "listo" && (
+        <div className="w-full mt-1 rounded-lg bg-white border-2 border-red-400 overflow-hidden">
+          <p className="bg-red-100 px-2 py-1 text-[11px] font-bold text-red-900">
+            Ergebnis der Prüfung — diesen Teil auch kopieren
+          </p>
+          <pre className="p-2 text-[10.5px] leading-snug text-red-900 whitespace-pre-wrap break-all font-mono">
+            {salida || "(la sonda no devolvio nada)"}
+          </pre>
+        </div>
       )}
     </>
   )
