@@ -54,6 +54,7 @@ import {
   Gift,
   ChevronLeft,
   ChevronRight,
+  Loader2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -1415,8 +1416,16 @@ export function Admin({ onClose }: AdminProps) {
     }
   }
 
+  // Guardando un producto: mientras esta en true, el boton gira y no se puede
+  // volver a pulsar. Antes no habia ninguna senal: se pulsaba, no pasaba nada
+  // visible durante un par de segundos —la foto tarda en subir— y era facil
+  // pulsar otra vez y crear el articulo dos veces.
+  const [productSaving, setProductSaving] = useState(false)
+
   const handleProductSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (productSaving) return
+    setProductSaving(true)
 
     const formData = new FormData(e.currentTarget)
     const isEditing = currentEditingProduct !== null && !isDuplicating
@@ -1498,6 +1507,8 @@ export function Admin({ onClose }: AdminProps) {
         description: "Fehler beim Speichern des Produkts",
         variant: "destructive",
       })
+    } finally {
+      setProductSaving(false)
     }
   }
 
@@ -4360,7 +4371,10 @@ export function Admin({ onClose }: AdminProps) {
         </Dialog>
 
         {/* Product Add/Edit Modal */}
-        <Dialog open={isProductModalOpen} onOpenChange={setIsProductModalOpen}>
+        {/* Mientras guarda no se cierra: ni pulsando fuera, ni con Escape.
+            Cerrarlo a mitad no cancelaria la subida —la peticion ya va de
+            camino—, solo dejaria a Sabrina sin saber si se guardo o no. */}
+        <Dialog open={isProductModalOpen} onOpenChange={abierto => { if (!productSaving) setIsProductModalOpen(abierto) }}>
           <DialogContent className="left-0 top-0 translate-x-0 translate-y-0 w-full max-w-full h-full max-h-full rounded-none sm:left-[50%] sm:top-[50%] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:max-w-2xl sm:h-auto sm:max-h-[80vh] sm:rounded-lg overflow-y-auto bg-white">
             <DialogHeader>
               <DialogTitle>{isDuplicating ? "Produkt duplizieren" : currentEditingProduct ? "Produkt bearbeiten" : "Produkt hinzufügen"}</DialogTitle>
@@ -4569,15 +4583,22 @@ export function Admin({ onClose }: AdminProps) {
 
               <div className="flex justify-end space-x-2 pt-4">
                 {currentEditingProduct && !isDuplicating && (
-                  <Button type="button" variant="outline" onClick={duplicateCurrentProduct} className="mr-auto bg-white text-brand border-brand hover:bg-brand/10">
+                  <Button type="button" variant="outline" onClick={duplicateCurrentProduct} disabled={productSaving} className="mr-auto bg-white text-brand border-brand hover:bg-brand/10">
                     Duplizieren
                   </Button>
                 )}
-                <Button type="button" variant="outline" onClick={() => setIsProductModalOpen(false)} className="bg-white text-gray-700 hover:bg-gray-50">
+                <Button type="button" variant="outline" onClick={() => setIsProductModalOpen(false)} disabled={productSaving} className="bg-white text-gray-700 hover:bg-gray-50">
                   Abbrechen
                 </Button>
-                <Button type="submit" className="bg-brand hover:bg-brand-dark text-white rounded-full px-6">
-                  {currentEditingProduct && !isDuplicating ? "Aktualisieren" : "Erstellen"}
+                <Button type="submit" disabled={productSaving} className="bg-brand hover:bg-brand-dark text-white rounded-full px-6 disabled:opacity-100">
+                  {productSaving ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Wird gespeichert…
+                    </>
+                  ) : (
+                    currentEditingProduct && !isDuplicating ? "Aktualisieren" : "Erstellen"
+                  )}
                 </Button>
               </div>
             </form>
