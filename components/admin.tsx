@@ -179,6 +179,22 @@ interface AdminProps {
  * verdad las apaga son los interruptores de lib/features.ts y api/features.php
  * —el panel no es la cerradura, es el cartel—.
  */
+/**
+ * Los campos que vienen de la tienda de caza de la que salió esta y que
+ * Sabrina no necesita: Bewertung, Badge, Hersteller, Lieferant y Gewicht.
+ *
+ * En `false` no se le enseñan, pero NO están borrados: siguen yendo en el
+ * formulario como input escondido con el valor que ya tenían, así que la base
+ * de datos no pierde nada y se pueden recuperar poniendo esto en `true`.
+ *
+ * El peso hoy no lo usa nadie: con el PAQUETE 2 la caja y el cálculo de
+ * portes están apagados (`caja` y `envios` en lib/features.ts) y el carrito
+ * termina en WhatsApp. Se sigue mandando con el mismo valor de siempre
+ * (0.500 en uno nuevo) por si algún día se enciende el paquete 3 — entonces
+ * sí saldría de aquí el precio del envío, y habría que volver a enseñarlo.
+ */
+const CAMPOS_PLANTILLA = false
+
 const PAQUETE_3 = [
   { clave: "orders",        etiqueta: "Bestellungen", Icono: ShoppingBag },
   { clave: "einstellungen", etiqueta: "Zahlung",      Icono: Shield },
@@ -4456,9 +4472,21 @@ export function Admin({ onClose }: AdminProps) {
                 </Select>
               </div>
 
+              {/* ── Campos de la plantilla que Sabrina no usa ────────────
+                  Bewertung, Badge, Hersteller y Lieferant vienen de la tienda
+                  de caza de la que salió esta. Ella no puntúa sus cosas ni
+                  tiene fabricantes ni proveedores: las hace a mano.
+
+                  Se OCULTAN, no se borran: el campo sigue en el formulario
+                  como input escondido con el valor que ya tenía, así que lo
+                  que haya guardado se vuelve a mandar igual y la base de
+                  datos no cambia ni un dato. Para volver a enseñarlos basta
+                  con poner CAMPOS_PLANTILLA a true arriba del fichero. */}
+              {CAMPOS_PLANTILLA ? (
+              <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-            
+
                 </div>
                 <div>
                   <Label htmlFor="rating">Bewertung (0-5)</Label>
@@ -4506,6 +4534,18 @@ export function Admin({ onClose }: AdminProps) {
                     className="bg-white"
                   />
                 </div>
+              </div>
+              </>
+              ) : (
+                <>
+                  <input type="hidden" name="rating"   value={currentEditingProduct?.rating ?? ""} readOnly />
+                  <input type="hidden" name="badge"    value={currentEditingProduct?.badge ?? ""} readOnly />
+                  <input type="hidden" name="origin"   value={currentEditingProduct?.origin ?? ""} readOnly />
+                  <input type="hidden" name="supplier" value={currentEditingProduct?.supplier ?? ""} readOnly />
+                </>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
                   {/* Versand auf Anfrage: no se vende online (contactar / recogida) */}
                   <input type="hidden" name="shipping_on_request" value={productOnRequest ? "1" : "0"} />
@@ -4519,20 +4559,35 @@ export function Admin({ onClose }: AdminProps) {
                     <span className="text-sm font-medium text-amber-800">Versand auf Anfrage — nicht online kaufbar (Kontakt / Abholung im Laden)</span>
                   </label>
                 </div>
+                {/* El peso tampoco se le enseña. Con el paquete 2 no lo usa
+                    nadie: la caja y los portes están apagados y el carrito
+                    acaba en WhatsApp. Se manda escondido con el mismo valor
+                    de siempre para no perderlo, porque el día que se encienda
+                    el paquete 3 de aquí saldrá el precio del envío.
+                    Volver a enseñarlo: CAMPOS_PLANTILLA a true. */}
                 {!productOnRequest && (
-                <div>
-                  <Label htmlFor="weight_kg">Gewicht (kg)</Label>
-                  <Input
-                    id="weight_kg"
-                    name="weight_kg"
-                    type="number"
-                    step="0.001"
-                    min="0"
-                    defaultValue={currentEditingProduct?.weight_kg ?? "0.500"}
-                    placeholder="z.B. 0.350"
-                    className="bg-white"
-                  />
-                </div>
+                  CAMPOS_PLANTILLA ? (
+                  <div>
+                    <Label htmlFor="weight_kg">Gewicht (kg)</Label>
+                    <Input
+                      id="weight_kg"
+                      name="weight_kg"
+                      type="number"
+                      step="0.001"
+                      min="0"
+                      defaultValue={currentEditingProduct?.weight_kg ?? "0.500"}
+                      placeholder="z.B. 0.350"
+                      className="bg-white"
+                    />
+                  </div>
+                  ) : (
+                    <input
+                      type="hidden"
+                      name="weight_kg"
+                      value={currentEditingProduct?.weight_kg ?? "0.500"}
+                      readOnly
+                    />
+                  )
                 )}
               </div>
 
@@ -4654,7 +4709,7 @@ export function Admin({ onClose }: AdminProps) {
                     required
                     defaultValue={editingCategory?.name || ""}
                     key={editingCategory?.id ?? "new"}
-                    placeholder="z.B. Rubs & Gewürze"
+                    placeholder="z.B. Taschen & Accessoires"
                     className="bg-white h-12 text-base sm:h-10 sm:text-sm mt-1"
                   />
                   {!editingCategory && (
