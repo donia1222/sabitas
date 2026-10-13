@@ -82,6 +82,14 @@ export default function ProductPage() {
   const id = params.id as string
   const backTo = searchParams.get("back")
 
+  // El botón dice a dónde lleva. Si viene de una colección lo nombra, porque
+  // «Zurück» a secas obliga a recordar de dónde venías.
+  const volverTexto = backTo?.startsWith("kollektion/")
+    ? "Zurück zur Kollektion"
+    : backTo === "shop"
+      ? "Zurück zum Shop"
+      : "Zurück"
+
   const [product, setProduct] = useState<Product | null>(null)
   const [similar, setSimilar] = useState<Product[]>([])
   const [failedSimilar, setFailedSimilar] = useState<Set<number>>(new Set())
@@ -313,8 +321,35 @@ export default function ProductPage() {
       {/* La misma cabecera que la portada: un solo sitio que mantener. */}
       <Header onCartOpen={() => router.push("/shop")} />
 
+      {/*
+        Volver, justo debajo de la cabecera y encima de la foto.
+        Usa el «back» que ya traía el enlace desde la cuadrícula, así que
+        vuelve a LA MISMA colección y a la misma posición, no al inicio.
+        Si se llega de fuera (enlace compartido, el carrito) no hay «back»:
+        entonces tira del historial del navegador, y si tampoco lo hay —una
+        pestaña recién abierta— va a la tienda, que es mejor que un botón
+        que no hace nada.
+      */}
+      <div className="max-w-5xl mx-auto px-4 pt-5">
+        <button
+          type="button"
+          onClick={() => {
+            if (backTo) { router.push(`/${backTo}`); return }
+            if (typeof window !== "undefined" && window.history.length > 1) { router.back(); return }
+            router.push("/shop")
+          }}
+          className="inline-flex items-center gap-2 rounded-full border border-n-200 bg-white
+                     px-4 py-2.5 text-sm font-bold text-n-700 shadow-sm transition-colors
+                     hover:border-brand hover:text-brand active:scale-[.98]"
+          aria-label={volverTexto}
+        >
+          <ArrowLeft className="w-4 h-4" />
+          {volverTexto}
+        </button>
+      </div>
+
       {/* Content */}
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-4 pt-5 pb-8">
         <div className="bg-white rounded-3xl shadow-sm border border-n-150 overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2">
 
