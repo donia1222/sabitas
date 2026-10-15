@@ -1025,19 +1025,7 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                 abre una hoja por abajo, y debajo las categorias en pastillas
                 con su foto pequeña. Las tarjetas cuadradas de antes ocupaban
                 media pantalla antes de ver un solo producto. */}
-            {/* Pegada arriba al bajar (15/10/2026).
-                El `top` sigue a la cabecera: con ella a la vista, la barra se
-                para justo debajo (84 px); cuando la cabecera se esconde al
-                bajar, la barra sube hasta arriba del todo. Las dos usan la
-                misma cuenta para decidirlo, asi que se mueven juntas.
-                Al volver arriba del todo, la barra se queda otra vez en su
-                sitio y la sombra desaparece. */}
-            <div
-              className={`lg:hidden mb-4 space-y-3 sticky z-40 -mx-4 px-4 pt-3 pb-2 bg-n-50/95 backdrop-blur-md transition-[top,box-shadow] duration-300 ${
-                barraPegada ? "shadow-[0_6px_16px_-10px_rgba(0,0,0,.35)] border-b border-brand-tint" : ""
-              }`}
-              style={{ top: headerVisible ? "84px" : "0px" }}
-            >
+            <div className="lg:hidden mb-4 space-y-3">
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-n-400 pointer-events-none" />
@@ -1069,8 +1057,23 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                   )}
                 </button>
               </div>
+            </div>
 
-              <div ref={mobileCatScrollRef} className="flex gap-2 overflow-x-auto -mx-4 px-4 pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {/* Pegados arriba al bajar (15/10/2026) — solo los chips.
+                  Con el buscador y los filtros dentro ocupaba media pantalla
+                  y tapaba justo lo que se habia venido a mirar.
+                  El `top` sigue a la cabecera: con ella a la vista, los chips
+                  se paran debajo (84 px); cuando se esconde al bajar, suben
+                  del todo. Las dos cosas usan la misma cuenta, asi que se
+                  mueven juntas. Al volver arriba, los chips vuelven a su
+                  sitio y la sombra desaparece. */}
+            <div
+              ref={mobileCatScrollRef}
+              className={`lg:hidden mb-4 flex gap-2 overflow-x-auto -mx-4 px-4 pt-1 pb-2 sticky z-40 bg-n-50/95 backdrop-blur-md transition-[top,box-shadow] duration-300 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${
+                barraPegada ? "shadow-[0_6px_16px_-10px_rgba(0,0,0,.35)]" : ""
+              }`}
+              style={{ top: headerVisible ? "84px" : "0px" }}
+            >
                 <button
                   onClick={() => { setShowWishlist(false); setActiveCategory("all") }}
                   className={`shrink-0 h-11 px-4 rounded-full text-[13.5px] font-semibold border transition-colors ${
@@ -1123,7 +1126,6 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                     </span>
                   </button>
                 )}
-              </div>
             </div>
 
             {/* ── La hoja de filtros del telefono ───────────────────────
