@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { AdminLoginButton } from "@/components/admin-auth"
 import { InstallPWAButton } from "@/components/install-pwa-button"
-import { Facebook, Twitter, Instagram, Newspaper, ArrowRight, Download, ShieldCheck, MapPin, Phone, Mail } from "lucide-react"
+import { Facebook, Newspaper, ArrowRight, Download, ShieldCheck, MapPin, Phone, Mail } from "lucide-react"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
@@ -254,24 +254,25 @@ Falls Sie eine beschädigte oder falsche Ware erhalten haben, wenden Sie sich bi
         </div>
       )}
 
-      {/* ── Social icons ── */}
+      {/* ── Facebook ──────────────────────────────────────────────────
+          Antes habia tres iconos y solo uno llevaba a algun sitio: Twitter e
+          Instagram eran botones que no hacian nada, de cuando esto venia de
+          una plantilla. Un icono que no responde es peor que no tenerlo,
+          porque el que lo pulsa cree que la web esta rota.
+          Queda el unico que existe de verdad, con el nombre al lado: la «f»
+          sola no se lee como algo que se pueda pulsar. */}
       <div className="border-b border-n-200 py-4 bg-white">
-        <div className="container mx-auto px-4 flex justify-center gap-6">
-          {[
-            { Icon: Facebook, href: "https://www.facebook.com/" },
-            { Icon: Twitter, href: null },
-            { Icon: Instagram, href: null },
-          ].map(({ Icon, href }, i) =>
-            href ? (
-              <a key={i} href={href} target="_blank" rel="noopener noreferrer" className="w-9 h-9 flex items-center justify-center text-n-600 hover:text-brand transition-colors">
-                <Icon className="w-5 h-5" />
-              </a>
-            ) : (
-              <button key={i} className="w-9 h-9 flex items-center justify-center text-n-600 hover:text-brand transition-colors">
-                <Icon className="w-5 h-5" />
-              </button>
-            )
-          )}
+        <div className="container mx-auto px-4 flex justify-center">
+          <a
+            href="https://www.facebook.com/sabrina.steinbeck"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Sabitas auf Facebook"
+            className="inline-flex items-center gap-2.5 rounded-full border border-n-200 px-5 py-2.5 text-n-700 hover:text-brand hover:border-brand transition-colors"
+          >
+            <Facebook className="w-5 h-5" />
+            <span className="text-sm font-semibold">Facebook</span>
+          </a>
         </div>
       </div>
 

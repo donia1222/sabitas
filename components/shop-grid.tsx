@@ -10,7 +10,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import {
   ShoppingCart, ChevronLeft, ChevronRight,
   Search, X, Check, ArrowLeft,
-  ArrowUp, ChevronDown, Heart, Menu, Newspaper, Download, Images, Gift,
+  ChevronDown, Heart, Menu, Newspaper, Download, Images, Gift,
   SlidersHorizontal
 } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"
@@ -323,9 +323,12 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
   const [sortBy, setSortBy]                 = useState<"default"|"name_asc"|"name_desc"|"price_asc"|"price_desc">("default")
   const [sidebarOpen, setSidebarOpen]       = useState(false)
   const [expandedCats, setExpandedCats]     = useState<Set<string>>(new Set())
-  const [showBackTop, setShowBackTop]       = useState(false)
   const [navMenuOpen, setNavMenuOpen]       = useState(false)
   const [headerVisible, setHeaderVisible]   = useState(true)
+  /* La barra del movil —buscador, filtros y categorias— se queda pegada
+     arriba al bajar. Esto solo sirve para ponerle la sombra cuando lo esta:
+     quieta en su sitio no tiene que haber ninguna linea. */
+  const [barraPegada, setBarraPegada]       = useState(false)
   const lastScrollYRef                      = useRef(0)
   const [showUserProfile, setShowUserProfile] = useState(false)
 
@@ -410,7 +413,7 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
   useEffect(() => {
     const onScroll = () => {
       const currentY = window.scrollY
-      setShowBackTop(currentY > 500)
+      setBarraPegada(currentY > 180)
       if (currentY < 10) {
         setHeaderVisible(true)
       } else if (currentY > lastScrollYRef.current && currentY > 100) {
@@ -657,16 +660,10 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
       />
 
 
-      {/* Back to top */}
-      {showBackTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed right-6 z-50 bg-white hover:bg-gray-50 text-gray-700 rounded-2xl p-3 shadow-xl border border-gray-200 transition-all hover:scale-110 active:scale-95"
-          style={{ bottom: typeof window !== 'undefined' && window.innerWidth >= 1024 ? '5.5rem' : '1.5rem' }}
-        >
-          <ArrowUp className="w-5 h-5" />
-        </button>
-      )}
+      {/* El boton de «subir arriba» vive en el header (el redondo lila) y
+          solo tiene que haber uno. Aqui habia un segundo, blanco y cuadrado,
+          que salia justo encima del otro: dos botones para lo mismo, uno
+          sobre otro, y ninguno de los dos parecia el bueno. */}
 
 
 <div className="min-h-screen bg-n-50">
@@ -1028,7 +1025,19 @@ export default function ShopGrid({ categoriaInicial }: { categoriaInicial?: stri
                 abre una hoja por abajo, y debajo las categorias en pastillas
                 con su foto pequeña. Las tarjetas cuadradas de antes ocupaban
                 media pantalla antes de ver un solo producto. */}
-            <div className="lg:hidden mb-4 space-y-3">
+            {/* Pegada arriba al bajar (15/10/2026).
+                El `top` sigue a la cabecera: con ella a la vista, la barra se
+                para justo debajo (84 px); cuando la cabecera se esconde al
+                bajar, la barra sube hasta arriba del todo. Las dos usan la
+                misma cuenta para decidirlo, asi que se mueven juntas.
+                Al volver arriba del todo, la barra se queda otra vez en su
+                sitio y la sombra desaparece. */}
+            <div
+              className={`lg:hidden mb-4 space-y-3 sticky z-40 -mx-4 px-4 pt-3 pb-2 bg-n-50/95 backdrop-blur-md transition-[top,box-shadow] duration-300 ${
+                barraPegada ? "shadow-[0_6px_16px_-10px_rgba(0,0,0,.35)] border-b border-brand-tint" : ""
+              }`}
+              style={{ top: headerVisible ? "84px" : "0px" }}
+            >
               <div className="flex gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-n-400 pointer-events-none" />
